@@ -1,10 +1,13 @@
 package com.leohoc.ets.domain.entity;
 
 import com.leohoc.ets.domain.enums.DirectionMovement;
+import com.leohoc.ets.domain.enums.HealthCondition;
 import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
 import com.leohoc.ets.util.RandomUtil;
 
 import java.awt.*;
+
+import static com.leohoc.ets.domain.enums.HealthCondition.INFECTED;
 
 public class Individual {
 
@@ -13,6 +16,7 @@ public class Individual {
     private int x;
     private int y;
     private DirectionMovement directionMovement;
+    private HealthCondition healthCondition;
 
     public static Individual randomIndividual() {
         return new Individual(
@@ -26,6 +30,7 @@ public class Individual {
         this.x = x;
         this.y = y;
         this.directionMovement = directionMovement;
+        this.healthCondition = HealthCondition.NORMAL;
     }
 
     public int getX() {
@@ -44,8 +49,8 @@ public class Individual {
         return SimulationIndividualProperties.getIndividualHeight();
     }
 
-    public Color getColor() {
-        return Color.GRAY;
+    public HealthCondition getHealthCondition() {
+        return healthCondition;
     }
 
     public void move() {
@@ -102,5 +107,19 @@ public class Individual {
 
     private void changeDirection() {
         this.directionMovement = DirectionMovement.randomDirectionMovement();
+    }
+
+    public void gotInfected() {
+        healthCondition = INFECTED;
+    }
+
+    public void interactionWith(Individual passerby) {
+        if (crossedWayWith(passerby) && passerby.getHealthCondition().equals(INFECTED)) {
+            healthCondition = INFECTED;
+        }
+    }
+
+    private boolean crossedWayWith(Individual passerby) {
+        return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
     }
 }

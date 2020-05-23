@@ -35,6 +35,9 @@ public class SimulationPropertiesLoader {
                                                 downBoundary,
                                                 leftBoundary);
 
+            Integer initialInfectedPercent = Integer.parseInt(properties.getProperty("simulation.epidemic.initialconditions.infectedpercent"));
+            SimulationEpidemicProperties.loadProperties(initialInfectedPercent);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
