@@ -8,6 +8,7 @@ import java.util.List;
 
 public class GraphicalEnvironment extends JFrame {
 
+    public static final String TITLE = "Epidemic Transmission Simulation";
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
 
@@ -19,7 +20,7 @@ public class GraphicalEnvironment extends JFrame {
     private void initialize(final Integer mapSize, final List<Individual> population) {
         this.setSize(mapSize, mapSize);
         this.setContentPane(getJContentPane(population));
-        this.setTitle("Epidemic Transmission Simulation");
+        this.setTitle(TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
