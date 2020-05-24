@@ -16,7 +16,7 @@ import static java.math.RoundingMode.HALF_UP;
 public class Simulation {
 
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 5;
-    private static final Integer SIMULATION_UPDATE_TIME_MS = 10;
+    private static final Integer SIMULATION_UPDATE_TIME_MS = 1;
     private static final BigDecimal HUNDRED_PERCENT = BigDecimal.valueOf(100);
     private static final int SCALE = 5;
 
@@ -39,7 +39,7 @@ public class Simulation {
     private void setInitialInfectedPopulation() {
         final int infectedIndividualsCount = calculateInfectedIndividualsCount();
         for (int i = 0; i < infectedIndividualsCount; i++) {
-            population.get(RandomUtil.generateIntLessThan(getPopulationSize())).gotInfected();
+            population.get(RandomUtil.generateIntLessThan(getPopulationSize())).gotInfected(simulationTimeEvolution.getInstantInSimulatedDays());
         }
     }
 
@@ -56,9 +56,10 @@ public class Simulation {
 
             for (Individual individual : population) {
                 individual.move();
+                individual.updateHealthCondition(simulationTimeEvolution.getInstantInSimulatedDays());
                 for (Individual passerby : population) {
                     if (!individual.equals(passerby)) {
-                        individual.interactionWith(passerby);
+                        individual.interactionWith(passerby, simulationTimeEvolution.getInstantInSimulatedDays());
                     }
                 }
             }

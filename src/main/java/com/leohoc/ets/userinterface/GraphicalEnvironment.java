@@ -2,11 +2,13 @@ package com.leohoc.ets.userinterface;
 
 import com.leohoc.ets.application.SimulationTimeEvolution;
 import com.leohoc.ets.domain.entity.Individual;
-import com.leohoc.ets.domain.enums.HealthCondition;
+import com.leohoc.ets.domain.enums.HealthStatus;
 import com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties;
 
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,7 @@ import static com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties.
 public class GraphicalEnvironment extends JFrame {
 
     private static final String TITLE = "Epidemic Transmission Simulation";
-    private static final int HUNDRED_PERCENT = 100;
+    private static final BigDecimal HUNDRED_PERCENT = BigDecimal.valueOf(100);
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
 
     private JPanel jContentPane = null;
@@ -60,20 +62,24 @@ public class GraphicalEnvironment extends JFrame {
 
                     int infectedCount = 0;
                     int normalCount = 0;
+                    int recoveredCount = 0;
 
                     for (Individual individual : population) {
 
                         drawIndividual(g, individual);
 
-                        if (individual.getHealthCondition().equals(HealthCondition.INFECTED)) {
+                        if (individual.getHealthStatus().equals(HealthStatus.INFECTED)) {
                             infectedCount++;
                         }
-                        if (individual.getHealthCondition().equals(HealthCondition.NORMAL)) {
+                        if (individual.getHealthStatus().equals(HealthStatus.NORMAL)) {
                             normalCount++;
+                        }
+                        if (individual.getHealthStatus().equals(HealthStatus.RECOVERED)) {
+                            recoveredCount++;
                         }
                     }
 
-                    drawChartPanel(g, infectedCount, normalCount, simulationTimeEvolution);
+                    drawChartPanel(g, infectedCount, normalCount, recoveredCount, simulationTimeEvolution);
                 }
             };
         }
@@ -81,15 +87,15 @@ public class GraphicalEnvironment extends JFrame {
     }
 
     private void drawIndividual(Graphics g, Individual individual) {
-        g.setColor(individual.getHealthCondition().getColor());
+        g.setColor(individual.getHealthCondition().getHealthStatus().getColor());
         g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
     }
 
-    private void drawChartPanel(final Graphics g, final int infectedCount, final int normalCount, final SimulationTimeEvolution simulationTimeEvolution) {
+    private void drawChartPanel(final Graphics g, final int infectedCount, final int normalCount, final int recoveredCount, final SimulationTimeEvolution simulationTimeEvolution) {
 
         drawBackgroundPanel(g);
 
-        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount);
+        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount);
         populationHealthConditionEvolution.put(simulationTimeEvolution.getInstantInSimulatedDays(), currentPopulationHealthCondition);
 
         AreaChart areaChart = new AreaChart(
@@ -108,18 +114,20 @@ public class GraphicalEnvironment extends JFrame {
         g.fillRect(getMapSize(), GRAPHICS_Y_AXIS_START_POINT, getAreaChartWidth(), getMapSize());
     }
 
-    private List<AreaChartElement> buildPopulationHealthConditionEvolution(int infectedCount, int normalCount) {
+    private List<AreaChartElement> buildPopulationHealthConditionEvolution(int infectedCount, int normalCount, int recoveredCount) {
 
         final int infectedPercentage = calculatePercentage(infectedCount, SimulationEnvironmentProperties.getPopulationSize());
         final int normalPercentage = calculatePercentage(normalCount, SimulationEnvironmentProperties.getPopulationSize());
+        final int recoveredPercentage = calculatePercentage(recoveredCount, SimulationEnvironmentProperties.getPopulationSize());
 
         List<AreaChartElement> instantPopulationHealthCondition = new ArrayList<>();
-        instantPopulationHealthCondition.add(new AreaChartElement(infectedPercentage, HealthCondition.INFECTED.getColor()));
-        instantPopulationHealthCondition.add(new AreaChartElement(normalPercentage, HealthCondition.NORMAL.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(infectedPercentage, HealthStatus.INFECTED.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(normalPercentage, HealthStatus.NORMAL.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(recoveredPercentage, HealthStatus.RECOVERED.getColor()));
         return instantPopulationHealthCondition;
     }
 
     private int calculatePercentage(int count, int totalCount) {
-        return (count * HUNDRED_PERCENT) / totalCount;
+        return BigDecimal.valueOf(count).multiply(HUNDRED_PERCENT).divide(BigDecimal.valueOf(totalCount), RoundingMode.HALF_UP).intValue();
     }
 }

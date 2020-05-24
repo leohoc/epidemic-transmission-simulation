@@ -2,7 +2,7 @@ package com.leohoc.ets.domain.enums;
 
 import java.awt.*;
 
-public enum HealthCondition {
+public enum HealthStatus {
 
     NORMAL,
     INFECTED,
