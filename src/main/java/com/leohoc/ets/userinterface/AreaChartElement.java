@@ -4,16 +4,16 @@ import java.awt.*;
 
 public class AreaChartElement {
 
-    private final Integer percentage;
+    private final Integer count;
     private final Color color;
 
-    public AreaChartElement(final Integer percentage, final Color color) {
-        this.percentage = percentage;
+    public AreaChartElement(final Integer count, final Color color) {
+        this.count = count;
         this.color = color;
     }
 
-    public Integer getPercentage() {
-        return percentage;
+    public Integer getCount() {
+        return count;
     }
 
     public Color getColor() {

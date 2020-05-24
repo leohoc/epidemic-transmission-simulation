@@ -7,6 +7,7 @@ import com.leohoc.ets.util.RandomUtil;
 
 import static com.leohoc.ets.domain.enums.DirectionMovement.*;
 import static com.leohoc.ets.domain.enums.HealthStatus.*;
+import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getDeathPercentage;
 import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getRecoveryDays;
 import static com.leohoc.ets.infrastructure.config.SimulationIndividualProperties.getDirectionChangeProbability;
 
@@ -59,9 +60,11 @@ public class Individual {
     }
 
     public void move() {
-        adjustDirection();
-        x += directionMovement.xAxisMovement();
-        y += directionMovement.yAxisMovement();
+        if (!isDead()) {
+            adjustDirection();
+            x += directionMovement.xAxisMovement();
+            y += directionMovement.yAxisMovement();
+        }
     }
 
     public void gotInfected(long currentDay) {
@@ -75,9 +78,18 @@ public class Individual {
     }
 
     public void updateHealthCondition(long currentDay) {
-        if (hasRecovered(getRecoveryDays(), currentDay)) {
-            healthCondition = new HealthCondition(RECOVERED, currentDay);
+        if (isInfected() && reachedRecoverTime(getRecoveryDays(), currentDay)) {
+            if (hasDied()) {
+                healthCondition = new HealthCondition(DEAD, currentDay);
+                directionMovement = STANDING;
+            } else {
+                healthCondition = new HealthCondition(RECOVERED, currentDay);
+            }
         }
+    }
+
+    private boolean isDead() {
+        return getHealthStatus().equals(DEAD);
     }
 
     private void adjustDirection() {
@@ -134,15 +146,15 @@ public class Individual {
         return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
     }
 
-    private boolean hasRecovered(final int recoverAverageDays, final long currentDay) {
-        return isInfected() && reachedRecoverTime(recoverAverageDays, currentDay);
-    }
-
     private boolean isInfected() {
         return healthCondition.getHealthStatus().equals(HealthStatus.INFECTED);
     }
 
     private boolean reachedRecoverTime(int recoverAverageDays, long currentDay) {
         return (currentDay - healthCondition.getStartDay()) > recoverAverageDays;
+    }
+
+    private boolean hasDied() {
+        return RandomUtil.generateIntLessThan(HUNDRED_PERCENT) <= getDeathPercentage();
     }
 }

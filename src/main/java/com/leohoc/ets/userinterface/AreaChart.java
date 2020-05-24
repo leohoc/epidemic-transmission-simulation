@@ -6,7 +6,6 @@ import java.util.List;
 
 public class AreaChart {
 
-    private static final int HUNDRED_PERCENT = 100;
     private final int chartX;
     private final int chartY;
     private final int chartWidth;
@@ -14,6 +13,7 @@ public class AreaChart {
     private final HashMap<Long, List<AreaChartElement>> chartContent;
     private final long simulationTotalIterations;
     private final int elementWidth;
+    private final int totalItemsCount;
 
     public AreaChart(final int chartX,
                      final int chartY,
@@ -21,7 +21,8 @@ public class AreaChart {
                      final int chartHeight,
                      final HashMap<Long, List<AreaChartElement>> chartContent,
                      final long simulationTotalIterations,
-                     final int elementWidth) {
+                     final int elementWidth,
+                     final int totalItemsCount) {
         this.chartX = chartX;
         this.chartY = chartY;
         this.chartWidth = chartWidth;
@@ -29,6 +30,7 @@ public class AreaChart {
         this.chartContent = chartContent;
         this.simulationTotalIterations = simulationTotalIterations;
         this.elementWidth = elementWidth;
+        this.totalItemsCount = totalItemsCount;
     }
 
     public void draw(Graphics g) {
@@ -59,6 +61,6 @@ public class AreaChart {
     }
 
     private int calculateElementHeight(AreaChartElement element) {
-        return (element.getPercentage() * chartHeight) / HUNDRED_PERCENT;
+        return (element.getCount() * chartHeight) / totalItemsCount;
     }
 }

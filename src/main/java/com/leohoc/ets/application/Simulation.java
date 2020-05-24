@@ -15,8 +15,7 @@ import static java.math.RoundingMode.HALF_UP;
 
 public class Simulation {
 
-    private static final Integer GRAPHICS_UPDATE_TIME_MS = 5;
-    private static final Integer SIMULATION_UPDATE_TIME_MS = 1;
+    private static final Integer GRAPHICS_UPDATE_TIME_MS = 2;
     private static final BigDecimal HUNDRED_PERCENT = BigDecimal.valueOf(100);
     private static final int SCALE = 5;
 
@@ -51,8 +50,6 @@ public class Simulation {
     private void runSimulation() {
 
         while (!simulationTimeEvolution.hasSimulationFinished()) {
-
-            sleepFor(SIMULATION_UPDATE_TIME_MS);
 
             for (Individual individual : population) {
                 individual.move();

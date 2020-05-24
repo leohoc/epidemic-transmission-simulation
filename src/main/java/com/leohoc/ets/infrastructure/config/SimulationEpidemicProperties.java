@@ -8,12 +8,18 @@ public class SimulationEpidemicProperties {
     private static long totalTimeInMs;
     private static long simulatedDayDurationInMs;
     private static int recoveryDays;
+    private static int deathPercentage;
 
-    static void loadProperties(final int initialInfectedPercent, final long totalTimeInMs, final long simulatedDayDurationInMs, final int recoveryDays) {
+    static void loadProperties(final int initialInfectedPercent,
+                               final long totalTimeInMs,
+                               final long simulatedDayDurationInMs,
+                               final int recoveryDays,
+                               final int deathPercentage) {
         SimulationEpidemicProperties.initialInfectedPercent = initialInfectedPercent;
         SimulationEpidemicProperties.totalTimeInMs = totalTimeInMs;
         SimulationEpidemicProperties.simulatedDayDurationInMs = simulatedDayDurationInMs;
         SimulationEpidemicProperties.recoveryDays = recoveryDays;
+        SimulationEpidemicProperties.deathPercentage = deathPercentage;
     }
     public static long getTotalTimeInMs() {
         return totalTimeInMs;
@@ -29,5 +35,9 @@ public class SimulationEpidemicProperties {
 
     public static int getRecoveryDays() {
         return recoveryDays;
+    }
+
+    public static int getDeathPercentage() {
+        return deathPercentage;
     }
 }

@@ -11,13 +11,13 @@ public enum HealthStatus {
 
     public Color getColor() {
         if (this.equals(INFECTED)) {
-            return Color.RED;
+            return Color.BLUE;
         }
         if (this.equals(RECOVERED)) {
             return Color.GREEN;
         }
         if (this.equals(DEAD)) {
-            return Color.BLACK;
+            return Color.RED;
         }
         return Color.LIGHT_GRAY;
     }

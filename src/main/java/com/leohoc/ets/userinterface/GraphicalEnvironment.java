@@ -3,23 +3,20 @@ package com.leohoc.ets.userinterface;
 import com.leohoc.ets.application.SimulationTimeEvolution;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties;
 
 import javax.swing.*;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getMapSize;
+import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getPopulationSize;
 import static com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties.*;
 
 public class GraphicalEnvironment extends JFrame {
 
     private static final String TITLE = "Epidemic Transmission Simulation";
-    private static final BigDecimal HUNDRED_PERCENT = BigDecimal.valueOf(100);
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
 
     private JPanel jContentPane = null;
@@ -63,6 +60,7 @@ public class GraphicalEnvironment extends JFrame {
                     int infectedCount = 0;
                     int normalCount = 0;
                     int recoveredCount = 0;
+                    int deadCount = 0;
 
                     for (Individual individual : population) {
 
@@ -77,9 +75,12 @@ public class GraphicalEnvironment extends JFrame {
                         if (individual.getHealthStatus().equals(HealthStatus.RECOVERED)) {
                             recoveredCount++;
                         }
+                        if (individual.getHealthStatus().equals(HealthStatus.DEAD)) {
+                            deadCount++;
+                        }
                     }
 
-                    drawChartPanel(g, infectedCount, normalCount, recoveredCount, simulationTimeEvolution);
+                    drawChartPanel(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution);
                 }
             };
         }
@@ -91,11 +92,16 @@ public class GraphicalEnvironment extends JFrame {
         g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
     }
 
-    private void drawChartPanel(final Graphics g, final int infectedCount, final int normalCount, final int recoveredCount, final SimulationTimeEvolution simulationTimeEvolution) {
+    private void drawChartPanel(final Graphics g,
+                                final int infectedCount,
+                                final int normalCount,
+                                final int recoveredCount,
+                                final int deadCount,
+                                final SimulationTimeEvolution simulationTimeEvolution) {
 
         drawBackgroundPanel(g);
 
-        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount);
+        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount, deadCount);
         populationHealthConditionEvolution.put(simulationTimeEvolution.getInstantInSimulatedDays(), currentPopulationHealthCondition);
 
         AreaChart areaChart = new AreaChart(
@@ -105,7 +111,8 @@ public class GraphicalEnvironment extends JFrame {
                                     getAreaChartHeight(),
                                     populationHealthConditionEvolution,
                                     simulationTimeEvolution.getSimulatedTotalDays(),
-                                    getAreaChartElementWidth());
+                                    getAreaChartElementWidth(),
+                                    getPopulationSize());
         areaChart.draw(g);
     }
 
@@ -114,20 +121,16 @@ public class GraphicalEnvironment extends JFrame {
         g.fillRect(getMapSize(), GRAPHICS_Y_AXIS_START_POINT, getAreaChartWidth(), getMapSize());
     }
 
-    private List<AreaChartElement> buildPopulationHealthConditionEvolution(int infectedCount, int normalCount, int recoveredCount) {
-
-        final int infectedPercentage = calculatePercentage(infectedCount, SimulationEnvironmentProperties.getPopulationSize());
-        final int normalPercentage = calculatePercentage(normalCount, SimulationEnvironmentProperties.getPopulationSize());
-        final int recoveredPercentage = calculatePercentage(recoveredCount, SimulationEnvironmentProperties.getPopulationSize());
+    private List<AreaChartElement> buildPopulationHealthConditionEvolution(final int infectedCount,
+                                                                           final int normalCount,
+                                                                           final int recoveredCount,
+                                                                           final int deadCount) {
 
         List<AreaChartElement> instantPopulationHealthCondition = new ArrayList<>();
-        instantPopulationHealthCondition.add(new AreaChartElement(infectedPercentage, HealthStatus.INFECTED.getColor()));
-        instantPopulationHealthCondition.add(new AreaChartElement(normalPercentage, HealthStatus.NORMAL.getColor()));
-        instantPopulationHealthCondition.add(new AreaChartElement(recoveredPercentage, HealthStatus.RECOVERED.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(infectedCount, HealthStatus.INFECTED.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(normalCount, HealthStatus.NORMAL.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(recoveredCount, HealthStatus.RECOVERED.getColor()));
+        instantPopulationHealthCondition.add(new AreaChartElement(deadCount, HealthStatus.DEAD.getColor()));
         return instantPopulationHealthCondition;
-    }
-
-    private int calculatePercentage(int count, int totalCount) {
-        return BigDecimal.valueOf(count).multiply(HUNDRED_PERCENT).divide(BigDecimal.valueOf(totalCount), RoundingMode.HALF_UP).intValue();
     }
 }
