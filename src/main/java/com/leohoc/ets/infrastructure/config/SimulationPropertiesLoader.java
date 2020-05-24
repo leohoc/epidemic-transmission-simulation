@@ -30,7 +30,8 @@ public class SimulationPropertiesLoader {
     private static void loadEpidemicProperties(final Properties properties) {
         final int initialInfectedPercent = parseInt(properties.getProperty("simulation.epidemic.initialconditions.infectedpercent"));
         final int simulationTotalTimeInMs = parseInt(properties.getProperty("simulation.epidemic.totaltime"));
-        SimulationEpidemicProperties.loadProperties(initialInfectedPercent, simulationTotalTimeInMs);
+        final int simulatedDayDurationInMs = parseInt(properties.getProperty("simulation.epidemic.daydurationinms"));
+        SimulationEpidemicProperties.loadProperties(initialInfectedPercent, simulationTotalTimeInMs, simulatedDayDurationInMs);
     }
 
     private static void loadIndividualProperties(final Properties properties) {

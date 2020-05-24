@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getBigDecimalPopulationSize;
 import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getPopulationSize;
-import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getInitialInfectedPercent;
+import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.*;
 import static java.math.RoundingMode.HALF_UP;
 
 public class Simulation {
@@ -21,7 +21,7 @@ public class Simulation {
     private static final int SCALE = 5;
 
     private final List<Individual> population = new ArrayList<>();
-    private Integer iteration = 0;
+    private final SimulationTimeEvolution simulationTimeEvolution = new SimulationTimeEvolution(getTotalTimeInMs(), getSimulatedDayDurationInMs());
 
     public void startSimulation() {
         generatePopulation();
@@ -50,7 +50,7 @@ public class Simulation {
 
     private void runSimulation() {
 
-        while (true) {
+        while (!simulationTimeEvolution.hasSimulationFinished()) {
 
             sleepFor(SIMULATION_UPDATE_TIME_MS);
 
@@ -62,18 +62,17 @@ public class Simulation {
                     }
                 }
             }
-            iteration = iteration + 1;
         }
     }
 
     private void runGraphicalEnvironment() {
 
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(population, iteration);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(population, simulationTimeEvolution);
         graphicalEnvironment.setVisible(true);
 
-        while (true) {
+        while (!simulationTimeEvolution.hasSimulationFinished()) {
             sleepFor(GRAPHICS_UPDATE_TIME_MS);
-            graphicalEnvironment.getImagePanel(population, iteration).repaint();
+            graphicalEnvironment.getImagePanel(population, simulationTimeEvolution).repaint();
         }
     }
 

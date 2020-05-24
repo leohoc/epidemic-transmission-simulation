@@ -1,5 +1,6 @@
 package com.leohoc.ets.userinterface;
 
+import com.leohoc.ets.application.SimulationTimeEvolution;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.HealthCondition;
 import com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties;
@@ -7,12 +8,10 @@ import com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getMapSize;
-import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getTotalTimeInMs;
 import static com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties.*;
 
 public class GraphicalEnvironment extends JFrame {
@@ -24,34 +23,33 @@ public class GraphicalEnvironment extends JFrame {
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
 
-    private final long startTime = Calendar.getInstance().getTimeInMillis();
     HashMap<Long, List<AreaChartElement>> populationHealthConditionEvolution = new HashMap<>();
 
-    public GraphicalEnvironment(final List<Individual> population, final Integer iteration) {
+    public GraphicalEnvironment(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
         super();
-        initialize(population, iteration);
+        initialize(population, simulationTimeEvolution);
     }
 
-    private void initialize(final List<Individual> population, final Integer iteration) {
+    private void initialize(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
         final int totalWidth = getMapSize() + getAreaChartWidth();
         this.setSize(totalWidth, getMapSize());
-        this.setContentPane(getJContentPane(population, iteration));
+        this.setContentPane(getJContentPane(population, simulationTimeEvolution));
         this.setTitle(TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
 
-    private JPanel getJContentPane(final List<Individual> population, final Integer iteration) {
+    private JPanel getJContentPane(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
         if (jContentPane == null) {
             jContentPane = new JPanel();
             jContentPane.setLayout(new BorderLayout());
-            jContentPane.add(getImagePanel(population, iteration), BorderLayout.CENTER);
+            jContentPane.add(getImagePanel(population, simulationTimeEvolution), BorderLayout.CENTER);
         }
         return jContentPane;
     }
 
-    public JPanel getImagePanel(final List<Individual> population, final int iteration) {
+    public JPanel getImagePanel(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
         if (imagePanel == null) {
             imagePanel = new JPanel() {
 
@@ -75,7 +73,7 @@ public class GraphicalEnvironment extends JFrame {
                         }
                     }
 
-                    drawChartPanel(g, infectedCount, normalCount);
+                    drawChartPanel(g, infectedCount, normalCount, simulationTimeEvolution);
                 }
             };
         }
@@ -87,14 +85,12 @@ public class GraphicalEnvironment extends JFrame {
         g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
     }
 
-    private void drawChartPanel(Graphics g, int infectedCount, int normalCount) {
+    private void drawChartPanel(final Graphics g, final int infectedCount, final int normalCount, final SimulationTimeEvolution simulationTimeEvolution) {
 
         drawBackgroundPanel(g);
 
         List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount);
-
-        long simulationInstant = Calendar.getInstance().getTimeInMillis() - startTime;
-        populationHealthConditionEvolution.put(simulationInstant, currentPopulationHealthCondition);
+        populationHealthConditionEvolution.put(simulationTimeEvolution.getInstantInSimulatedDays(), currentPopulationHealthCondition);
 
         AreaChart areaChart = new AreaChart(
                                     getMapSize(),
@@ -102,7 +98,7 @@ public class GraphicalEnvironment extends JFrame {
                                     getAreaChartWidth(),
                                     getAreaChartHeight(),
                                     populationHealthConditionEvolution,
-                                    getTotalTimeInMs(),
+                                    simulationTimeEvolution.getSimulatedTotalDays(),
                                     getAreaChartElementWidth());
         areaChart.draw(g);
     }

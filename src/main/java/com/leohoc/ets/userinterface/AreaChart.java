@@ -12,7 +12,7 @@ public class AreaChart {
     private final int chartWidth;
     private final int chartHeight;
     private final HashMap<Long, List<AreaChartElement>> chartContent;
-    private final int simulationTotalTimeInMs;
+    private final long simulationTotalIterations;
     private final int elementWidth;
 
     public AreaChart(final int chartX,
@@ -20,27 +20,27 @@ public class AreaChart {
                      final int chartWidth,
                      final int chartHeight,
                      final HashMap<Long, List<AreaChartElement>> chartContent,
-                     final int simulationTotalTimeInMs,
+                     final long simulationTotalIterations,
                      final int elementWidth) {
         this.chartX = chartX;
         this.chartY = chartY;
         this.chartWidth = chartWidth;
         this.chartHeight = chartHeight;
         this.chartContent = chartContent;
-        this.simulationTotalTimeInMs = simulationTotalTimeInMs;
+        this.simulationTotalIterations = simulationTotalIterations;
         this.elementWidth = elementWidth;
     }
 
     public void draw(Graphics g) {
-        for (Long simulationInstant : chartContent.keySet()) {
+        for (Long simulationIteration : chartContent.keySet()) {
 
-            List<AreaChartElement> instantElements = chartContent.get(simulationInstant);
+            List<AreaChartElement> instantElements = chartContent.get(simulationIteration);
             int elementsAccumulatedY = 0;
 
             for (AreaChartElement element : instantElements) {
 
                 int elementHeight = calculateElementHeight(element);
-                int elementX = calculateElementXStartPoint(simulationInstant);
+                int elementX = calculateElementXStartPoint(simulationIteration);
                 int elementY = calculateElementYStartPoint(elementsAccumulatedY, elementHeight);
 
                 g.setColor(element.getColor());
@@ -55,7 +55,7 @@ public class AreaChart {
     }
 
     private int calculateElementXStartPoint(Long simulationInstant) {
-        return chartX + (int) ((simulationInstant * chartWidth) / simulationTotalTimeInMs);
+        return chartX + (int) ((simulationInstant * chartWidth) / simulationTotalIterations);
     }
 
     private int calculateElementHeight(AreaChartElement element) {
