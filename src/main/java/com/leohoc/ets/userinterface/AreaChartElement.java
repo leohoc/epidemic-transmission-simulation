@@ -4,10 +4,10 @@ import java.awt.*;
 
 public class AreaChartElement {
 
-    private Integer percentage;
-    private Color color;
+    private final Integer percentage;
+    private final Color color;
 
-    public AreaChartElement(Integer percentage, Color color) {
+    public AreaChartElement(final Integer percentage, final Color color) {
         this.percentage = percentage;
         this.color = color;
     }

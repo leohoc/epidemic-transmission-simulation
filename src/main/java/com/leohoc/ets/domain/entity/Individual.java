@@ -5,8 +5,6 @@ import com.leohoc.ets.domain.enums.HealthCondition;
 import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
 import com.leohoc.ets.util.RandomUtil;
 
-import java.awt.*;
-
 import static com.leohoc.ets.domain.enums.HealthCondition.INFECTED;
 
 public class Individual {
@@ -59,11 +57,21 @@ public class Individual {
         y += directionMovement.yAxisMovement();
     }
 
+    public void gotInfected() {
+        healthCondition = INFECTED;
+    }
+
+    public void interactionWith(Individual passerby) {
+        if (crossedWayWith(passerby) && passerby.getHealthCondition().equals(INFECTED)) {
+            this.gotInfected();
+        }
+    }
+
     private void adjustDirection() {
         changeDirectionByReachingMapBoundaries();
         if (shouldChangeDirectionRandomly()) {
             changeDirection();
-        };
+        }
     }
 
     private void changeDirectionByReachingMapBoundaries() {
@@ -107,16 +115,6 @@ public class Individual {
 
     private void changeDirection() {
         this.directionMovement = DirectionMovement.randomDirectionMovement();
-    }
-
-    public void gotInfected() {
-        healthCondition = INFECTED;
-    }
-
-    public void interactionWith(Individual passerby) {
-        if (crossedWayWith(passerby) && passerby.getHealthCondition().equals(INFECTED)) {
-            healthCondition = INFECTED;
-        }
     }
 
     private boolean crossedWayWith(Individual passerby) {

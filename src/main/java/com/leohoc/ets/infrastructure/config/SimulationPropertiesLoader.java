@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.lang.Integer.parseInt;
+
 public class SimulationPropertiesLoader {
 
     private static final String PROPERTIES_FILE_PATH = "src/main/resources/application.properties";
@@ -15,31 +17,50 @@ public class SimulationPropertiesLoader {
             Properties properties = new Properties();
             properties.load(input);
 
-            Integer mapSize = Integer.parseInt(properties.getProperty("simulation.environment.map.size"));
-            Integer populationSize = Integer.parseInt(properties.getProperty("simulation.environment.population.size"));
-            SimulationEnvironmentProperties.loadProperties(mapSize, populationSize);
-
-            Integer upBoundary = Integer.parseInt(properties.getProperty("simulation.individual.boundary.up"));
-            Integer rightBoundary = Integer.parseInt(properties.getProperty("simulation.individual.boundary.right"));
-            Integer downBoundary = Integer.parseInt(properties.getProperty("simulation.individual.boundary.down"));
-            Integer leftBoundary = Integer.parseInt(properties.getProperty("simulation.individual.boundary.left"));
-            Integer individualWidth = Integer.parseInt(properties.getProperty("simulation.individual.width"));
-            Integer individualHeight = Integer.parseInt(properties.getProperty("simulation.individual.height"));
-            Integer directionChangeProbability = Integer.parseInt(properties.getProperty("simulation.individual.direction.changeprobability"));
-            SimulationIndividualProperties.loadProperties(
-                                                individualWidth,
-                                                individualHeight,
-                                                directionChangeProbability,
-                                                upBoundary,
-                                                rightBoundary,
-                                                downBoundary,
-                                                leftBoundary);
-
-            Integer initialInfectedPercent = Integer.parseInt(properties.getProperty("simulation.epidemic.initialconditions.infectedpercent"));
-            SimulationEpidemicProperties.loadProperties(initialInfectedPercent);
+            loadEnvironmentProperties(properties);
+            loadIndividualProperties(properties);
+            loadEpidemicProperties(properties);
+            loadGraphicsProperties(properties);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void loadEpidemicProperties(final Properties properties) {
+        final int initialInfectedPercent = parseInt(properties.getProperty("simulation.epidemic.initialconditions.infectedpercent"));
+        final int simulationTotalTimeInMs = parseInt(properties.getProperty("simulation.epidemic.totaltime"));
+        SimulationEpidemicProperties.loadProperties(initialInfectedPercent, simulationTotalTimeInMs);
+    }
+
+    private static void loadIndividualProperties(final Properties properties) {
+        final int upBoundary = parseInt(properties.getProperty("simulation.individual.boundary.up"));
+        final int rightBoundary = parseInt(properties.getProperty("simulation.individual.boundary.right"));
+        final int downBoundary = parseInt(properties.getProperty("simulation.individual.boundary.down"));
+        final int leftBoundary = parseInt(properties.getProperty("simulation.individual.boundary.left"));
+        final int individualWidth = parseInt(properties.getProperty("simulation.individual.width"));
+        final int individualHeight = parseInt(properties.getProperty("simulation.individual.height"));
+        final int directionChangeProbability = parseInt(properties.getProperty("simulation.individual.direction.changeprobability"));
+        SimulationIndividualProperties.loadProperties(
+                                            individualWidth,
+                                            individualHeight,
+                                            directionChangeProbability,
+                                            upBoundary,
+                                            rightBoundary,
+                                            downBoundary,
+                                            leftBoundary);
+    }
+
+    private static void loadEnvironmentProperties(final Properties properties) {
+        final int mapSize = parseInt(properties.getProperty("simulation.environment.map.size"));
+        final int populationSize = parseInt(properties.getProperty("simulation.environment.population.size"));
+        SimulationEnvironmentProperties.loadProperties(mapSize, populationSize);
+    }
+
+    private static void loadGraphicsProperties(final Properties properties) {
+        final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
+        final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
+        final int areaChartElementWidth = parseInt(properties.getProperty("simulation.graphics.areachart.element.width"));
+        SimulationGraphicsProperties.loadProperties(areaChartWidth, areaChartHeight, areaChartElementWidth);
     }
 }

@@ -10,13 +10,13 @@ public class SimulationIndividualProperties {
     private static Integer downBoundary;
     private static Integer leftBoundary;
 
-    protected static void loadProperties(final Integer individualWidth,
-                                         final Integer individualHeight,
-                                         final Integer directionChangeProbability,
-                                         final Integer upBoundary,
-                                         final Integer rightBoundary,
-                                         final Integer downBoundary,
-                                         final Integer leftBoundary) {
+    static void loadProperties(final Integer individualWidth,
+                               final Integer individualHeight,
+                               final Integer directionChangeProbability,
+                               final Integer upBoundary,
+                               final Integer rightBoundary,
+                               final Integer downBoundary,
+                               final Integer leftBoundary) {
         SimulationIndividualProperties.individualWidth = individualWidth;
         SimulationIndividualProperties.individualHeight = individualHeight;
         SimulationIndividualProperties.directionChangeProbability = directionChangeProbability;

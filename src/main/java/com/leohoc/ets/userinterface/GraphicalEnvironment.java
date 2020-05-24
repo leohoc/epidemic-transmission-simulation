@@ -11,25 +11,30 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getMapSize;
+import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getTotalTimeInMs;
+import static com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties.*;
+
 public class GraphicalEnvironment extends JFrame {
 
-    public static final String TITLE = "Epidemic Transmission Simulation";
-    private static final int CHART_PANEL_WIDTH = 400;
-    public static final int HUNDRED_PERCENT = 100;
+    private static final String TITLE = "Epidemic Transmission Simulation";
+    private static final int HUNDRED_PERCENT = 100;
+    private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
+
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
-    private Integer mapSize = null;
-    private long startTime = Calendar.getInstance().getTimeInMillis();
+
+    private final long startTime = Calendar.getInstance().getTimeInMillis();
     HashMap<Long, List<AreaChartElement>> populationHealthConditionEvolution = new HashMap<>();
 
-    public GraphicalEnvironment(final Integer mapSize, final List<Individual> population, final Integer iteration) {
+    public GraphicalEnvironment(final List<Individual> population, final Integer iteration) {
         super();
-        this.mapSize = mapSize;
         initialize(population, iteration);
     }
 
     private void initialize(final List<Individual> population, final Integer iteration) {
-        this.setSize(mapSize + CHART_PANEL_WIDTH, mapSize);
+        final int totalWidth = getMapSize() + getAreaChartWidth();
+        this.setSize(totalWidth, getMapSize());
         this.setContentPane(getJContentPane(population, iteration));
         this.setTitle(TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -60,8 +65,7 @@ public class GraphicalEnvironment extends JFrame {
 
                     for (Individual individual : population) {
 
-                        g.setColor(individual.getHealthCondition().getColor());
-                        g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
+                        drawIndividual(g, individual);
 
                         if (individual.getHealthCondition().equals(HealthCondition.INFECTED)) {
                             infectedCount++;
@@ -78,23 +82,45 @@ public class GraphicalEnvironment extends JFrame {
         return imagePanel;
     }
 
+    private void drawIndividual(Graphics g, Individual individual) {
+        g.setColor(individual.getHealthCondition().getColor());
+        g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
+    }
+
     private void drawChartPanel(Graphics g, int infectedCount, int normalCount) {
 
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(mapSize, 0, CHART_PANEL_WIDTH, mapSize);
+        drawBackgroundPanel(g);
 
-        int infectedPercentage = calculatePercentage(infectedCount, SimulationEnvironmentProperties.getPopulationSize());
-        int normalPercentage = calculatePercentage(normalCount, SimulationEnvironmentProperties.getPopulationSize());
+        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount);
+
+        long simulationInstant = Calendar.getInstance().getTimeInMillis() - startTime;
+        populationHealthConditionEvolution.put(simulationInstant, currentPopulationHealthCondition);
+
+        AreaChart areaChart = new AreaChart(
+                                    getMapSize(),
+                                    GRAPHICS_Y_AXIS_START_POINT,
+                                    getAreaChartWidth(),
+                                    getAreaChartHeight(),
+                                    populationHealthConditionEvolution,
+                                    getTotalTimeInMs(),
+                                    getAreaChartElementWidth());
+        areaChart.draw(g);
+    }
+
+    private void drawBackgroundPanel(Graphics g) {
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(getMapSize(), GRAPHICS_Y_AXIS_START_POINT, getAreaChartWidth(), getMapSize());
+    }
+
+    private List<AreaChartElement> buildPopulationHealthConditionEvolution(int infectedCount, int normalCount) {
+
+        final int infectedPercentage = calculatePercentage(infectedCount, SimulationEnvironmentProperties.getPopulationSize());
+        final int normalPercentage = calculatePercentage(normalCount, SimulationEnvironmentProperties.getPopulationSize());
 
         List<AreaChartElement> instantPopulationHealthCondition = new ArrayList<>();
         instantPopulationHealthCondition.add(new AreaChartElement(infectedPercentage, HealthCondition.INFECTED.getColor()));
         instantPopulationHealthCondition.add(new AreaChartElement(normalPercentage, HealthCondition.NORMAL.getColor()));
-
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        populationHealthConditionEvolution.put(currentTime - startTime, instantPopulationHealthCondition);
-
-        AreaChart areaChart = new AreaChart(mapSize, 0, CHART_PANEL_WIDTH, CHART_PANEL_WIDTH, populationHealthConditionEvolution);
-        areaChart.draw(g);
+        return instantPopulationHealthCondition;
     }
 
     private int calculatePercentage(int count, int totalCount) {

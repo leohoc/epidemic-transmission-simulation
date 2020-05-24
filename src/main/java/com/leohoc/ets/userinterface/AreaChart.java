@@ -6,21 +6,29 @@ import java.util.List;
 
 public class AreaChart {
 
-    private static final int SIMULATION_TOTAL_TIME_IN_MS = 100000;
     private static final int HUNDRED_PERCENT = 100;
-    private static final int ELEMENT_WIDTH = 1;
-    private int chartX;
-    private int chartY;
-    private int chartWidth;
-    private int chartHeight;
-    private HashMap<Long, List<AreaChartElement>> chartContent;
+    private final int chartX;
+    private final int chartY;
+    private final int chartWidth;
+    private final int chartHeight;
+    private final HashMap<Long, List<AreaChartElement>> chartContent;
+    private final int simulationTotalTimeInMs;
+    private final int elementWidth;
 
-    public AreaChart(int chartX, int chartY, int chartWidth, int chartHeight, HashMap<Long, List<AreaChartElement>> chartContent) {
+    public AreaChart(final int chartX,
+                     final int chartY,
+                     final int chartWidth,
+                     final int chartHeight,
+                     final HashMap<Long, List<AreaChartElement>> chartContent,
+                     final int simulationTotalTimeInMs,
+                     final int elementWidth) {
         this.chartX = chartX;
         this.chartY = chartY;
         this.chartWidth = chartWidth;
         this.chartHeight = chartHeight;
         this.chartContent = chartContent;
+        this.simulationTotalTimeInMs = simulationTotalTimeInMs;
+        this.elementWidth = elementWidth;
     }
 
     public void draw(Graphics g) {
@@ -31,13 +39,26 @@ public class AreaChart {
 
             for (AreaChartElement element : instantElements) {
 
-                int elementX = (int) (simulationInstant * chartWidth) / SIMULATION_TOTAL_TIME_IN_MS;
-                int elementHeight = (element.getPercentage() * chartHeight) / HUNDRED_PERCENT;
+                int elementHeight = calculateElementHeight(element);
+                int elementX = calculateElementXStartPoint(simulationInstant);
+                int elementY = calculateElementYStartPoint(elementsAccumulatedY, elementHeight);
 
                 g.setColor(element.getColor());
-                g.fillRect(chartX + elementX, chartY + (chartHeight - elementsAccumulatedY - elementHeight), ELEMENT_WIDTH, elementHeight);
+                g.fillRect(elementX, elementY, elementWidth, elementHeight);
                 elementsAccumulatedY += elementHeight;
             }
         }
+    }
+
+    private int calculateElementYStartPoint(int elementsAccumulatedY, int elementHeight) {
+        return chartY + (chartHeight - elementsAccumulatedY - elementHeight);
+    }
+
+    private int calculateElementXStartPoint(Long simulationInstant) {
+        return chartX + (int) ((simulationInstant * chartWidth) / simulationTotalTimeInMs);
+    }
+
+    private int calculateElementHeight(AreaChartElement element) {
+        return (element.getPercentage() * chartHeight) / HUNDRED_PERCENT;
     }
 }
