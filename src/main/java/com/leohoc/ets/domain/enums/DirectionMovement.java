@@ -37,6 +37,6 @@ public enum DirectionMovement {
 
     private static class Movements {
         public static final int STAND = 0;
-        public static final int STEP = 4;
+        public static final int STEP = 5;
     }
 }

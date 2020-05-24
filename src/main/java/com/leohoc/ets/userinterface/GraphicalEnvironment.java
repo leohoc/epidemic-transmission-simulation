@@ -18,6 +18,9 @@ public class GraphicalEnvironment extends JFrame {
 
     private static final String TITLE = "Epidemic Transmission Simulation";
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
+    private static final String TOTAL_INFECTED = "Total infected:";
+    private static final String TOTAL_RECOVERED = "Total recovered:";
+    private static final String TOTAL_DEAD = "Total dead:";
 
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
@@ -100,25 +103,37 @@ public class GraphicalEnvironment extends JFrame {
                                 final SimulationTimeEvolution simulationTimeEvolution) {
 
         drawBackgroundPanel(g);
-
-        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount, deadCount);
-        populationHealthConditionEvolution.put(simulationTimeEvolution.getInstantInSimulatedDays(), currentPopulationHealthCondition);
-
-        AreaChart areaChart = new AreaChart(
-                                    getMapSize(),
-                                    GRAPHICS_Y_AXIS_START_POINT,
-                                    getAreaChartWidth(),
-                                    getAreaChartHeight(),
-                                    populationHealthConditionEvolution,
-                                    simulationTimeEvolution.getSimulatedTotalDays(),
-                                    getAreaChartElementWidth(),
-                                    getPopulationSize());
-        areaChart.draw(g);
+        drawAreaChart(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution);
+        drawCountInformation(g, infectedCount, recoveredCount, deadCount);
     }
 
     private void drawBackgroundPanel(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(getMapSize(), GRAPHICS_Y_AXIS_START_POINT, getAreaChartWidth(), getMapSize());
+    }
+
+
+    private void drawAreaChart(Graphics g, int infectedCount, int normalCount, int recoveredCount, int deadCount, SimulationTimeEvolution simulationTimeEvolution) {
+        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount, deadCount);
+        populationHealthConditionEvolution.put(simulationTimeEvolution.getInstantInSimulatedDays(), currentPopulationHealthCondition);
+
+        AreaChart areaChart = new AreaChart(
+                getMapSize(),
+                GRAPHICS_Y_AXIS_START_POINT,
+                getAreaChartWidth(),
+                getAreaChartHeight(),
+                populationHealthConditionEvolution,
+                simulationTimeEvolution.getSimulatedTotalDays(),
+                getAreaChartElementWidth(),
+                getPopulationSize());
+        areaChart.draw(g);
+    }
+
+    private void drawCountInformation(Graphics g, int infectedCount, int recoveredCount, int deadCount) {
+        g.setColor(Color.WHITE);
+        g.drawString(TOTAL_INFECTED + infectedCount, getMapSize(), getInfectedCountY());
+        g.drawString(TOTAL_RECOVERED + recoveredCount, getMapSize(), getRecoveredCountY());
+        g.drawString(TOTAL_DEAD + deadCount, getMapSize(), getDeadCountY());
     }
 
     private List<AreaChartElement> buildPopulationHealthConditionEvolution(final int infectedCount,

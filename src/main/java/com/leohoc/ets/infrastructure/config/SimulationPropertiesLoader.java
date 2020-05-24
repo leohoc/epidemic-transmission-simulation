@@ -64,6 +64,9 @@ public class SimulationPropertiesLoader {
         final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
         final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
         final int areaChartElementWidth = parseInt(properties.getProperty("simulation.graphics.areachart.element.width"));
-        SimulationGraphicsProperties.loadProperties(areaChartWidth, areaChartHeight, areaChartElementWidth);
+        final int infectedCountY = parseInt(properties.getProperty("simulation.graphics.info.infected.y"));
+        final int recoveredCountY = parseInt(properties.getProperty("simulation.graphics.info.recovered.y"));
+        final int deadCountY = parseInt(properties.getProperty("simulation.graphics.info.dead.y"));
+        SimulationGraphicsProperties.loadProperties(areaChartWidth, areaChartHeight, areaChartElementWidth, infectedCountY, recoveredCountY, deadCountY);
     }
 }
