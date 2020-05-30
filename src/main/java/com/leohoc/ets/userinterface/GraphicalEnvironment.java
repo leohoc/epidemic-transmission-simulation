@@ -1,18 +1,15 @@
 package com.leohoc.ets.userinterface;
 
-import com.leohoc.ets.application.SimulationTimeEvolution;
+import com.leohoc.ets.application.IterationEvolution;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.HealthStatus;
+import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getMapSize;
-import static com.leohoc.ets.infrastructure.config.SimulationEnvironmentProperties.getPopulationSize;
-import static com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties.*;
 
 public class GraphicalEnvironment extends JFrame {
 
@@ -24,17 +21,17 @@ public class GraphicalEnvironment extends JFrame {
 
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
+    private final SimulationGraphicsProperties properties;
+    private final HashMap<Integer, List<AreaChartElement>> populationHealthConditionEvolution = new HashMap<>();
 
-    HashMap<Long, List<AreaChartElement>> populationHealthConditionEvolution = new HashMap<>();
-
-    public GraphicalEnvironment(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
+    public GraphicalEnvironment(final SimulationGraphicsProperties properties) {
         super();
-        initialize(population, simulationTimeEvolution);
+        this.properties = properties;
     }
 
-    private void initialize(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
-        final int totalWidth = getMapSize() + getAreaChartWidth();
-        this.setSize(totalWidth, getMapSize());
+    public void initialize(final List<Individual> population, final IterationEvolution simulationTimeEvolution) {
+        final int totalWidth = properties.getMapWidth() + properties.getAreaChartWidth();
+        this.setSize(totalWidth, properties.getMapHeight());
         this.setContentPane(getJContentPane(population, simulationTimeEvolution));
         this.setTitle(TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -42,7 +39,7 @@ public class GraphicalEnvironment extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    private JPanel getJContentPane(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
+    private JPanel getJContentPane(final List<Individual> population, final IterationEvolution simulationTimeEvolution) {
         if (jContentPane == null) {
             jContentPane = new JPanel();
             jContentPane.setLayout(new BorderLayout());
@@ -51,7 +48,7 @@ public class GraphicalEnvironment extends JFrame {
         return jContentPane;
     }
 
-    public JPanel getImagePanel(final List<Individual> population, final SimulationTimeEvolution simulationTimeEvolution) {
+    public JPanel getImagePanel(final List<Individual> population, final IterationEvolution simulationTimeEvolution) {
         if (imagePanel == null) {
             imagePanel = new JPanel() {
 
@@ -83,7 +80,7 @@ public class GraphicalEnvironment extends JFrame {
                         }
                     }
 
-                    drawChartPanel(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution);
+                    drawChartPanel(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution, population.size());
                 }
             };
         }
@@ -100,40 +97,47 @@ public class GraphicalEnvironment extends JFrame {
                                 final int normalCount,
                                 final int recoveredCount,
                                 final int deadCount,
-                                final SimulationTimeEvolution simulationTimeEvolution) {
+                                final IterationEvolution simulationTimeEvolution,
+                                final int populationCount) {
 
         drawBackgroundPanel(g);
-        drawAreaChart(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution);
+        drawAreaChart(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution, populationCount);
         drawCountInformation(g, infectedCount, recoveredCount, deadCount);
     }
 
     private void drawBackgroundPanel(Graphics g) {
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(getMapSize(), GRAPHICS_Y_AXIS_START_POINT, getAreaChartWidth(), getMapSize());
+        g.fillRect(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getMapHeight());
     }
 
 
-    private void drawAreaChart(Graphics g, int infectedCount, int normalCount, int recoveredCount, int deadCount, SimulationTimeEvolution simulationTimeEvolution) {
+    private void drawAreaChart(final Graphics g,
+                               final int infectedCount,
+                               final int normalCount,
+                               final int recoveredCount,
+                               final int deadCount,
+                               final IterationEvolution simulationTimeEvolution,
+                               final int populationCount) {
         List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount, deadCount);
-        populationHealthConditionEvolution.put(simulationTimeEvolution.getInstantInSimulatedDays(), currentPopulationHealthCondition);
+        populationHealthConditionEvolution.put(simulationTimeEvolution.getCurrentSimulatedDay(), currentPopulationHealthCondition);
 
         AreaChart areaChart = new AreaChart(
-                getMapSize(),
+                properties.getMapWidth(),
                 GRAPHICS_Y_AXIS_START_POINT,
-                getAreaChartWidth(),
-                getAreaChartHeight(),
+                properties.getAreaChartWidth(),
+                properties.getAreaChartHeight(),
                 populationHealthConditionEvolution,
                 simulationTimeEvolution.getSimulatedTotalDays(),
-                getAreaChartElementWidth(),
-                getPopulationSize());
+                properties.getAreaChartElementWidth(),
+                populationCount);
         areaChart.draw(g);
     }
 
     private void drawCountInformation(Graphics g, int infectedCount, int recoveredCount, int deadCount) {
         g.setColor(Color.WHITE);
-        g.drawString(TOTAL_INFECTED + infectedCount, getMapSize(), getInfectedCountY());
-        g.drawString(TOTAL_RECOVERED + recoveredCount, getMapSize(), getRecoveredCountY());
-        g.drawString(TOTAL_DEAD + deadCount, getMapSize(), getDeadCountY());
+        g.drawString(TOTAL_INFECTED + infectedCount, properties.getMapWidth(), properties.getInfectedCountY());
+        g.drawString(TOTAL_RECOVERED + recoveredCount, properties.getMapWidth(), properties.getRecoveredCountY());
+        g.drawString(TOTAL_DEAD + deadCount, properties.getMapWidth(), properties.getDeadCountY());
     }
 
     private List<AreaChartElement> buildPopulationHealthConditionEvolution(final int infectedCount,

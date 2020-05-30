@@ -6,8 +6,8 @@ import com.leohoc.ets.infrastructure.config.SimulationPropertiesLoader;
 public class ETSApplication {
 
 	public static void main(String[] args) {
-		SimulationPropertiesLoader.loadProperties();
-		Simulation simulation = new Simulation();
+		SimulationPropertiesLoader propertiesLoader = new SimulationPropertiesLoader();
+		Simulation simulation = new Simulation(propertiesLoader);
 		simulation.startSimulation();
 	}
 

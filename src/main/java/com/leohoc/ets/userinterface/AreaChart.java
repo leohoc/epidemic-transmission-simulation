@@ -10,7 +10,7 @@ public class AreaChart {
     private final int chartY;
     private final int chartWidth;
     private final int chartHeight;
-    private final HashMap<Long, List<AreaChartElement>> chartContent;
+    private final HashMap<Integer, List<AreaChartElement>> chartContent;
     private final long simulationTotalIterations;
     private final int elementWidth;
     private final int totalItemsCount;
@@ -19,7 +19,7 @@ public class AreaChart {
                      final int chartY,
                      final int chartWidth,
                      final int chartHeight,
-                     final HashMap<Long, List<AreaChartElement>> chartContent,
+                     final HashMap<Integer, List<AreaChartElement>> chartContent,
                      final long simulationTotalIterations,
                      final int elementWidth,
                      final int totalItemsCount) {
@@ -34,7 +34,7 @@ public class AreaChart {
     }
 
     public void draw(Graphics g) {
-        for (Long simulationIteration : chartContent.keySet()) {
+        for (Integer simulationIteration : chartContent.keySet()) {
 
             List<AreaChartElement> instantElements = chartContent.get(simulationIteration);
             int elementsAccumulatedY = 0;
@@ -56,7 +56,7 @@ public class AreaChart {
         return chartY + (chartHeight - elementsAccumulatedY - elementHeight);
     }
 
-    private int calculateElementXStartPoint(Long simulationInstant) {
+    private int calculateElementXStartPoint(Integer simulationInstant) {
         return chartX + (int) ((simulationInstant * chartWidth) / simulationTotalIterations);
     }
 

@@ -7,9 +7,6 @@ import com.leohoc.ets.util.RandomUtil;
 
 import static com.leohoc.ets.domain.enums.DirectionMovement.*;
 import static com.leohoc.ets.domain.enums.HealthStatus.*;
-import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getDeathPercentage;
-import static com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties.getRecoveryDays;
-import static com.leohoc.ets.infrastructure.config.SimulationIndividualProperties.getDirectionChangeProbability;
 
 public class Individual {
 
@@ -19,20 +16,24 @@ public class Individual {
     private int y;
     private DirectionMovement directionMovement;
     private HealthCondition healthCondition;
+    private SimulationIndividualProperties individualProperties;
 
-    public static Individual randomIndividual() {
+    public static Individual randomIndividual(SimulationIndividualProperties individualProperties) {
+
         return new Individual(
-                RandomUtil.generateIntBetween(SimulationIndividualProperties.getLeftBoundary(), SimulationIndividualProperties.getRightBoundary()),
-                RandomUtil.generateIntBetween(SimulationIndividualProperties.getUpBoundary(), SimulationIndividualProperties.getDownBoundary()),
-                randomDirectionMovement()
+                RandomUtil.generateIntBetween(individualProperties.getLeftBoundary(), individualProperties.getRightBoundary()),
+                RandomUtil.generateIntBetween(individualProperties.getUpBoundary(), individualProperties.getDownBoundary()),
+                randomDirectionMovement(),
+                individualProperties
         );
     }
 
-    public Individual(final int x, final int y, final DirectionMovement directionMovement) {
+    public Individual(final int x, final int y, final DirectionMovement directionMovement, SimulationIndividualProperties individualProperties) {
         this.x = x;
         this.y = y;
         this.directionMovement = directionMovement;
         this.healthCondition = new HealthCondition(NORMAL);
+        this.individualProperties = individualProperties;
     }
 
     public int getX() {
@@ -44,11 +45,11 @@ public class Individual {
     }
 
     public int getWidth() {
-        return SimulationIndividualProperties.getIndividualWidth();
+        return individualProperties.getIndividualWidth();
     }
 
     public int getHeight() {
-        return SimulationIndividualProperties.getIndividualHeight();
+        return individualProperties.getIndividualHeight();
     }
 
     public HealthCondition getHealthCondition() {
@@ -67,25 +68,27 @@ public class Individual {
         }
     }
 
-    public void gotInfected(long currentDay) {
+    public void gotInfected(int currentDay) {
         healthCondition = new HealthCondition(INFECTED, currentDay);
     }
 
-    public void interactionWith(Individual passerby, long currentDay) {
+    public void interactionWith(Individual passerby, int currentDay) {
         if (crossedWayWith(passerby) && passerby.isInfected() && !this.getHealthCondition().hasAntibodies()) {
             this.gotInfected(currentDay);
         }
     }
 
-    public void updateHealthCondition(long currentDay) {
-        if (isInfected() && reachedRecoverTime(getRecoveryDays(), currentDay)) {
-            if (hasDied()) {
-                healthCondition = new HealthCondition(DEAD, currentDay);
-                directionMovement = STANDING;
-            } else {
-                healthCondition = new HealthCondition(RECOVERED, currentDay);
-            }
-        }
+    public boolean isInfected() {
+        return healthCondition.getHealthStatus().equals(HealthStatus.INFECTED);
+    }
+
+    public void died(int deathDay) {
+        healthCondition = new HealthCondition(DEAD, deathDay);
+        directionMovement = STANDING;
+    }
+
+    public void recovered(int recoveryDay) {
+        healthCondition = new HealthCondition(RECOVERED, recoveryDay);
     }
 
     private boolean isDead() {
@@ -119,23 +122,23 @@ public class Individual {
     }
 
     private boolean reachedLeftBoundary() {
-        return x <= SimulationIndividualProperties.getLeftBoundary();
+        return x <= individualProperties.getLeftBoundary();
     }
 
     private boolean reachedRightBoundary() {
-        return x >= SimulationIndividualProperties.getRightBoundary();
+        return x >= individualProperties.getRightBoundary();
     }
 
     private boolean reachedUpBoundary() {
-        return y <= SimulationIndividualProperties.getUpBoundary();
+        return y <= individualProperties.getUpBoundary();
     }
 
     private boolean reachedDownBoundary() {
-        return y >= SimulationIndividualProperties.getDownBoundary();
+        return y >= individualProperties.getDownBoundary();
     }
 
     private boolean shouldChangeDirectionRandomly() {
-        return RandomUtil.generateIntLessThan(HUNDRED_PERCENT) < getDirectionChangeProbability();
+        return RandomUtil.generateIntLessThan(HUNDRED_PERCENT) < individualProperties.getDirectionChangeProbability();
     }
 
     private void changeDirection() {
@@ -144,17 +147,5 @@ public class Individual {
 
     private boolean crossedWayWith(Individual passerby) {
         return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
-    }
-
-    private boolean isInfected() {
-        return healthCondition.getHealthStatus().equals(HealthStatus.INFECTED);
-    }
-
-    private boolean reachedRecoverTime(int recoverAverageDays, long currentDay) {
-        return (currentDay - healthCondition.getStartDay()) > recoverAverageDays;
-    }
-
-    private boolean hasDied() {
-        return RandomUtil.generateIntLessThan(HUNDRED_PERCENT) <= getDeathPercentage();
     }
 }

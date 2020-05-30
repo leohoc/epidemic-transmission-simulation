@@ -2,48 +2,62 @@ package com.leohoc.ets.infrastructure.config;
 
 public class SimulationGraphicsProperties {
 
-    private static int areaChartWidth;
-    private static int areaChartHeight;
-    private static int areaChartElementWidth;
-    private static int infectedCountY;
-    private static int recoveredCountY;
-    private static int deadCountY;
+    private final int mapWidth;
+    private final int mapHeight;
+    private final int areaChartWidth;
+    private final int areaChartHeight;
+    private final int areaChartElementWidth;
+    private final int infectedCountY;
+    private final int recoveredCountY;
+    private final int deadCountY;
 
-    static void loadProperties(final int areaChartWidth,
-                               final int areaChartHeight,
-                               final int areaChartElementWidth,
-                               final int infectedCountY,
-                               final int recoveredCountY,
-                               final int deadCountY) {
-        SimulationGraphicsProperties.areaChartWidth = areaChartWidth;
-        SimulationGraphicsProperties.areaChartHeight = areaChartHeight;
-        SimulationGraphicsProperties.areaChartElementWidth = areaChartElementWidth;
-        SimulationGraphicsProperties.infectedCountY = infectedCountY;
-        SimulationGraphicsProperties.recoveredCountY = recoveredCountY;
-        SimulationGraphicsProperties.deadCountY = deadCountY;
+    public SimulationGraphicsProperties(final int mapWidth,
+                                        final int mapHeight,
+                                        final int areaChartWidth,
+                                        final int areaChartHeight,
+                                        final int areaChartElementWidth,
+                                        final int infectedCountY,
+                                        final int recoveredCountY,
+                                        final int deadCountY) {
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
+        this.areaChartWidth = areaChartWidth;
+        this.areaChartHeight = areaChartHeight;
+        this.areaChartElementWidth = areaChartElementWidth;
+        this.infectedCountY = infectedCountY;
+        this.recoveredCountY = recoveredCountY;
+        this.deadCountY = deadCountY;
     }
 
-    public static int getAreaChartWidth() {
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getAreaChartWidth() {
         return areaChartWidth;
     }
 
-    public static int getAreaChartHeight() {
+    public int getAreaChartHeight() {
         return areaChartHeight;
     }
 
-    public static int getAreaChartElementWidth() {
+    public int getAreaChartElementWidth() {
         return areaChartElementWidth;
     }
 
-    public static int getInfectedCountY() {
+    public int getInfectedCountY() {
         return infectedCountY;
     }
 
-    public static int getRecoveredCountY() {
+    public int getRecoveredCountY() {
         return recoveredCountY;
     }
 
-    public static int getDeadCountY() {
+    public int getDeadCountY() {
         return deadCountY;
     }
 }

@@ -2,55 +2,55 @@ package com.leohoc.ets.infrastructure.config;
 
 public class SimulationIndividualProperties {
 
-    private static Integer individualWidth;
-    private static Integer individualHeight;
-    private static Integer directionChangeProbability;
-    private static Integer upBoundary;
-    private static Integer rightBoundary;
-    private static Integer downBoundary;
-    private static Integer leftBoundary;
+    private final int individualWidth;
+    private final int individualHeight;
+    private final int directionChangeProbability;
+    private final int upBoundary;
+    private final int rightBoundary;
+    private final int downBoundary;
+    private final int leftBoundary;
 
-    static void loadProperties(final Integer individualWidth,
-                               final Integer individualHeight,
-                               final Integer directionChangeProbability,
-                               final Integer upBoundary,
-                               final Integer rightBoundary,
-                               final Integer downBoundary,
-                               final Integer leftBoundary) {
-        SimulationIndividualProperties.individualWidth = individualWidth;
-        SimulationIndividualProperties.individualHeight = individualHeight;
-        SimulationIndividualProperties.directionChangeProbability = directionChangeProbability;
-        SimulationIndividualProperties.upBoundary = upBoundary;
-        SimulationIndividualProperties.rightBoundary = rightBoundary;
-        SimulationIndividualProperties.downBoundary = downBoundary;
-        SimulationIndividualProperties.leftBoundary = leftBoundary;
+    public SimulationIndividualProperties(final int individualWidth,
+                                          final int individualHeight,
+                                          final int directionChangeProbability,
+                                          final int upBoundary,
+                                          final int rightBoundary,
+                                          final int downBoundary,
+                                          final int leftBoundary) {
+        this.individualWidth = individualWidth;
+        this.individualHeight = individualHeight;
+        this.directionChangeProbability = directionChangeProbability;
+        this.upBoundary = upBoundary;
+        this.rightBoundary = rightBoundary;
+        this.downBoundary = downBoundary;
+        this.leftBoundary = leftBoundary;
     }
 
-    public static Integer getIndividualWidth() {
+    public int getIndividualWidth() {
         return individualWidth;
     }
 
-    public static Integer getIndividualHeight() {
+    public int getIndividualHeight() {
         return individualHeight;
     }
 
-    public static Integer getDirectionChangeProbability() {
+    public int getDirectionChangeProbability() {
         return directionChangeProbability;
     }
 
-    public static Integer getUpBoundary() {
+    public int getUpBoundary() {
         return upBoundary;
     }
 
-    public static Integer getRightBoundary() {
+    public int getRightBoundary() {
         return rightBoundary;
     }
 
-    public static Integer getDownBoundary() {
+    public int getDownBoundary() {
         return downBoundary;
     }
 
-    public static Integer getLeftBoundary() {
+    public int getLeftBoundary() {
         return leftBoundary;
     }
 }
