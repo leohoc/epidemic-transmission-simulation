@@ -10,13 +10,13 @@ public class SimulationIndividualProperties {
     private final int downBoundary;
     private final int leftBoundary;
 
-    public SimulationIndividualProperties(final int individualWidth,
-                                          final int individualHeight,
-                                          final int directionChangeProbability,
-                                          final int upBoundary,
-                                          final int rightBoundary,
-                                          final int downBoundary,
-                                          final int leftBoundary) {
+    public SimulationIndividualProperties(final Integer individualWidth,
+                                          final Integer individualHeight,
+                                          final Integer directionChangeProbability,
+                                          final Integer upBoundary,
+                                          final Integer rightBoundary,
+                                          final Integer downBoundary,
+                                          final Integer leftBoundary) {
         this.individualWidth = individualWidth;
         this.individualHeight = individualHeight;
         this.directionChangeProbability = directionChangeProbability;
@@ -26,31 +26,31 @@ public class SimulationIndividualProperties {
         this.leftBoundary = leftBoundary;
     }
 
-    public int getIndividualWidth() {
+    public Integer getIndividualWidth() {
         return individualWidth;
     }
 
-    public int getIndividualHeight() {
+    public Integer getIndividualHeight() {
         return individualHeight;
     }
 
-    public int getDirectionChangeProbability() {
+    public Integer getDirectionChangeProbability() {
         return directionChangeProbability;
     }
 
-    public int getUpBoundary() {
+    public Integer getUpBoundary() {
         return upBoundary;
     }
 
-    public int getRightBoundary() {
+    public Integer getRightBoundary() {
         return rightBoundary;
     }
 
-    public int getDownBoundary() {
+    public Integer getDownBoundary() {
         return downBoundary;
     }
 
-    public int getLeftBoundary() {
+    public Integer getLeftBoundary() {
         return leftBoundary;
     }
 }

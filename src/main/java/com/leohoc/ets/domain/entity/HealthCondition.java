@@ -5,9 +5,9 @@ import com.leohoc.ets.domain.enums.HealthStatus;
 public class HealthCondition {
 
     private final HealthStatus healthStatus;
-    private final int startDay;
+    private final Integer startDay;
 
-    public HealthCondition(final HealthStatus healthStatus, final int startDay) {
+    public HealthCondition(final HealthStatus healthStatus, final Integer startDay) {
         this.healthStatus = healthStatus;
         this.startDay = startDay;
     }
@@ -21,7 +21,7 @@ public class HealthCondition {
         return healthStatus;
     }
 
-    public int getStartDay() {
+    public Integer getStartDay() {
         return startDay;
     }
 

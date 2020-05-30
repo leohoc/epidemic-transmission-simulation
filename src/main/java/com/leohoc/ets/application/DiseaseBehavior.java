@@ -32,7 +32,7 @@ public class DiseaseBehavior {
         return (currentSimulatedDay - diseaseStartDay) > epidemicProperties.getRecoveryDays();
     }
 
-    private boolean hasDied() {
+    protected boolean hasDied() {
         return RandomUtil.generatePercent() <= epidemicProperties.getDeathPercentage();
     }
 
