@@ -13,7 +13,7 @@ public class DiseaseBehavior {
     }
 
     public void updateHealthCondition(final Individual individual, final int currentSimulatedDay) {
-        if (individual.isInfected() && reachedRecoverTime(individual.getHealthCondition().getStartDay(), currentSimulatedDay)) {
+        if (individual.isInfected() && reachedRecoveryTime(individual.getHealthCondition().getStartDay(), currentSimulatedDay)) {
             if (hasDied()) {
                 individual.died(currentSimulatedDay);
             } else {
@@ -22,7 +22,13 @@ public class DiseaseBehavior {
         }
     }
 
-    private boolean reachedRecoverTime(int diseaseStartDay, long currentSimulatedDay) {
+    public void interactionBetween(final Individual individual, final Individual passerby, final int currentSimulatedDay) {
+        if (individual.crossedWayWith(passerby) && passerby.isInfected() && individual.getHealthCondition().hasNoAntibodies()) {
+            individual.gotInfected(currentSimulatedDay);
+        }
+    }
+
+    private boolean reachedRecoveryTime(final int diseaseStartDay, final long currentSimulatedDay) {
         return (currentSimulatedDay - diseaseStartDay) > epidemicProperties.getRecoveryDays();
     }
 

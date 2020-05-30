@@ -5,7 +5,7 @@ public class SimulationProperties {
     private final int populationSize;
     private final int initialInfectedPercent;
 
-    public SimulationProperties(int populationSize, int initialInfectedPercent) {
+    public SimulationProperties(final int populationSize, final int initialInfectedPercent) {
         this.populationSize = populationSize;
         this.initialInfectedPercent = initialInfectedPercent;
     }

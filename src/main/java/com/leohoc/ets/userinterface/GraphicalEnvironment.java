@@ -1,6 +1,7 @@
 package com.leohoc.ets.userinterface;
 
 import com.leohoc.ets.application.IterationEvolution;
+import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.HealthStatus;
 import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
@@ -11,145 +12,135 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.leohoc.ets.domain.enums.HealthStatus.*;
+import static java.lang.String.format;
+
 public class GraphicalEnvironment extends JFrame {
 
-    private static final String TITLE = "Epidemic Transmission Simulation";
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
-    private static final String TOTAL_INFECTED = "Total infected:";
-    private static final String TOTAL_RECOVERED = "Total recovered:";
-    private static final String TOTAL_DEAD = "Total dead:";
+    private static final String TITLE = "Epidemic Transmission Simulation";
+    private static final String TOTAL_INFECTED = "Total infected: %s";
+    private static final String TOTAL_RECOVERED = "Total recovered: %s";
+    private static final String TOTAL_DEAD = "Total dead: %s";
+    private static final String EPIDEMIC_RUNNING_DAYS = "Epidemic running days: %s";
 
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
     private final SimulationGraphicsProperties properties;
-    private final HashMap<Integer, List<AreaChartElement>> populationHealthConditionEvolution = new HashMap<>();
+    private final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
 
     public GraphicalEnvironment(final SimulationGraphicsProperties properties) {
         super();
         this.properties = properties;
     }
 
-    public void initialize(final List<Individual> population, final IterationEvolution simulationTimeEvolution) {
+    public void initialize(final List<Individual> population,
+                           final IterationEvolution iterationEvolution,
+                           final EpidemicStatistics epidemicStatistics) {
         final int totalWidth = properties.getMapWidth() + properties.getAreaChartWidth();
         this.setSize(totalWidth, properties.getMapHeight());
-        this.setContentPane(getJContentPane(population, simulationTimeEvolution));
+        this.setContentPane(getJContentPane(population, iterationEvolution, epidemicStatistics));
         this.setTitle(TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
 
-    private JPanel getJContentPane(final List<Individual> population, final IterationEvolution simulationTimeEvolution) {
+    private JPanel getJContentPane(final List<Individual> population,
+                                   final IterationEvolution iterationEvolution,
+                                   final EpidemicStatistics epidemicStatistics) {
         if (jContentPane == null) {
             jContentPane = new JPanel();
             jContentPane.setLayout(new BorderLayout());
-            jContentPane.add(getImagePanel(population, simulationTimeEvolution), BorderLayout.CENTER);
+            jContentPane.add(getImagePanel(population, iterationEvolution, epidemicStatistics), BorderLayout.CENTER);
         }
         return jContentPane;
     }
 
-    public JPanel getImagePanel(final List<Individual> population, final IterationEvolution simulationTimeEvolution) {
+    public JPanel getImagePanel(final List<Individual> population,
+                                final IterationEvolution iterationEvolution,
+                                final EpidemicStatistics epidemicStatistics) {
+
         if (imagePanel == null) {
             imagePanel = new JPanel() {
 
                 @Override
-                public void paint(Graphics g) {
+                public void paint(Graphics graphics) {
 
-                    super.paint(g);
-
-                    int infectedCount = 0;
-                    int normalCount = 0;
-                    int recoveredCount = 0;
-                    int deadCount = 0;
+                    super.paint(graphics);
 
                     for (Individual individual : population) {
-
-                        drawIndividual(g, individual);
-
-                        if (individual.getHealthStatus().equals(HealthStatus.INFECTED)) {
-                            infectedCount++;
-                        }
-                        if (individual.getHealthStatus().equals(HealthStatus.NORMAL)) {
-                            normalCount++;
-                        }
-                        if (individual.getHealthStatus().equals(HealthStatus.RECOVERED)) {
-                            recoveredCount++;
-                        }
-                        if (individual.getHealthStatus().equals(HealthStatus.DEAD)) {
-                            deadCount++;
-                        }
+                        drawIndividual(graphics, individual);
                     }
-
-                    drawChartPanel(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution, population.size());
+                    updateAreaChartContent(iterationEvolution.getCurrentIteration(), epidemicStatistics);
+                    drawChartPanel(graphics, iterationEvolution, epidemicStatistics, population.size());
                 }
             };
         }
         return imagePanel;
     }
 
-    private void drawIndividual(Graphics g, Individual individual) {
-        g.setColor(individual.getHealthCondition().getHealthStatus().getColor());
+    private void drawIndividual(final Graphics g, final Individual individual) {
+        g.setColor(getColorFor(individual.getHealthCondition().getHealthStatus()));
         g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
     }
 
-    private void drawChartPanel(final Graphics g,
-                                final int infectedCount,
-                                final int normalCount,
-                                final int recoveredCount,
-                                final int deadCount,
-                                final IterationEvolution simulationTimeEvolution,
-                                final int populationCount) {
-
-        drawBackgroundPanel(g);
-        drawAreaChart(g, infectedCount, normalCount, recoveredCount, deadCount, simulationTimeEvolution, populationCount);
-        drawCountInformation(g, infectedCount, recoveredCount, deadCount);
+    private void drawChartPanel(final Graphics graphics,
+                                final IterationEvolution iterationEvolution,
+                                final EpidemicStatistics epidemicStatistics,
+                                final Integer populationSize) {
+        drawBackgroundPanel(graphics);
+        drawAreaChart(graphics, iterationEvolution.getTotalIterations(), populationSize);
+        drawCountInformation(graphics, epidemicStatistics, iterationEvolution.getCurrentSimulatedDay());
     }
 
-    private void drawBackgroundPanel(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getMapHeight());
+    private void drawBackgroundPanel(final Graphics graphics) {
+        graphics.setColor(Color.DARK_GRAY);
+        graphics.fillRect(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getMapHeight());
     }
 
-
-    private void drawAreaChart(final Graphics g,
-                               final int infectedCount,
-                               final int normalCount,
-                               final int recoveredCount,
-                               final int deadCount,
-                               final IterationEvolution simulationTimeEvolution,
-                               final int populationCount) {
-        List<AreaChartElement> currentPopulationHealthCondition = buildPopulationHealthConditionEvolution(infectedCount, normalCount, recoveredCount, deadCount);
-        populationHealthConditionEvolution.put(simulationTimeEvolution.getCurrentSimulatedDay(), currentPopulationHealthCondition);
-
+    private void drawAreaChart(final Graphics graphics,
+                               final Integer totalIterations,
+                               final Integer populationSize) {
         AreaChart areaChart = new AreaChart(
-                properties.getMapWidth(),
-                GRAPHICS_Y_AXIS_START_POINT,
-                properties.getAreaChartWidth(),
-                properties.getAreaChartHeight(),
-                populationHealthConditionEvolution,
-                simulationTimeEvolution.getSimulatedTotalDays(),
-                properties.getAreaChartElementWidth(),
-                populationCount);
-        areaChart.draw(g);
+                buildAreaChartPanel(),
+                totalIterations,
+                populationSize,
+                areaChartContentByIteration);
+        areaChart.draw(graphics);
     }
 
-    private void drawCountInformation(Graphics g, int infectedCount, int recoveredCount, int deadCount) {
-        g.setColor(Color.WHITE);
-        g.drawString(TOTAL_INFECTED + infectedCount, properties.getMapWidth(), properties.getInfectedCountY());
-        g.drawString(TOTAL_RECOVERED + recoveredCount, properties.getMapWidth(), properties.getRecoveredCountY());
-        g.drawString(TOTAL_DEAD + deadCount, properties.getMapWidth(), properties.getDeadCountY());
+    private void updateAreaChartContent(final Integer iteration, final EpidemicStatistics epidemicStatistics) {
+        List<AreaChartElement> areaChartContent = new ArrayList<>();
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getInfectedCount(), getColorFor(INFECTED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getNormalCount(), getColorFor(HealthStatus.NORMAL)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getRecoveredCount(), getColorFor(RECOVERED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getDeadCount(), getColorFor(DEAD)));
+        areaChartContentByIteration.put(iteration, areaChartContent);
     }
 
-    private List<AreaChartElement> buildPopulationHealthConditionEvolution(final int infectedCount,
-                                                                           final int normalCount,
-                                                                           final int recoveredCount,
-                                                                           final int deadCount) {
+    private Rectangle buildAreaChartPanel() {
+        return new Rectangle(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getAreaChartHeight());
+    }
 
-        List<AreaChartElement> instantPopulationHealthCondition = new ArrayList<>();
-        instantPopulationHealthCondition.add(new AreaChartElement(infectedCount, HealthStatus.INFECTED.getColor()));
-        instantPopulationHealthCondition.add(new AreaChartElement(normalCount, HealthStatus.NORMAL.getColor()));
-        instantPopulationHealthCondition.add(new AreaChartElement(recoveredCount, HealthStatus.RECOVERED.getColor()));
-        instantPopulationHealthCondition.add(new AreaChartElement(deadCount, HealthStatus.DEAD.getColor()));
-        return instantPopulationHealthCondition;
+    private void drawCountInformation(final Graphics graphics, final EpidemicStatistics epidemicStatistics, final Integer currentSimulatedDay) {
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(format(TOTAL_INFECTED, epidemicStatistics.getInfectedCount()), properties.getMapWidth(), properties.getInfectedCountY());
+        graphics.drawString(format(TOTAL_RECOVERED, epidemicStatistics.getRecoveredCount()), properties.getMapWidth(), properties.getRecoveredCountY());
+        graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getDeadCount()), properties.getMapWidth(), properties.getDeadCountY());
+        graphics.drawString(format(EPIDEMIC_RUNNING_DAYS, currentSimulatedDay), properties.getMapWidth(), properties.getEpidemicRunningDaysY());
+    }
+
+    private Color getColorFor(final HealthStatus healthStatus) {
+        if (healthStatus.equals(INFECTED)) {
+            return Color.BLUE;
+        }
+        if (healthStatus.equals(RECOVERED)) {
+            return Color.GREEN;
+        }
+        if (healthStatus.equals(DEAD)) {
+            return Color.RED;
+        }
+        return Color.LIGHT_GRAY;
     }
 }

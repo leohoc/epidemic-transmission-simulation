@@ -10,8 +10,6 @@ import static com.leohoc.ets.domain.enums.HealthStatus.*;
 
 public class Individual {
 
-    public static final int HUNDRED_PERCENT = 100;
-
     private int x;
     private int y;
     private DirectionMovement directionMovement;
@@ -19,7 +17,6 @@ public class Individual {
     private SimulationIndividualProperties individualProperties;
 
     public static Individual randomIndividual(SimulationIndividualProperties individualProperties) {
-
         return new Individual(
                 RandomUtil.generateIntBetween(individualProperties.getLeftBoundary(), individualProperties.getRightBoundary()),
                 RandomUtil.generateIntBetween(individualProperties.getUpBoundary(), individualProperties.getDownBoundary()),
@@ -68,18 +65,12 @@ public class Individual {
         }
     }
 
-    public void gotInfected(int currentDay) {
-        healthCondition = new HealthCondition(INFECTED, currentDay);
-    }
-
-    public void interactionWith(Individual passerby, int currentDay) {
-        if (crossedWayWith(passerby) && passerby.isInfected() && !this.getHealthCondition().hasAntibodies()) {
-            this.gotInfected(currentDay);
-        }
-    }
-
     public boolean isInfected() {
         return healthCondition.getHealthStatus().equals(HealthStatus.INFECTED);
+    }
+
+    public void gotInfected(int currentDay) {
+        healthCondition = new HealthCondition(INFECTED, currentDay);
     }
 
     public void died(int deathDay) {
@@ -138,14 +129,14 @@ public class Individual {
     }
 
     private boolean shouldChangeDirectionRandomly() {
-        return RandomUtil.generateIntLessThan(HUNDRED_PERCENT) < individualProperties.getDirectionChangeProbability();
+        return RandomUtil.generatePercent() <= individualProperties.getDirectionChangeProbability();
     }
 
     private void changeDirection() {
         this.directionMovement = randomDirectionMovement();
     }
 
-    private boolean crossedWayWith(Individual passerby) {
+    public boolean crossedWayWith(Individual passerby) {
         return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
     }
 }

@@ -6,27 +6,27 @@ public class SimulationGraphicsProperties {
     private final int mapHeight;
     private final int areaChartWidth;
     private final int areaChartHeight;
-    private final int areaChartElementWidth;
     private final int infectedCountY;
     private final int recoveredCountY;
     private final int deadCountY;
+    private final int epidemicRunningDaysY;
 
     public SimulationGraphicsProperties(final int mapWidth,
                                         final int mapHeight,
                                         final int areaChartWidth,
                                         final int areaChartHeight,
-                                        final int areaChartElementWidth,
                                         final int infectedCountY,
                                         final int recoveredCountY,
-                                        final int deadCountY) {
+                                        final int deadCountY,
+                                        final int epidemicRunningDaysY) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.areaChartWidth = areaChartWidth;
         this.areaChartHeight = areaChartHeight;
-        this.areaChartElementWidth = areaChartElementWidth;
         this.infectedCountY = infectedCountY;
         this.recoveredCountY = recoveredCountY;
         this.deadCountY = deadCountY;
+        this.epidemicRunningDaysY = epidemicRunningDaysY;
     }
 
     public int getMapWidth() {
@@ -45,10 +45,6 @@ public class SimulationGraphicsProperties {
         return areaChartHeight;
     }
 
-    public int getAreaChartElementWidth() {
-        return areaChartElementWidth;
-    }
-
     public int getInfectedCountY() {
         return infectedCountY;
     }
@@ -59,5 +55,9 @@ public class SimulationGraphicsProperties {
 
     public int getDeadCountY() {
         return deadCountY;
+    }
+
+    public int getEpidemicRunningDaysY() {
+        return epidemicRunningDaysY;
     }
 }

@@ -12,8 +12,16 @@ public class IterationEvolution {
         this.currentIteration = 0;
     }
 
-    public int getSimulatedTotalDays() {
-        return properties.getTotalIterations() / properties.getIterationsPerDay();
+    public int getCurrentIteration() {
+        return currentIteration;
+    }
+
+    public int getTotalIterations() {
+        return properties.getTotalIterations();
+    }
+
+    public void iterate() {
+        this.currentIteration++;
     }
 
     public int getCurrentSimulatedDay() {
@@ -22,9 +30,5 @@ public class IterationEvolution {
 
     public boolean hasSimulationFinished() {
         return currentIteration > properties.getTotalIterations();
-    }
-
-    public void iterate() {
-        this.currentIteration++;
     }
 }

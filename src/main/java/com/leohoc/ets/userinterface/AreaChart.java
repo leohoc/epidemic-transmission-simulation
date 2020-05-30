@@ -6,61 +6,51 @@ import java.util.List;
 
 public class AreaChart {
 
-    private final int chartX;
-    private final int chartY;
-    private final int chartWidth;
-    private final int chartHeight;
-    private final HashMap<Integer, List<AreaChartElement>> chartContent;
-    private final long simulationTotalIterations;
-    private final int elementWidth;
-    private final int totalItemsCount;
+    private static final int ELEMENT_WIDTH = 1;
 
-    public AreaChart(final int chartX,
-                     final int chartY,
-                     final int chartWidth,
-                     final int chartHeight,
-                     final HashMap<Integer, List<AreaChartElement>> chartContent,
-                     final long simulationTotalIterations,
-                     final int elementWidth,
-                     final int totalItemsCount) {
-        this.chartX = chartX;
-        this.chartY = chartY;
-        this.chartWidth = chartWidth;
-        this.chartHeight = chartHeight;
-        this.chartContent = chartContent;
-        this.simulationTotalIterations = simulationTotalIterations;
-        this.elementWidth = elementWidth;
+    private final Rectangle chartPanel;
+    private final long totalIterations;
+    private final int totalItemsCount;
+    private final HashMap<Integer, List<AreaChartElement>> iterationsContent;
+
+    public AreaChart(final Rectangle chartPanel,
+                     final long totalIterations,
+                     final int totalItemsCount,
+                     final HashMap<Integer, List<AreaChartElement>> iterationsContent) {
+        this.chartPanel = chartPanel;
+        this.totalIterations = totalIterations;
         this.totalItemsCount = totalItemsCount;
+        this.iterationsContent = iterationsContent;
     }
 
-    public void draw(Graphics g) {
-        for (Integer simulationIteration : chartContent.keySet()) {
+    public void draw(final Graphics graphics) {
+        for (Integer iteration : iterationsContent.keySet()) {
 
-            List<AreaChartElement> instantElements = chartContent.get(simulationIteration);
+            List<AreaChartElement> iterationContent = iterationsContent.get(iteration);
             int elementsAccumulatedY = 0;
 
-            for (AreaChartElement element : instantElements) {
+            for (AreaChartElement element : iterationContent) {
 
                 int elementHeight = calculateElementHeight(element);
-                int elementX = calculateElementXStartPoint(simulationIteration);
+                int elementX = calculateElementXStartPoint(iteration);
                 int elementY = calculateElementYStartPoint(elementsAccumulatedY, elementHeight);
 
-                g.setColor(element.getColor());
-                g.fillRect(elementX, elementY, elementWidth, elementHeight);
+                graphics.setColor(element.getColor());
+                graphics.fillRect(elementX, elementY, ELEMENT_WIDTH, elementHeight);
                 elementsAccumulatedY += elementHeight;
             }
         }
     }
 
-    private int calculateElementYStartPoint(int elementsAccumulatedY, int elementHeight) {
-        return chartY + (chartHeight - elementsAccumulatedY - elementHeight);
+    private int calculateElementHeight(final AreaChartElement element) {
+        return (int) (element.getCount() * chartPanel.getHeight()) / totalItemsCount;
     }
 
-    private int calculateElementXStartPoint(Integer simulationInstant) {
-        return chartX + (int) ((simulationInstant * chartWidth) / simulationTotalIterations);
+    private int calculateElementYStartPoint(final int elementsAccumulatedY, final int elementHeight) {
+        return (int) chartPanel.getY() + (int) (chartPanel.getHeight() - elementsAccumulatedY - elementHeight);
     }
 
-    private int calculateElementHeight(AreaChartElement element) {
-        return (element.getCount() * chartHeight) / totalItemsCount;
+    private int calculateElementXStartPoint(final Integer iteration) {
+        return (int) chartPanel.getX() + (int) ((iteration * chartPanel.getWidth()) / totalIterations);
     }
 }

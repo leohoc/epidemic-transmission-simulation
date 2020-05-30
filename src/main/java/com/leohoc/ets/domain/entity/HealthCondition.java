@@ -12,7 +12,7 @@ public class HealthCondition {
         this.startDay = startDay;
     }
 
-    public HealthCondition(HealthStatus healthStatus) {
+    public HealthCondition(final HealthStatus healthStatus) {
         this.healthStatus = healthStatus;
         this.startDay = 0;
     }
@@ -25,7 +25,7 @@ public class HealthCondition {
         return startDay;
     }
 
-    public boolean hasAntibodies() {
-        return healthStatus.equals(HealthStatus.INFECTED) || healthStatus.equals(HealthStatus.RECOVERED) || healthStatus.equals(HealthStatus.DEAD);
+    public boolean hasNoAntibodies() {
+        return healthStatus.equals(HealthStatus.NORMAL);
     }
 }

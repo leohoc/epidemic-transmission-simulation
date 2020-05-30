@@ -14,7 +14,7 @@ public enum DirectionMovement {
     LEFT(-Movements.STEP, Movements.STAND),
     UP_LEFT(-Movements.STEP, -Movements.STEP);
 
-    DirectionMovement(int xAxisMovement, int yAxisMovement) {
+    DirectionMovement(final int xAxisMovement, final int yAxisMovement) {
         this.xAxisMovement = xAxisMovement;
         this.yAxisMovement = yAxisMovement;
     }

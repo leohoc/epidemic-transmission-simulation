@@ -33,7 +33,6 @@ public class SimulationPropertiesLoader {
     }
 
     public SimulationEpidemicProperties loadEpidemicProperties() {
-
         final int recoveryDays = parseInt(properties.getProperty("simulation.epidemic.recoverydays"));
         final int deathPercentage = parseInt(properties.getProperty("simulation.epidemic.deathpercentage"));
         return new SimulationEpidemicProperties(recoveryDays, deathPercentage);
@@ -55,10 +54,10 @@ public class SimulationPropertiesLoader {
         final int mapHeight = parseInt(properties.getProperty("simulation.graphics.map.height"));
         final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
         final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
-        final int areaChartElementWidth = parseInt(properties.getProperty("simulation.graphics.areachart.element.width"));
         final int infectedCountY = parseInt(properties.getProperty("simulation.graphics.info.infected.y"));
         final int recoveredCountY = parseInt(properties.getProperty("simulation.graphics.info.recovered.y"));
         final int deadCountY = parseInt(properties.getProperty("simulation.graphics.info.dead.y"));
-        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, areaChartElementWidth, infectedCountY, recoveredCountY, deadCountY);
+        final int epidemicRunningDaysY = parseInt(properties.getProperty("simulation.graphics.info.runningdays.y"));
+        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, infectedCountY, recoveredCountY, deadCountY, epidemicRunningDaysY);
     }
 }
