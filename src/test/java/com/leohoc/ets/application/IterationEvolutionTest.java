@@ -67,6 +67,4 @@ class IterationEvolutionTest {
         // Then
         assertFalse(hasSimulationFinished);
     }
-
-
 }

@@ -16,56 +16,45 @@ public class Simulation {
     private final EpidemicStatistics epidemicStatistics = new EpidemicStatistics();;
     private final List<Individual> population = new ArrayList<>();
     private final SimulationProperties simulationProperties;
+    private final SimulationIndividualProperties individualProperties;
     private final IterationEvolution iterationEvolution;
-    private final DiseaseBehavior diseaseBehavior;
+    private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
 
     public Simulation(final SimulationPropertiesLoader simulationPropertiesLoader) {
         this.simulationProperties = simulationPropertiesLoader.loadSimulationProperties();
+        this.individualProperties = simulationPropertiesLoader.loadIndividualProperties();
         this.iterationEvolution = new IterationEvolution(simulationPropertiesLoader.loadIterationsProperties());
-        this.diseaseBehavior = new DiseaseBehavior(simulationPropertiesLoader.loadEpidemicProperties());
+        this.populationDynamics = new PopulationDynamics(simulationPropertiesLoader.loadEpidemicProperties());
         this.graphicalEnvironment = new GraphicalEnvironment(simulationPropertiesLoader.loadGraphicsProperties());
-        this.generatePopulation(simulationPropertiesLoader.loadIndividualProperties());
     }
 
-    private void generatePopulation(final SimulationIndividualProperties individualProperties) {
+    public void startSimulation() {
+        this.population.addAll(generatePopulation());
+        new Thread(() -> runSimulation()).start();
+        new Thread(() -> runGraphicalEnvironment()).start();
+    }
+
+    protected List<Individual> generatePopulation() {
+        List<Individual> initialPopulation = new ArrayList<>();
         for (int i = 0; i < simulationProperties.getPopulationSize(); i++) {
             Individual individual = Individual.randomIndividual(individualProperties);
             if (shouldGotInfected(simulationProperties.getInitialInfectedPercent())) {
                 individual.gotInfected(iterationEvolution.getCurrentSimulatedDay());
             }
-            population.add(individual);
+            initialPopulation.add(individual);
         }
+        return initialPopulation;
     }
 
-    private boolean shouldGotInfected(final int initialInfectedPercent) {
-        return RandomUtil.generatePercent() <= initialInfectedPercent;
-    }
-
-    public void startSimulation() {
-        new Thread(() -> runSimulation()).start();
-        new Thread(() -> runGraphicalEnvironment()).start();
+    protected boolean shouldGotInfected(final int initialInfectedPercent) {
+        return RandomUtil.generatePercent() < initialInfectedPercent;
     }
 
     private void runSimulation() {
-
         while (!iterationEvolution.hasSimulationFinished()) {
-
-            EpidemicStatistics iterationStatistics = new EpidemicStatistics();
-
-            for (Individual individual : population) {
-
-                individual.move();
-                diseaseBehavior.updateHealthCondition(individual, iterationEvolution.getCurrentSimulatedDay());
-
-                for (Individual passerby : population) {
-                    if (!individual.equals(passerby)) {
-                        diseaseBehavior.interactionBetween(individual, passerby, iterationEvolution.getCurrentSimulatedDay());
-                    }
-                }
-                iterationStatistics.updateStatistics(individual.getHealthStatus());
-            }
-            epidemicStatistics.updateAllStatistics(iterationStatistics.getHealthStatusStatistic());
+            EpidemicStatistics iterationStatistics = populationDynamics.executeDynamicsIterationOn(population, iterationEvolution.getCurrentSimulatedDay());
+            epidemicStatistics.updateAllStatistics(iterationStatistics);
             iterationEvolution.iterate();
         }
     }

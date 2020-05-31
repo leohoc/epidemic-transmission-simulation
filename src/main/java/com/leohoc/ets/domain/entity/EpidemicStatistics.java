@@ -20,8 +20,8 @@ public class EpidemicStatistics {
         healthStatusStatistic.put(healthStatus, ++healthStatusCount);
     }
 
-    public void updateAllStatistics(final HashMap<HealthStatus, Integer> healthStatusStatistic) {
-        this.healthStatusStatistic = healthStatusStatistic;
+    public void updateAllStatistics(final EpidemicStatistics epidemicStatistics) {
+        this.healthStatusStatistic = epidemicStatistics.getHealthStatusStatistic();
     }
 
     public HashMap<HealthStatus, Integer> getHealthStatusStatistic() {
