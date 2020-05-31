@@ -73,7 +73,7 @@ public class Simulation {
         }
     }
 
-    private void sleepFor(Integer timeInMs) {
+    private void sleepFor(final Integer timeInMs) {
         try {
             Thread.sleep(timeInMs);
         } catch (InterruptedException e) {

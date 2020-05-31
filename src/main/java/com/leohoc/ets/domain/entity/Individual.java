@@ -25,7 +25,7 @@ public class Individual {
         );
     }
 
-    public Individual(final int x, final int y, final DirectionMovement directionMovement, SimulationIndividualProperties individualProperties) {
+    public Individual(final int x, final int y, final DirectionMovement directionMovement, final SimulationIndividualProperties individualProperties) {
         this.x = x;
         this.y = y;
         this.directionMovement = directionMovement;
@@ -69,16 +69,16 @@ public class Individual {
         return healthCondition.getHealthStatus().equals(HealthStatus.INFECTED);
     }
 
-    public void gotInfected(int currentDay) {
+    public void gotInfected(final int currentDay) {
         healthCondition = new HealthCondition(INFECTED, currentDay);
     }
 
-    public void died(int deathDay) {
+    public void died(final int deathDay) {
         healthCondition = new HealthCondition(DEAD, deathDay);
         directionMovement = STANDING;
     }
 
-    public void recovered(int recoveryDay) {
+    public void recovered(final int recoveryDay) {
         healthCondition = new HealthCondition(RECOVERED, recoveryDay);
     }
 
@@ -86,25 +86,36 @@ public class Individual {
         return getHealthStatus().equals(DEAD);
     }
 
-    private void adjustDirection() {
+    protected void adjustDirection() {
         changeDirectionByReachingMapBoundaries();
         if (shouldChangeDirectionRandomly()) {
             changeDirection();
         }
     }
 
-    private void changeDirectionByReachingMapBoundaries() {
+    public boolean crossedWayWith(final Individual passerby) {
+        return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
+    }
+
+    protected DirectionMovement getDirectionMovement() {
+        return this.directionMovement;
+    }
+
+    protected void changeDirectionByReachingMapBoundaries() {
 
         if (reachedLeftBoundary()) {
             directionMovement = RIGHT;
+            return;
         }
 
         if (reachedRightBoundary()) {
             directionMovement = LEFT;
+            return;
         }
 
         if (reachedUpBoundary()) {
             directionMovement = DOWN;
+            return;
         }
 
         if (reachedDownBoundary()) {
@@ -112,31 +123,27 @@ public class Individual {
         }
     }
 
-    private boolean reachedLeftBoundary() {
+    protected boolean reachedLeftBoundary() {
         return x <= individualProperties.getLeftBoundary();
     }
 
-    private boolean reachedRightBoundary() {
+    protected boolean reachedRightBoundary() {
         return x >= individualProperties.getRightBoundary();
     }
 
-    private boolean reachedUpBoundary() {
+    protected boolean reachedUpBoundary() {
         return y <= individualProperties.getUpBoundary();
     }
 
-    private boolean reachedDownBoundary() {
+    protected boolean reachedDownBoundary() {
         return y >= individualProperties.getDownBoundary();
     }
 
-    private boolean shouldChangeDirectionRandomly() {
+    protected boolean shouldChangeDirectionRandomly() {
         return RandomUtil.generatePercent() < individualProperties.getDirectionChangeProbability();
     }
 
-    private void changeDirection() {
+    protected void changeDirection() {
         this.directionMovement = randomDirectionMovement();
-    }
-
-    public boolean crossedWayWith(Individual passerby) {
-        return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
     }
 }
