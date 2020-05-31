@@ -1,14 +1,15 @@
 package com.leohoc.ets.application;
 
 import com.leohoc.ets.domain.entity.Individual;
-import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
 import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 import com.leohoc.ets.infrastructure.config.SimulationProperties;
 import com.leohoc.ets.infrastructure.config.SimulationPropertiesLoader;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
+import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -17,9 +18,6 @@ class SimulationTest {
     private static final int POPULATION_SIZE = 10;
     private static final int ZERO_INITIAL_INFECTED_PERCENT = 0;
     private static final int ONE_HUNDRED_INITIAL_INFECTED_PERCENT = 100;
-    private static final int DEFAULT_PROPERTY_VALUE = 1;
-    private static final int INDIVIDUAL_INITIAL_BOUNDARY = 0;
-    private static final int INDIVIDUAL_END_BOUNDARY = 10;
     private static final int TOTAL_ITERATIONS = 10;
     private static final int ITERATIONS_PER_DAY = 1;
 
@@ -57,20 +55,21 @@ class SimulationTest {
         assertTrue(population.stream().allMatch(Individual::isInfected));
     }
 
-    private SimulationProperties buildSimulationProperties(final int initialInfectedPercent) {
-        return new SimulationProperties(POPULATION_SIZE, initialInfectedPercent);
+    @Test
+    public void testRunSimulation() {
+        // Given
+        when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
+        simulation = spy(new Simulation(simulationPropertiesLoader));
+
+        // When
+        simulation.runSimulation();
+
+        // Then
+        verify(simulation, Mockito.times(TOTAL_ITERATIONS)).runDynamicsIteration();
     }
 
-    private SimulationIndividualProperties buildIndividualProperties() {
-        return new SimulationIndividualProperties(
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
-                INDIVIDUAL_INITIAL_BOUNDARY,
-                INDIVIDUAL_END_BOUNDARY,
-                INDIVIDUAL_END_BOUNDARY,
-                INDIVIDUAL_INITIAL_BOUNDARY
-        );
+    private SimulationProperties buildSimulationProperties(final int initialInfectedPercent) {
+        return new SimulationProperties(POPULATION_SIZE, initialInfectedPercent);
     }
 
     private SimulationIterationsProperties buildIterationsProperties() {

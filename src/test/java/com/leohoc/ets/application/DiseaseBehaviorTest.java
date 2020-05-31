@@ -3,33 +3,28 @@ package com.leohoc.ets.application;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
-import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.leohoc.ets.builders.PropertiesBuilder.buildEpidemicProperties;
+import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 class DiseaseBehaviorTest {
 
-    private static final Integer RECOVERY_DAYS = 14;
-    private static final Integer DEATH_PERCENTAGE = 1;
     private static final Integer POINT_A_X = 0;
     private static final Integer POINT_A_Y = 0;
     private static final Integer POINT_B_X = 10;
     private static final Integer POINT_B_Y = 10;
-    private static final Integer INDIVIDUAL_WIDTH = 1;
-    private static final Integer INDIVIDUAL_HEIGHT = 1;
-    private static final Integer DEFAULT_PROPERTY_VALUE = 1;
     private static final Integer SIMULATION_START_DAY = 0;
 
     private DiseaseBehavior diseaseBehavior;
 
     @BeforeEach
     public void setup() {
-        diseaseBehavior = spy(new DiseaseBehavior(new SimulationEpidemicProperties(RECOVERY_DAYS, DEATH_PERCENTAGE)));
+        diseaseBehavior = spy(new DiseaseBehavior(buildEpidemicProperties()));
     }
 
     @Test
@@ -196,16 +191,5 @@ class DiseaseBehaviorTest {
 
     private Individual buildIndividual(final Integer x, final Integer y) {
         return new Individual(x, y, DirectionMovement.STANDING, buildIndividualProperties());
-    }
-
-    private SimulationIndividualProperties buildIndividualProperties() {
-        return new SimulationIndividualProperties(
-                INDIVIDUAL_WIDTH,
-                INDIVIDUAL_HEIGHT,
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE);
     }
 }

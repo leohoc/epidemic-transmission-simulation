@@ -29,7 +29,7 @@ public class IterationEvolution {
     }
 
     public boolean hasSimulationFinished() {
-        return currentIteration > properties.getTotalIterations();
+        return currentIteration >= properties.getTotalIterations();
     }
 
     protected void setCurrentIteration(final int currentIteration) {

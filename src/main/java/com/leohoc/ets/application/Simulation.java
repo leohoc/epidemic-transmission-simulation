@@ -25,7 +25,7 @@ public class Simulation {
         this.simulationProperties = simulationPropertiesLoader.loadSimulationProperties();
         this.individualProperties = simulationPropertiesLoader.loadIndividualProperties();
         this.iterationEvolution = new IterationEvolution(simulationPropertiesLoader.loadIterationsProperties());
-        this.populationDynamics = new PopulationDynamics(simulationPropertiesLoader.loadEpidemicProperties());
+        this.populationDynamics = new PopulationDynamics(new DiseaseBehavior(simulationPropertiesLoader.loadEpidemicProperties()));
         this.graphicalEnvironment = new GraphicalEnvironment(simulationPropertiesLoader.loadGraphicsProperties());
     }
 
@@ -51,12 +51,16 @@ public class Simulation {
         return RandomUtil.generatePercent() < initialInfectedPercent;
     }
 
-    private void runSimulation() {
-        while (!iterationEvolution.hasSimulationFinished()) {
-            EpidemicStatistics iterationStatistics = populationDynamics.executeDynamicsIterationOn(population, iterationEvolution.getCurrentSimulatedDay());
-            epidemicStatistics.updateAllStatistics(iterationStatistics);
+    protected void runSimulation() {
+        do {
+            runDynamicsIteration();
             iterationEvolution.iterate();
-        }
+        } while (!iterationEvolution.hasSimulationFinished());
+    }
+
+    protected void runDynamicsIteration() {
+        EpidemicStatistics iterationStatistics = populationDynamics.executeDynamicsIterationOn(population, iterationEvolution.getCurrentSimulatedDay());
+        epidemicStatistics.updateAllStatistics(iterationStatistics);
     }
 
     private void runGraphicalEnvironment() {

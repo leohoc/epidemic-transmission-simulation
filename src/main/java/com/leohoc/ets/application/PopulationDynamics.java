@@ -2,7 +2,6 @@ package com.leohoc.ets.application;
 
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
-import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
 
 import java.util.List;
 
@@ -10,8 +9,8 @@ public class PopulationDynamics {
 
     private final DiseaseBehavior diseaseBehavior;
 
-    public PopulationDynamics(final SimulationEpidemicProperties epidemicProperties) {
-        this.diseaseBehavior = new DiseaseBehavior(epidemicProperties);
+    public PopulationDynamics(final DiseaseBehavior diseaseBehavior) {
+        this.diseaseBehavior = diseaseBehavior;
     }
 
     public EpidemicStatistics executeDynamicsIterationOn(final List<Individual> population, final int currentSimulatedDay){
@@ -19,7 +18,7 @@ public class PopulationDynamics {
         EpidemicStatistics iterationStatistics = new EpidemicStatistics();
 
         for (Individual individual : population) {
-            individual.move();
+            executeMovementBehaviorOn(individual);
             diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
             executeIndividualInteractionWithPopulation(individual, population, currentSimulatedDay);
             iterationStatistics.updateStatistics(individual.getHealthStatus());
@@ -27,9 +26,13 @@ public class PopulationDynamics {
         return iterationStatistics;
     }
 
-    private void executeIndividualInteractionWithPopulation(final Individual individual,
-                                                            final List<Individual> population,
-                                                            final int currentSimulatedDay) {
+    protected void executeMovementBehaviorOn(final Individual individual) {
+        individual.move();
+    }
+
+    protected void executeIndividualInteractionWithPopulation(final Individual individual,
+                                                              final List<Individual> population,
+                                                              final int currentSimulatedDay) {
         for (Individual passerby : population) {
             if (!individual.equals(passerby)) {
                 diseaseBehavior.interactionBetween(individual, passerby, currentSimulatedDay);
