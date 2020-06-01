@@ -25,20 +25,22 @@ public class AreaChart {
 
     public void draw(final Graphics graphics) {
         for (Integer iteration : iterationsContent.keySet()) {
+            drawIterationContent(graphics, iteration);
+        }
+    }
 
-            List<AreaChartElement> iterationContent = iterationsContent.get(iteration);
-            int elementsAccumulatedY = 0;
+    private void drawIterationContent(Graphics graphics, Integer iteration) {
+        List<AreaChartElement> iterationContent = iterationsContent.get(iteration);
+        int elementsAccumulatedY = 0;
 
-            for (AreaChartElement element : iterationContent) {
+        for (AreaChartElement element : iterationContent) {
+            int elementHeight = calculateElementHeight(element);
+            int elementX = calculateElementXStartPoint(iteration);
+            int elementY = calculateElementYStartPoint(elementsAccumulatedY, elementHeight);
 
-                int elementHeight = calculateElementHeight(element);
-                int elementX = calculateElementXStartPoint(iteration);
-                int elementY = calculateElementYStartPoint(elementsAccumulatedY, elementHeight);
-
-                graphics.setColor(element.getColor());
-                graphics.fillRect(elementX, elementY, ELEMENT_WIDTH, elementHeight);
-                elementsAccumulatedY += elementHeight;
-            }
+            graphics.setColor(element.getColor());
+            graphics.fillRect(elementX, elementY, ELEMENT_WIDTH, elementHeight);
+            elementsAccumulatedY += elementHeight;
         }
     }
 
