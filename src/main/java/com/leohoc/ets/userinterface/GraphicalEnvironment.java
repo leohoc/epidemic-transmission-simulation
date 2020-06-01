@@ -80,9 +80,18 @@ public class GraphicalEnvironment extends JFrame {
         return imagePanel;
     }
 
-    private void drawIndividual(final Graphics g, final Individual individual) {
+    protected void drawIndividual(final Graphics g, final Individual individual) {
         g.setColor(getColorFor(individual.getHealthCondition().getHealthStatus()));
         g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
+    }
+
+    private void updateAreaChartContent(final Integer iteration, final EpidemicStatistics epidemicStatistics) {
+        List<AreaChartElement> areaChartContent = new ArrayList<>();
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getInfectedCount(), getColorFor(INFECTED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getNormalCount(), getColorFor(HealthStatus.NORMAL)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getRecoveredCount(), getColorFor(RECOVERED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getDeadCount(), getColorFor(DEAD)));
+        areaChartContentByIteration.put(iteration, areaChartContent);
     }
 
     private void drawChartPanel(final Graphics graphics,
@@ -108,15 +117,6 @@ public class GraphicalEnvironment extends JFrame {
                 populationSize,
                 areaChartContentByIteration);
         areaChart.draw(graphics);
-    }
-
-    private void updateAreaChartContent(final Integer iteration, final EpidemicStatistics epidemicStatistics) {
-        List<AreaChartElement> areaChartContent = new ArrayList<>();
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getInfectedCount(), getColorFor(INFECTED)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getNormalCount(), getColorFor(HealthStatus.NORMAL)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getRecoveredCount(), getColorFor(RECOVERED)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getDeadCount(), getColorFor(DEAD)));
-        areaChartContentByIteration.put(iteration, areaChartContent);
     }
 
     private Rectangle buildAreaChartPanel() {
