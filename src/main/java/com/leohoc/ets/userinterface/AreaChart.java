@@ -23,6 +23,22 @@ public class AreaChart {
         this.iterationsContent = iterationsContent;
     }
 
+    protected Rectangle getChartPanel() {
+        return chartPanel;
+    }
+
+    protected long getTotalIterations() {
+        return totalIterations;
+    }
+
+    protected int getTotalItemsCount() {
+        return totalItemsCount;
+    }
+
+    protected HashMap<Integer, List<AreaChartElement>> getIterationsContent() {
+        return iterationsContent;
+    }
+
     public void draw(final Graphics graphics) {
         for (Integer iteration : iterationsContent.keySet()) {
             drawIterationContent(graphics, iteration);

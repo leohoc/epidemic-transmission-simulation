@@ -3,6 +3,7 @@ package com.leohoc.ets.builders;
 import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
 import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
 import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
+import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 
 public class PropertiesBuilder {
 
@@ -11,9 +12,13 @@ public class PropertiesBuilder {
     private static final int INDIVIDUAL_END_BOUNDARY = 10;
     private static final int RECOVERY_DAYS = 14;
     private static final int ZERO_DEATH_PERCENTAGE = 0;
-
     private static final int DEFAULT_MAP_PROPERTY_VALUE = 10;
-
+    private static final int INFECTED_COUNT_Y = 1;
+    private static final int RECOVERED_COUNT_Y = 2;
+    private static final int DEAD_COUNT_Y = 3;
+    private static final int RUNNING_DAYS_Y = 4;
+    private static final Integer TOTAL_ITERATIONS = 100;
+    private static final Integer ITERATIONS_PER_DAY = 10;
 
     public static SimulationIndividualProperties buildIndividualProperties() {
         return new SimulationIndividualProperties(
@@ -37,9 +42,13 @@ public class PropertiesBuilder {
                 DEFAULT_MAP_PROPERTY_VALUE,
                 DEFAULT_MAP_PROPERTY_VALUE,
                 DEFAULT_MAP_PROPERTY_VALUE,
-                DEFAULT_MAP_PROPERTY_VALUE,
-                DEFAULT_MAP_PROPERTY_VALUE,
-                DEFAULT_MAP_PROPERTY_VALUE,
-                DEFAULT_MAP_PROPERTY_VALUE);
+                INFECTED_COUNT_Y,
+                RECOVERED_COUNT_Y,
+                DEAD_COUNT_Y,
+                RUNNING_DAYS_Y);
+    }
+
+    public static SimulationIterationsProperties buildIterationsProperties() {
+        return new SimulationIterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY);
     }
 }

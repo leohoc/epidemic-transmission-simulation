@@ -72,7 +72,7 @@ public class GraphicalEnvironment extends JFrame {
                     for (Individual individual : population) {
                         drawIndividual(graphics, individual);
                     }
-                    updateAreaChartContent(iterationEvolution.getCurrentIteration(), epidemicStatistics);
+                    areaChartContentByIteration.put(iterationEvolution.getCurrentIteration(), buildAreaChartContent(epidemicStatistics));
                     drawChartPanel(graphics, iterationEvolution, epidemicStatistics, population.size());
                 }
             };
@@ -85,21 +85,21 @@ public class GraphicalEnvironment extends JFrame {
         g.fillRect(individual.getX(), individual.getY(), individual.getWidth(), individual.getHeight());
     }
 
-    private void updateAreaChartContent(final Integer iteration, final EpidemicStatistics epidemicStatistics) {
+    protected List<AreaChartElement> buildAreaChartContent(final EpidemicStatistics epidemicStatistics) {
         List<AreaChartElement> areaChartContent = new ArrayList<>();
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getInfectedCount(), getColorFor(INFECTED)));
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getNormalCount(), getColorFor(HealthStatus.NORMAL)));
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getRecoveredCount(), getColorFor(RECOVERED)));
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getDeadCount(), getColorFor(DEAD)));
-        areaChartContentByIteration.put(iteration, areaChartContent);
+        return areaChartContent;
     }
 
-    private void drawChartPanel(final Graphics graphics,
+    protected void drawChartPanel(final Graphics graphics,
                                 final IterationEvolution iterationEvolution,
                                 final EpidemicStatistics epidemicStatistics,
                                 final Integer populationSize) {
         drawBackgroundPanel(graphics);
-        drawAreaChart(graphics, iterationEvolution.getTotalIterations(), populationSize);
+        buildAreaChart(iterationEvolution.getTotalIterations(), populationSize).draw(graphics);
         drawCountInformation(graphics, epidemicStatistics, iterationEvolution.getCurrentSimulatedDay());
     }
 
@@ -108,15 +108,12 @@ public class GraphicalEnvironment extends JFrame {
         graphics.fillRect(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getMapHeight());
     }
 
-    private void drawAreaChart(final Graphics graphics,
-                               final Integer totalIterations,
-                               final Integer populationSize) {
-        AreaChart areaChart = new AreaChart(
+    protected AreaChart buildAreaChart(final Integer totalIterations, final Integer populationSize) {
+        return new AreaChart(
                 buildAreaChartPanel(),
                 totalIterations,
                 populationSize,
                 areaChartContentByIteration);
-        areaChart.draw(graphics);
     }
 
     private Rectangle buildAreaChartPanel() {

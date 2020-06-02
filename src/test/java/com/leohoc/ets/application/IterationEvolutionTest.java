@@ -1,21 +1,18 @@
 package com.leohoc.ets.application;
 
-import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.leohoc.ets.builders.PropertiesBuilder.buildIterationsProperties;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IterationEvolutionTest {
-
-    private static final Integer TOTAL_ITERATIONS = 100;
-    private static final Integer ITERATIONS_PER_DAY = 10;
 
     private IterationEvolution iterationEvolution;
 
     @BeforeEach
     public void setup() {
-        iterationEvolution = new IterationEvolution(new SimulationIterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY));
+        iterationEvolution = new IterationEvolution(buildIterationsProperties());
     }
 
     @Test
