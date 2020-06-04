@@ -1,6 +1,8 @@
 package com.leohoc.ets.userinterface;
 
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,7 +63,10 @@ public class AreaChart {
     }
 
     private int calculateElementHeight(final AreaChartElement element) {
-        return (int) (element.getCount() * chartPanel.getHeight()) / totalItemsCount;
+        final BigDecimal count = new BigDecimal(element.getCount());
+        final BigDecimal height = new BigDecimal(chartPanel.getHeight());
+        final BigDecimal total = new BigDecimal(totalItemsCount);
+        return count.multiply(height).divide(total, RoundingMode.UP).intValue();
     }
 
     private int calculateElementYStartPoint(final int elementsAccumulatedY, final int elementHeight) {
