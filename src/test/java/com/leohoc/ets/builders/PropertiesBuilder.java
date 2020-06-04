@@ -24,11 +24,11 @@ public class PropertiesBuilder {
         return new SimulationIndividualProperties(
                 DEFAULT_PROPERTY_VALUE,
                 DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
                 INDIVIDUAL_INITIAL_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,
-                INDIVIDUAL_INITIAL_BOUNDARY
+                INDIVIDUAL_INITIAL_BOUNDARY,
+                DEFAULT_PROPERTY_VALUE
         );
     }
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 public class SimulationPropertiesLoader {
@@ -22,7 +23,7 @@ public class SimulationPropertiesLoader {
 
     public SimulationProperties loadSimulationProperties() {
         final int populationSize = parseInt(properties.getProperty("simulation.population.size"));
-        final int initialInfectedPercent = parseInt(properties.getProperty("simulation.initialconditions.infectedpercent"));
+        final double initialInfectedPercent = parseDouble(properties.getProperty("simulation.initialconditions.infectedpercent"));
         return new SimulationProperties(populationSize, initialInfectedPercent);
     }
 
@@ -34,19 +35,19 @@ public class SimulationPropertiesLoader {
 
     public SimulationEpidemicProperties loadEpidemicProperties() {
         final int recoveryDays = parseInt(properties.getProperty("simulation.epidemic.recoverydays"));
-        final int deathPercentage = parseInt(properties.getProperty("simulation.epidemic.deathpercentage"));
+        final double deathPercentage = parseDouble(properties.getProperty("simulation.epidemic.deathpercentage"));
         return new SimulationEpidemicProperties(recoveryDays, deathPercentage);
     }
 
     public SimulationIndividualProperties loadIndividualProperties() {
+        final int individualWidth = parseInt(properties.getProperty("simulation.individual.width"));
+        final int individualHeight = parseInt(properties.getProperty("simulation.individual.height"));
         final int upBoundary = parseInt(properties.getProperty("simulation.individual.boundary.up"));
         final int rightBoundary = parseInt(properties.getProperty("simulation.individual.boundary.right"));
         final int downBoundary = parseInt(properties.getProperty("simulation.individual.boundary.down"));
         final int leftBoundary = parseInt(properties.getProperty("simulation.individual.boundary.left"));
-        final int individualWidth = parseInt(properties.getProperty("simulation.individual.width"));
-        final int individualHeight = parseInt(properties.getProperty("simulation.individual.height"));
-        final int directionChangeProbability = parseInt(properties.getProperty("simulation.individual.direction.changeprobability"));
-        return new SimulationIndividualProperties(individualWidth, individualHeight, directionChangeProbability, upBoundary, rightBoundary, downBoundary, leftBoundary);
+        final double directionChangeProbability = parseDouble(properties.getProperty("simulation.individual.direction.changeprobability"));
+        return new SimulationIndividualProperties(individualWidth, individualHeight, upBoundary, rightBoundary, downBoundary, leftBoundary, directionChangeProbability);
     }
 
     public SimulationGraphicsProperties loadGraphicsProperties() {

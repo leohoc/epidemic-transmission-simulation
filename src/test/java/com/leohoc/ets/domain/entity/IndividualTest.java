@@ -302,7 +302,7 @@ class IndividualTest {
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, individualProperties);
 
         // When
-        when(individualProperties.getDirectionChangeProbability()).thenReturn(0);
+        when(individualProperties.getDirectionChangeProbability()).thenReturn(0.0);
         boolean shouldChangeDirection = individual.shouldChangeDirectionRandomly();
 
         // Then
@@ -316,7 +316,7 @@ class IndividualTest {
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, individualProperties);
 
         // When
-        when(individualProperties.getDirectionChangeProbability()).thenReturn(100);
+        when(individualProperties.getDirectionChangeProbability()).thenReturn(100.0);
         boolean shouldChangeDirection = individual.shouldChangeDirectionRandomly();
 
         // Then

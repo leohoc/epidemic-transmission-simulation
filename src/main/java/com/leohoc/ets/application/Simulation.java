@@ -47,8 +47,8 @@ public class Simulation {
         return initialPopulation;
     }
 
-    protected boolean shouldGotInfected(final int initialInfectedPercent) {
-        return RandomUtil.generatePercent() < initialInfectedPercent;
+    protected boolean shouldGotInfected(final double initialInfectedPercent) {
+        return RandomUtil.generatePercentWithTwoDigitsScale() < initialInfectedPercent;
     }
 
     protected void runSimulation() {

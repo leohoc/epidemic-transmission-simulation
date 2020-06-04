@@ -4,53 +4,53 @@ public class SimulationIndividualProperties {
 
     private final int individualWidth;
     private final int individualHeight;
-    private final int directionChangeProbability;
     private final int upBoundary;
     private final int rightBoundary;
     private final int downBoundary;
     private final int leftBoundary;
+    private final double directionChangeProbability;
 
-    public SimulationIndividualProperties(final Integer individualWidth,
-                                          final Integer individualHeight,
-                                          final Integer directionChangeProbability,
-                                          final Integer upBoundary,
-                                          final Integer rightBoundary,
-                                          final Integer downBoundary,
-                                          final Integer leftBoundary) {
+    public SimulationIndividualProperties(final int individualWidth,
+                                          final int individualHeight,
+                                          final int upBoundary,
+                                          final int rightBoundary,
+                                          final int downBoundary,
+                                          final int leftBoundary,
+                                          final double directionChangeProbability) {
         this.individualWidth = individualWidth;
         this.individualHeight = individualHeight;
-        this.directionChangeProbability = directionChangeProbability;
         this.upBoundary = upBoundary;
         this.rightBoundary = rightBoundary;
         this.downBoundary = downBoundary;
         this.leftBoundary = leftBoundary;
+        this.directionChangeProbability = directionChangeProbability;
     }
 
-    public Integer getIndividualWidth() {
+    public int getIndividualWidth() {
         return individualWidth;
     }
 
-    public Integer getIndividualHeight() {
+    public int getIndividualHeight() {
         return individualHeight;
     }
 
-    public Integer getDirectionChangeProbability() {
-        return directionChangeProbability;
-    }
-
-    public Integer getUpBoundary() {
+    public int getUpBoundary() {
         return upBoundary;
     }
 
-    public Integer getRightBoundary() {
+    public int getRightBoundary() {
         return rightBoundary;
     }
 
-    public Integer getDownBoundary() {
+    public int getDownBoundary() {
         return downBoundary;
     }
 
-    public Integer getLeftBoundary() {
+    public int getLeftBoundary() {
         return leftBoundary;
+    }
+
+    public double getDirectionChangeProbability() {
+        return directionChangeProbability;
     }
 }

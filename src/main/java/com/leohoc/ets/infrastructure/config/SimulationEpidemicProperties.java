@@ -3,10 +3,10 @@ package com.leohoc.ets.infrastructure.config;
 public class SimulationEpidemicProperties {
 
     private final int recoveryDays;
-    private final int deathPercentage;
+    private final double deathPercentage;
 
     public SimulationEpidemicProperties(final int recoveryDays,
-                                        final int deathPercentage) {
+                                        final double deathPercentage) {
         this.recoveryDays = recoveryDays;
         this.deathPercentage = deathPercentage;
     }
@@ -15,7 +15,7 @@ public class SimulationEpidemicProperties {
         return recoveryDays;
     }
 
-    public int getDeathPercentage() {
+    public double getDeathPercentage() {
         return deathPercentage;
     }
 }

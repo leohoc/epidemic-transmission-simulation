@@ -33,7 +33,7 @@ public class DiseaseBehavior {
     }
 
     protected boolean hasDied() {
-        return RandomUtil.generatePercent() < epidemicProperties.getDeathPercentage();
+        return RandomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getDeathPercentage();
     }
 
 }

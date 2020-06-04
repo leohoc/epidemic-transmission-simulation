@@ -3,9 +3,9 @@ package com.leohoc.ets.infrastructure.config;
 public class SimulationProperties {
 
     private final int populationSize;
-    private final int initialInfectedPercent;
+    private final double initialInfectedPercent;
 
-    public SimulationProperties(final int populationSize, final int initialInfectedPercent) {
+    public SimulationProperties(final int populationSize, final double initialInfectedPercent) {
         this.populationSize = populationSize;
         this.initialInfectedPercent = initialInfectedPercent;
     }
@@ -14,7 +14,7 @@ public class SimulationProperties {
         return populationSize;
     }
 
-    public int getInitialInfectedPercent() {
+    public double getInitialInfectedPercent() {
         return initialInfectedPercent;
     }
 }

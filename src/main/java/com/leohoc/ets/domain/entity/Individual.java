@@ -140,7 +140,7 @@ public class Individual {
     }
 
     protected boolean shouldChangeDirectionRandomly() {
-        return RandomUtil.generatePercent() < individualProperties.getDirectionChangeProbability();
+        return RandomUtil.generatePercentWithTwoDigitsScale() < individualProperties.getDirectionChangeProbability();
     }
 
     protected void changeDirection() {
