@@ -2,6 +2,7 @@ package com.leohoc.ets.domain.entity;
 
 import com.leohoc.ets.domain.enums.HealthStatus;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class EpidemicStatistics {
@@ -9,10 +10,9 @@ public class EpidemicStatistics {
     private HashMap<HealthStatus, Integer> healthStatusStatistic = new HashMap<>();
 
     public EpidemicStatistics() {
-        healthStatusStatistic.put(HealthStatus.NORMAL, 0);
-        healthStatusStatistic.put(HealthStatus.INFECTED, 0);
-        healthStatusStatistic.put(HealthStatus.RECOVERED, 0);
-        healthStatusStatistic.put(HealthStatus.DEAD, 0);
+        for (HealthStatus healthStatus : Arrays.asList(HealthStatus.values())) {
+            healthStatusStatistic.put(healthStatus, 0);
+        }
     }
 
     public void updateStatistics(final HealthStatus healthStatus) {
@@ -26,6 +26,10 @@ public class EpidemicStatistics {
 
     public HashMap<HealthStatus, Integer> getHealthStatusStatistic() {
         return healthStatusStatistic;
+    }
+
+    public Integer getHospitalizedCount() {
+        return healthStatusStatistic.get(HealthStatus.HOSPITALIZED);
     }
 
     public Integer getInfectedCount() {

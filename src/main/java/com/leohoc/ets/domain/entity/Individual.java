@@ -58,7 +58,7 @@ public class Individual {
     }
 
     public void move() {
-        if (!isDead()) {
+        if (healthCondition.getHealthStatus().allowedToMove()) {
             adjustDirection();
             x += directionMovement.xAxisMovement();
             y += directionMovement.yAxisMovement();
@@ -66,11 +66,16 @@ public class Individual {
     }
 
     public boolean isInfected() {
-        return healthCondition.getHealthStatus().equals(HealthStatus.INFECTED);
+        return healthCondition.getHealthStatus().isInfected();
     }
 
     public void gotInfected(final int currentDay) {
         healthCondition = new HealthCondition(INFECTED, currentDay);
+    }
+
+    public void gotHospitalized(final int infectionStartDay) {
+        healthCondition = new HealthCondition(HOSPITALIZED, infectionStartDay);
+        directionMovement = STANDING;
     }
 
     public void died(final int deathDay) {
@@ -82,7 +87,7 @@ public class Individual {
         healthCondition = new HealthCondition(RECOVERED, recoveryDay);
     }
 
-    private boolean isDead() {
+    private boolean isDeadNorHospitalized() {
         return getHealthStatus().equals(DEAD);
     }
 

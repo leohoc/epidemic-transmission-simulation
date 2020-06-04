@@ -36,7 +36,9 @@ public class SimulationPropertiesLoader {
     public SimulationEpidemicProperties loadEpidemicProperties() {
         final int recoveryDays = parseInt(properties.getProperty("simulation.epidemic.recoverydays"));
         final double deathPercentage = parseDouble(properties.getProperty("simulation.epidemic.deathpercentage"));
-        return new SimulationEpidemicProperties(recoveryDays, deathPercentage);
+        final double hospitalizationPercentage = parseDouble(properties.getProperty("simulation.epidemic.hospitalizationpercentage"));
+        final int hospitalizationDays = parseInt(properties.getProperty("simulation.epidemic.hospitalizationdays"));
+        return new SimulationEpidemicProperties(recoveryDays, deathPercentage, hospitalizationPercentage, hospitalizationDays);
     }
 
     public SimulationIndividualProperties loadIndividualProperties() {
@@ -56,9 +58,10 @@ public class SimulationPropertiesLoader {
         final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
         final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
         final int infectedCountY = parseInt(properties.getProperty("simulation.graphics.info.infected.y"));
+        final int hospitalizedCountY = parseInt(properties.getProperty("simulation.graphics.info.hospitalized.y"));
         final int recoveredCountY = parseInt(properties.getProperty("simulation.graphics.info.recovered.y"));
         final int deadCountY = parseInt(properties.getProperty("simulation.graphics.info.dead.y"));
         final int epidemicRunningDaysY = parseInt(properties.getProperty("simulation.graphics.info.runningdays.y"));
-        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, infectedCountY, recoveredCountY, deadCountY, epidemicRunningDaysY);
+        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, infectedCountY, hospitalizedCountY, recoveredCountY, deadCountY, epidemicRunningDaysY);
     }
 }

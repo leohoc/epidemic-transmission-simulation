@@ -13,11 +13,20 @@ public class DiseaseBehavior {
     }
 
     public void updateHealthCondition(final Individual individual, final int currentSimulatedDay) {
-        if (individual.isInfected() && reachedRecoveryTime(individual.getHealthCondition().getStartDay(), currentSimulatedDay)) {
-            if (hasDied()) {
-                individual.died(currentSimulatedDay);
-            } else {
-                individual.recovered(currentSimulatedDay);
+        if (individual.isInfected()) {
+
+            final int individualInfectionDay = individual.getHealthCondition().getStartDay();
+
+            if (reachedHospitalizationTime(individualInfectionDay, currentSimulatedDay) && shouldBeHospitalized()) {
+                individual.gotHospitalized(individualInfectionDay);
+            }
+
+            if (reachedRecoveryTime(individualInfectionDay, currentSimulatedDay)) {
+                if (hasDied()) {
+                    individual.died(currentSimulatedDay);
+                } else {
+                    individual.recovered(currentSimulatedDay);
+                }
             }
         }
     }
@@ -28,8 +37,16 @@ public class DiseaseBehavior {
         }
     }
 
-    private boolean reachedRecoveryTime(final int diseaseStartDay, final long currentSimulatedDay) {
-        return (currentSimulatedDay - diseaseStartDay) > epidemicProperties.getRecoveryDays();
+    private boolean reachedHospitalizationTime(final int individualInfectionDay, final int currentSimulatedDay) {
+        return (currentSimulatedDay - individualInfectionDay) == epidemicProperties.getHospitalizationDays();
+    }
+
+    private boolean shouldBeHospitalized() {
+        return RandomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getHospitalizationPercentage();
+    }
+
+    private boolean reachedRecoveryTime(final int individualInfectionDay, final long currentSimulatedDay) {
+        return (currentSimulatedDay - individualInfectionDay) > epidemicProperties.getRecoveryDays();
     }
 
     protected boolean hasDied() {

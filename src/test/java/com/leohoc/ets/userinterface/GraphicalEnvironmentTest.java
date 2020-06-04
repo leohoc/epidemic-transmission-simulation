@@ -52,7 +52,7 @@ class GraphicalEnvironmentTest {
         graphicalEnvironment.drawIndividual(graphics, individual);
 
         // Then
-        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.BLUE));
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.CYAN));
         verify(graphics, times(ONE_INVOCATION)).fillRect(eq(individual.getX()), eq(individual.getY()), eq(individual.getWidth()), eq(individual.getHeight()));
     }
 
@@ -98,14 +98,16 @@ class GraphicalEnvironmentTest {
         List<AreaChartElement> areaChartContent = graphicalEnvironment.buildAreaChartContent(epidemicStatistics);
 
         // Then
-        assertEquals(epidemicStatistics.getInfectedCount(), areaChartContent.get(0).getCount());
+        assertEquals(epidemicStatistics.getHospitalizedCount(), areaChartContent.get(0).getCount());
         assertEquals(Color.BLUE, areaChartContent.get(0).getColor());
-        assertEquals(epidemicStatistics.getNormalCount(), areaChartContent.get(1).getCount());
-        assertEquals(Color.LIGHT_GRAY, areaChartContent.get(1).getColor());
-        assertEquals(epidemicStatistics.getRecoveredCount(), areaChartContent.get(2).getCount());
-        assertEquals(Color.GREEN, areaChartContent.get(2).getColor());
-        assertEquals(epidemicStatistics.getDeadCount(), areaChartContent.get(3).getCount());
-        assertEquals(Color.RED, areaChartContent.get(3).getColor());
+        assertEquals(epidemicStatistics.getInfectedCount(), areaChartContent.get(1).getCount());
+        assertEquals(Color.CYAN, areaChartContent.get(1).getColor());
+        assertEquals(epidemicStatistics.getNormalCount(), areaChartContent.get(2).getCount());
+        assertEquals(Color.LIGHT_GRAY, areaChartContent.get(2).getColor());
+        assertEquals(epidemicStatistics.getRecoveredCount(), areaChartContent.get(3).getCount());
+        assertEquals(Color.GREEN, areaChartContent.get(3).getColor());
+        assertEquals(epidemicStatistics.getDeadCount(), areaChartContent.get(4).getCount());
+        assertEquals(Color.RED, areaChartContent.get(4).getColor());
     }
 
     @Test

@@ -20,6 +20,7 @@ public class GraphicalEnvironment extends JFrame {
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
     private static final String TITLE = "Epidemic Transmission Simulation";
     private static final String TOTAL_INFECTED = "Total infected: %s";
+    private static final String TOTAL_HOSPITALIZED = "Total hospitalized: %s";
     private static final String TOTAL_RECOVERED = "Total recovered: %s";
     private static final String TOTAL_DEAD = "Total dead: %s";
     private static final String EPIDEMIC_RUNNING_DAYS = "Epidemic running days: %s";
@@ -87,6 +88,7 @@ public class GraphicalEnvironment extends JFrame {
 
     protected List<AreaChartElement> buildAreaChartContent(final EpidemicStatistics epidemicStatistics) {
         List<AreaChartElement> areaChartContent = new ArrayList<>();
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getHospitalizedCount(), getColorFor(HOSPITALIZED)));
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getInfectedCount(), getColorFor(INFECTED)));
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getNormalCount(), getColorFor(HealthStatus.NORMAL)));
         areaChartContent.add(new AreaChartElement(epidemicStatistics.getRecoveredCount(), getColorFor(RECOVERED)));
@@ -123,14 +125,18 @@ public class GraphicalEnvironment extends JFrame {
     private void drawCountInformation(final Graphics graphics, final EpidemicStatistics epidemicStatistics, final Integer currentSimulatedDay) {
         graphics.setColor(Color.WHITE);
         graphics.drawString(format(TOTAL_INFECTED, epidemicStatistics.getInfectedCount()), properties.getMapWidth(), properties.getInfectedCountY());
+        graphics.drawString(format(TOTAL_HOSPITALIZED, epidemicStatistics.getHospitalizedCount()), properties.getMapWidth(), properties.getHospitalizedCountY());
         graphics.drawString(format(TOTAL_RECOVERED, epidemicStatistics.getRecoveredCount()), properties.getMapWidth(), properties.getRecoveredCountY());
         graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getDeadCount()), properties.getMapWidth(), properties.getDeadCountY());
         graphics.drawString(format(EPIDEMIC_RUNNING_DAYS, currentSimulatedDay), properties.getMapWidth(), properties.getEpidemicRunningDaysY());
     }
 
     private Color getColorFor(final HealthStatus healthStatus) {
-        if (healthStatus.equals(INFECTED)) {
+        if (healthStatus.equals(HOSPITALIZED)) {
             return Color.BLUE;
+        }
+        if (healthStatus.equals(INFECTED)) {
+            return Color.CYAN;
         }
         if (healthStatus.equals(RECOVERED)) {
             return Color.GREEN;
