@@ -19,27 +19,30 @@ public class GraphicalEnvironment extends JFrame {
 
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
     private static final String TITLE = "Epidemic Transmission Simulation";
-    private static final String TOTAL_INFECTED = "Total infected: %s";
-    private static final String TOTAL_HOSPITALIZED = "Total hospitalized: %s";
-    private static final String TOTAL_RECOVERED = "Total recovered: %s";
-    private static final String TOTAL_DEAD = "Total dead: %s";
+    private static final String TOTAL_INFECTED = "Current infected: %s";
+    private static final String TOTAL_HOSPITALIZED = "Current hospitalized: %s";
+    private static final String TOTAL_RECOVERED = "Current recovered: %s";
+    private static final String TOTAL_DEAD = "Current dead: %s";
     private static final String EPIDEMIC_RUNNING_DAYS = "Epidemic running days: %s";
 
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
-    private final SimulationGraphicsProperties properties;
+    private final SimulationGraphicsProperties graphicsProperties;
+    private final int availableBeds;
     private final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
 
-    public GraphicalEnvironment(final SimulationGraphicsProperties properties) {
+    public GraphicalEnvironment(final SimulationGraphicsProperties graphicsProperties,
+                                final int availableBeds) {
         super();
-        this.properties = properties;
+        this.graphicsProperties = graphicsProperties;
+        this.availableBeds = availableBeds;
     }
 
     public void initialize(final List<Individual> population,
                            final IterationEvolution iterationEvolution,
                            final EpidemicStatistics epidemicStatistics) {
-        final int totalWidth = properties.getMapWidth() + properties.getAreaChartWidth();
-        this.setSize(totalWidth, properties.getMapHeight());
+        final int totalWidth = graphicsProperties.getMapWidth() + graphicsProperties.getAreaChartWidth();
+        this.setSize(totalWidth, graphicsProperties.getMapHeight());
         this.setContentPane(getJContentPane(population, iterationEvolution, epidemicStatistics));
         this.setTitle(TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -107,7 +110,7 @@ public class GraphicalEnvironment extends JFrame {
 
     private void drawBackgroundPanel(final Graphics graphics) {
         graphics.setColor(Color.DARK_GRAY);
-        graphics.fillRect(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getMapHeight());
+        graphics.fillRect(graphicsProperties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, graphicsProperties.getAreaChartWidth(), graphicsProperties.getMapHeight());
     }
 
     protected AreaChart buildAreaChart(final Integer totalIterations, final Integer populationSize) {
@@ -115,20 +118,21 @@ public class GraphicalEnvironment extends JFrame {
                 buildAreaChartPanel(),
                 totalIterations,
                 populationSize,
-                areaChartContentByIteration);
+                areaChartContentByIteration,
+                availableBeds);
     }
 
     private Rectangle buildAreaChartPanel() {
-        return new Rectangle(properties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, properties.getAreaChartWidth(), properties.getAreaChartHeight());
+        return new Rectangle(graphicsProperties.getMapWidth(), GRAPHICS_Y_AXIS_START_POINT, graphicsProperties.getAreaChartWidth(), graphicsProperties.getAreaChartHeight());
     }
 
     private void drawCountInformation(final Graphics graphics, final EpidemicStatistics epidemicStatistics, final Integer currentSimulatedDay) {
         graphics.setColor(Color.WHITE);
-        graphics.drawString(format(TOTAL_INFECTED, epidemicStatistics.getInfectedCount()), properties.getMapWidth(), properties.getInfectedCountY());
-        graphics.drawString(format(TOTAL_HOSPITALIZED, epidemicStatistics.getHospitalizedCount()), properties.getMapWidth(), properties.getHospitalizedCountY());
-        graphics.drawString(format(TOTAL_RECOVERED, epidemicStatistics.getRecoveredCount()), properties.getMapWidth(), properties.getRecoveredCountY());
-        graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getDeadCount()), properties.getMapWidth(), properties.getDeadCountY());
-        graphics.drawString(format(EPIDEMIC_RUNNING_DAYS, currentSimulatedDay), properties.getMapWidth(), properties.getEpidemicRunningDaysY());
+        graphics.drawString(format(TOTAL_INFECTED, epidemicStatistics.getInfectedCount()), graphicsProperties.getMapWidth(), graphicsProperties.getInfectedCountY());
+        graphics.drawString(format(TOTAL_HOSPITALIZED, epidemicStatistics.getHospitalizedCount()), graphicsProperties.getMapWidth(), graphicsProperties.getHospitalizedCountY());
+        graphics.drawString(format(TOTAL_RECOVERED, epidemicStatistics.getRecoveredCount()), graphicsProperties.getMapWidth(), graphicsProperties.getRecoveredCountY());
+        graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getDeadCount()), graphicsProperties.getMapWidth(), graphicsProperties.getDeadCountY());
+        graphics.drawString(format(EPIDEMIC_RUNNING_DAYS, currentSimulatedDay), graphicsProperties.getMapWidth(), graphicsProperties.getEpidemicRunningDaysY());
     }
 
     private Color getColorFor(final HealthStatus healthStatus) {

@@ -64,4 +64,9 @@ public class SimulationPropertiesLoader {
         final int epidemicRunningDaysY = parseInt(properties.getProperty("simulation.graphics.info.runningdays.y"));
         return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, infectedCountY, hospitalizedCountY, recoveredCountY, deadCountY, epidemicRunningDaysY);
     }
+
+    public SimulationHealthSystemCapacityProperties loadHealthSystemCapacityProperties() {
+        final int availableBeds = parseInt(properties.getProperty("simulation.healthsystem.icus.availablebeds"));
+        return new SimulationHealthSystemCapacityProperties(availableBeds);
+    }
 }

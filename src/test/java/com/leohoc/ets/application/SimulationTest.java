@@ -1,6 +1,7 @@
 package com.leohoc.ets.application;
 
 import com.leohoc.ets.domain.entity.Individual;
+import com.leohoc.ets.infrastructure.config.SimulationHealthSystemCapacityProperties;
 import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 import com.leohoc.ets.infrastructure.config.SimulationProperties;
 import com.leohoc.ets.infrastructure.config.SimulationPropertiesLoader;
@@ -20,6 +21,7 @@ class SimulationTest {
     private static final int ONE_HUNDRED_INITIAL_INFECTED_PERCENT = 100;
     private static final int TOTAL_ITERATIONS = 10;
     private static final int ITERATIONS_PER_DAY = 1;
+    private static final int AVAILABLE_BEDS = 2;
 
     private Simulation simulation;
     private SimulationPropertiesLoader simulationPropertiesLoader = mock(SimulationPropertiesLoader.class);
@@ -27,6 +29,7 @@ class SimulationTest {
     @Test
     public void testGenerateEntirelyHealthyPopulation() {
         // Given
+        when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ZERO_INITIAL_INFECTED_PERCENT));
         when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(buildIndividualProperties());
         simulation = new Simulation(simulationPropertiesLoader);
@@ -42,6 +45,7 @@ class SimulationTest {
     @Test
     public void testGenerateEntirelyInfectedPopulation() {
         // Given
+        when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ONE_HUNDRED_INITIAL_INFECTED_PERCENT));
         when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(buildIndividualProperties());
         when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
@@ -58,6 +62,7 @@ class SimulationTest {
     @Test
     public void testRunSimulation() {
         // Given
+        when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
         simulation = spy(new Simulation(simulationPropertiesLoader));
 
@@ -74,5 +79,9 @@ class SimulationTest {
 
     private SimulationIterationsProperties buildIterationsProperties() {
         return new SimulationIterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY);
+    }
+
+    private SimulationHealthSystemCapacityProperties buildHealthSystemProperties() {
+        return new SimulationHealthSystemCapacityProperties(AVAILABLE_BEDS);
     }
 }

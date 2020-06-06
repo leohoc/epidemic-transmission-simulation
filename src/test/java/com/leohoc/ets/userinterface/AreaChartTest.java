@@ -13,13 +13,14 @@ class AreaChartTest {
     private static final int TOTAL_ITERATIONS = 4;
     private static final int TOTAL_ITEMS_COUNT = 4;
     private static final int ONE_INVOCATION = 1;
+    private static final int BOUNDARY_LINE_COUNT = 2;
 
     @Test
     public void testDraw() {
         // Given
         Rectangle chartPanel = buildChartPanel();
         HashMap<Integer, List<AreaChartElement>> iterationsContent = buildIterationsContent();
-        AreaChart areaChart = new AreaChart(chartPanel, TOTAL_ITERATIONS, TOTAL_ITEMS_COUNT, iterationsContent);
+        AreaChart areaChart = new AreaChart(chartPanel, TOTAL_ITERATIONS, TOTAL_ITEMS_COUNT, iterationsContent, BOUNDARY_LINE_COUNT);
 
         // When
         Graphics graphics = Mockito.spy(Graphics.class);
@@ -36,6 +37,9 @@ class AreaChartTest {
         Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(2, 0, 1, 2);
         Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(3, 3, 1, 1);
         Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(3, 0, 1, 3);
+        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).setColor(Color.YELLOW);
+        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).drawLine(0, 2, 4, 2);
+
     }
 
     private Rectangle buildChartPanel() {

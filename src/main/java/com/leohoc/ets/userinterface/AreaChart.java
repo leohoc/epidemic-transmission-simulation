@@ -14,15 +14,18 @@ public class AreaChart {
     private final long totalIterations;
     private final int totalItemsCount;
     private final HashMap<Integer, List<AreaChartElement>> iterationsContent;
+    private final int boundaryLineCount;
 
     public AreaChart(final Rectangle chartPanel,
                      final long totalIterations,
                      final int totalItemsCount,
-                     final HashMap<Integer, List<AreaChartElement>> iterationsContent) {
+                     final HashMap<Integer, List<AreaChartElement>> iterationsContent,
+                     final int boundaryLineCount) {
         this.chartPanel = chartPanel;
         this.totalIterations = totalIterations;
         this.totalItemsCount = totalItemsCount;
         this.iterationsContent = iterationsContent;
+        this.boundaryLineCount = boundaryLineCount;
     }
 
     protected Rectangle getChartPanel() {
@@ -45,6 +48,7 @@ public class AreaChart {
         for (Integer iteration : iterationsContent.keySet()) {
             drawIterationContent(graphics, iteration);
         }
+        drawBoundaryLine(graphics);
     }
 
     private void drawIterationContent(Graphics graphics, Integer iteration) {
@@ -64,9 +68,7 @@ public class AreaChart {
 
     private int calculateElementHeight(final AreaChartElement element) {
         final BigDecimal count = new BigDecimal(element.getCount());
-        final BigDecimal height = new BigDecimal(chartPanel.getHeight());
-        final BigDecimal total = new BigDecimal(totalItemsCount);
-        return count.multiply(height).divide(total, RoundingMode.UP).intValue();
+        return calculateY(count);
     }
 
     private int calculateElementYStartPoint(final int elementsAccumulatedY, final int elementHeight) {
@@ -76,4 +78,24 @@ public class AreaChart {
     private int calculateElementXStartPoint(final Integer iteration) {
         return (int) chartPanel.getX() + (int) ((iteration * chartPanel.getWidth()) / totalIterations);
     }
+
+    private void drawBoundaryLine(Graphics graphics) {
+        final int boundaryLineStartX = (int) chartPanel.getX();
+        final int boundaryLineEndX = (int) (chartPanel.getX() + chartPanel.getWidth());
+        final int boundaryLineY = calculateBoundaryLineY();
+        graphics.setColor(Color.YELLOW);
+        graphics.drawLine(boundaryLineStartX, boundaryLineY, boundaryLineEndX, boundaryLineY);
+    }
+
+    private int calculateBoundaryLineY() {
+        final BigDecimal count = new BigDecimal(boundaryLineCount);
+        return (int)getChartPanel().getHeight() - calculateY(count);
+    }
+
+    private int calculateY(BigDecimal count) {
+        final BigDecimal height = new BigDecimal(chartPanel.getHeight());
+        final BigDecimal total = new BigDecimal(totalItemsCount);
+        return count.multiply(height).divide(total, RoundingMode.UP).intValue();
+    }
+
 }

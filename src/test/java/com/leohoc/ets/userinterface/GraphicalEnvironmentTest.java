@@ -24,12 +24,13 @@ class GraphicalEnvironmentTest {
     private static final int ONE_INVOCATION = 1;
     private static final int POPULATION_SIZE = 10;
     private static final int INITIAL_Y = 0;
+    private static final int AVAILABLE_BEDS = 2;
 
     @Test
     public void testDrawHealthyIndividual() {
         // Given
         Individual individual = buildIndividual();
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -45,7 +46,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.gotInfected(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -61,7 +62,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.gotHospitalized(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -77,7 +78,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.recovered(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -93,7 +94,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.died(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -107,7 +108,7 @@ class GraphicalEnvironmentTest {
     @Test
     public void testBuildAreaChartContent() {
         // Given
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
         EpidemicStatistics epidemicStatistics = buildEpidemicStatistics();
 
         // When
@@ -130,7 +131,7 @@ class GraphicalEnvironmentTest {
     public void testDrawChartPanel() {
         // Given
         SimulationGraphicsProperties properties = buildGraphicsProperties();
-        GraphicalEnvironment graphicalEnvironment = Mockito.spy(new GraphicalEnvironment(properties));
+        GraphicalEnvironment graphicalEnvironment = Mockito.spy(new GraphicalEnvironment(properties, AVAILABLE_BEDS));
         IterationEvolution iterationEvolution = new IterationEvolution(buildIterationsProperties());
         EpidemicStatistics epidemicStatistics = buildEpidemicStatistics();
 
@@ -155,7 +156,7 @@ class GraphicalEnvironmentTest {
         // Given
         IterationEvolution iterationEvolution = new IterationEvolution(buildIterationsProperties());
         SimulationGraphicsProperties properties = buildGraphicsProperties();
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(properties);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(properties, AVAILABLE_BEDS);
 
         // When
         AreaChart areaChart = graphicalEnvironment.buildAreaChart(iterationEvolution.getTotalIterations(), POPULATION_SIZE);

@@ -21,12 +21,13 @@ public class Simulation {
     private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
 
-    public Simulation(final SimulationPropertiesLoader simulationPropertiesLoader) {
-        this.simulationProperties = simulationPropertiesLoader.loadSimulationProperties();
-        this.individualProperties = simulationPropertiesLoader.loadIndividualProperties();
-        this.iterationEvolution = new IterationEvolution(simulationPropertiesLoader.loadIterationsProperties());
-        this.populationDynamics = new PopulationDynamics(new DiseaseBehavior(simulationPropertiesLoader.loadEpidemicProperties()));
-        this.graphicalEnvironment = new GraphicalEnvironment(simulationPropertiesLoader.loadGraphicsProperties());
+    public Simulation(final SimulationPropertiesLoader propertiesLoader) {
+        final SimulationHealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
+        this.simulationProperties = propertiesLoader.loadSimulationProperties();
+        this.individualProperties = propertiesLoader.loadIndividualProperties();
+        this.iterationEvolution = new IterationEvolution(propertiesLoader.loadIterationsProperties());
+        this.populationDynamics = new PopulationDynamics(new DiseaseBehavior(propertiesLoader.loadEpidemicProperties()));
+        this.graphicalEnvironment = new GraphicalEnvironment(propertiesLoader.loadGraphicsProperties(), healthSystemCapacityProperties.getAvailableBeds());
     }
 
     public void startSimulation() {
