@@ -4,6 +4,8 @@ import com.leohoc.ets.domain.enums.HealthStatus;
 
 public class HealthCondition {
 
+    private static final Integer DEFAULT_START_DAY = 0;
+
     private final HealthStatus healthStatus;
     private final Integer startDay;
 
@@ -13,8 +15,7 @@ public class HealthCondition {
     }
 
     public HealthCondition(final HealthStatus healthStatus) {
-        this.healthStatus = healthStatus;
-        this.startDay = 0;
+        this(healthStatus, DEFAULT_START_DAY);
     }
 
     public HealthStatus getHealthStatus() {
@@ -23,9 +24,5 @@ public class HealthCondition {
 
     public Integer getStartDay() {
         return startDay;
-    }
-
-    public boolean hasNoAntibodies() {
-        return healthStatus.equals(HealthStatus.NORMAL);
     }
 }

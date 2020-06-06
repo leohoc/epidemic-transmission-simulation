@@ -47,7 +47,7 @@ class DiseaseBehaviorTest {
         Individual individual = buildIndividual();
 
         // When
-        Integer currentSimulatedDay = 10;
+        Integer currentSimulatedDay = 5;
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -85,6 +85,38 @@ class DiseaseBehaviorTest {
         // Then
         assertEquals(HealthStatus.DEAD, individual.getHealthCondition().getHealthStatus());
         assertEquals(currentSimulatedDay, individual.getHealthCondition().getStartDay());
+    }
+
+    @Test
+    public void testUpdateHealthConditionToHospitalized() {
+        // Given
+        Integer currentSimulatedDay = 7;
+        Individual individual = buildIndividual();
+        individual.gotInfected(SIMULATION_START_DAY);
+
+        // When
+        when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.TRUE);
+        diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
+
+        // Then
+        assertEquals(HealthStatus.HOSPITALIZED, individual.getHealthCondition().getHealthStatus());
+        assertEquals(SIMULATION_START_DAY, individual.getHealthCondition().getStartDay());
+    }
+
+    @Test
+    public void testUpdateHealthConditionShouldNotBeHospitalized() {
+        // Given
+        Integer currentSimulatedDay = 7;
+        Individual individual = buildIndividual();
+        individual.gotInfected(SIMULATION_START_DAY);
+
+        // When
+        when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.FALSE);
+        diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
+
+        // Then
+        assertEquals(HealthStatus.INFECTED, individual.getHealthCondition().getHealthStatus());
+        assertEquals(SIMULATION_START_DAY, individual.getHealthCondition().getStartDay());
     }
 
     @Test

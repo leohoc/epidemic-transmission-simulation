@@ -10,11 +10,15 @@ public enum HealthStatus {
     RECOVERED,
     DEAD;
 
-    public boolean isInfected() {
+    public boolean infected() {
         return Arrays.asList(INFECTED, HOSPITALIZED).contains(this);
     }
 
     public boolean allowedToMove() {
         return Arrays.asList(NORMAL, INFECTED, RECOVERED).contains(this);
+    }
+
+    public boolean hasAntibodies() {
+        return Arrays.asList(INFECTED, HOSPITALIZED, RECOVERED, DEAD).contains(this);
     }
 }

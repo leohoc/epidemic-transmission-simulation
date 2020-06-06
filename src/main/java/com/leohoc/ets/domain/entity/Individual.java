@@ -66,7 +66,7 @@ public class Individual {
     }
 
     public boolean isInfected() {
-        return healthCondition.getHealthStatus().isInfected();
+        return healthCondition.getHealthStatus().infected();
     }
 
     public void gotInfected(final int currentDay) {
@@ -85,10 +85,6 @@ public class Individual {
 
     public void recovered(final int recoveryDay) {
         healthCondition = new HealthCondition(RECOVERED, recoveryDay);
-    }
-
-    private boolean isDeadNorHospitalized() {
-        return getHealthStatus().equals(DEAD);
     }
 
     protected void adjustDirection() {
