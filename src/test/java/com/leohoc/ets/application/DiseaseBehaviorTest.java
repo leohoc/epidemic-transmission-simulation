@@ -19,12 +19,13 @@ class DiseaseBehaviorTest {
     private static final Integer POINT_B_X = 10;
     private static final Integer POINT_B_Y = 10;
     private static final Integer SIMULATION_START_DAY = 0;
+    private static final Integer AVAILABLE_BEDS = 1;
 
     private DiseaseBehavior diseaseBehavior;
 
     @BeforeEach
     public void setup() {
-        diseaseBehavior = spy(new DiseaseBehavior(buildEpidemicProperties()));
+        diseaseBehavior = spy(new DiseaseBehavior(buildEpidemicProperties(), AVAILABLE_BEDS));
     }
 
     @Test

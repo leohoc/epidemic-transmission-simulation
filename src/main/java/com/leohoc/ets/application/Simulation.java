@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Simulation {
 
-    private static final Integer GRAPHICS_UPDATE_TIME_MS = 20;
+    private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
 
     private final EpidemicStatistics epidemicStatistics = new EpidemicStatistics();;
     private final List<Individual> population = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Simulation {
         this.simulationProperties = propertiesLoader.loadSimulationProperties();
         this.individualProperties = propertiesLoader.loadIndividualProperties();
         this.iterationEvolution = new IterationEvolution(propertiesLoader.loadIterationsProperties());
-        this.populationDynamics = new PopulationDynamics(new DiseaseBehavior(propertiesLoader.loadEpidemicProperties()));
+        this.populationDynamics = new PopulationDynamics(new DiseaseBehavior(propertiesLoader.loadEpidemicProperties(), healthSystemCapacityProperties.getAvailableBeds()));
         this.graphicalEnvironment = new GraphicalEnvironment(propertiesLoader.loadGraphicsProperties(), healthSystemCapacityProperties.getAvailableBeds());
     }
 

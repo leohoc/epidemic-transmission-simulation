@@ -69,6 +69,10 @@ public class Individual {
         return healthCondition.getHealthStatus().infected();
     }
 
+    public boolean isHospitalized() {
+        return healthCondition.getHealthStatus().hospitalized();
+    }
+
     public void gotInfected(final int currentDay) {
         healthCondition = new HealthCondition(INFECTED, currentDay);
     }
