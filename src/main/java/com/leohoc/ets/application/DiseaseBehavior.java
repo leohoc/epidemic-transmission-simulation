@@ -9,9 +9,9 @@ public class DiseaseBehavior {
     private final SimulationEpidemicProperties epidemicProperties;
     private final HealthSystemResources healthSystemResources;
 
-    public DiseaseBehavior(final SimulationEpidemicProperties epidemicProperties, final int availableUCIBeds) {
+    public DiseaseBehavior(final SimulationEpidemicProperties epidemicProperties, final HealthSystemResources healthSystemResources) {
         this.epidemicProperties = epidemicProperties;
-        this.healthSystemResources = new HealthSystemResources(availableUCIBeds);
+        this.healthSystemResources = healthSystemResources;
     }
 
     public void updateHealthCondition(final Individual individual, final int currentSimulatedDay) {
@@ -30,7 +30,7 @@ public class DiseaseBehavior {
     private void checkRecovering(final Individual individual, final int currentSimulatedDay) {
         if (reachedRecoveryTime(individual.getHealthCondition().getStartDay(), currentSimulatedDay)) {
             if (individual.isHospitalized()) {
-                healthSystemResources.releaseUCIBed();
+                healthSystemResources.releaseICUBed();
             }
             if (hasDied()) {
                 individual.died(currentSimulatedDay);
@@ -43,8 +43,8 @@ public class DiseaseBehavior {
     private void checkHospitalizationNeeds(final Individual individual, final int currentSimulatedDay) {
         final int individualInfectionStartDay = individual.getHealthCondition().getStartDay();
         if (!individual.isHospitalized() && reachedHospitalizationTime(individualInfectionStartDay, currentSimulatedDay) && shouldBeHospitalized()) {
-            if (healthSystemResources.hasAvailableUCIBed()) {
-                healthSystemResources.fillUCIBed();
+            if (healthSystemResources.hasAvailableICUBed()) {
+                healthSystemResources.fillICUBed();
                 individual.gotHospitalized(individualInfectionStartDay);
             } else {
                 individual.died(currentSimulatedDay);

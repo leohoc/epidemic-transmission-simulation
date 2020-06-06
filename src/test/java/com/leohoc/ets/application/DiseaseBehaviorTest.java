@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import static com.leohoc.ets.builders.PropertiesBuilder.buildEpidemicProperties;
 import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class DiseaseBehaviorTest {
 
@@ -19,13 +18,15 @@ class DiseaseBehaviorTest {
     private static final Integer POINT_B_X = 10;
     private static final Integer POINT_B_Y = 10;
     private static final Integer SIMULATION_START_DAY = 0;
-    private static final Integer AVAILABLE_BEDS = 1;
+    private static final int ONE_INVOCATION = 1;
 
     private DiseaseBehavior diseaseBehavior;
+    private HealthSystemResources healthSystemResources;
 
     @BeforeEach
     public void setup() {
-        diseaseBehavior = spy(new DiseaseBehavior(buildEpidemicProperties(), AVAILABLE_BEDS));
+        healthSystemResources = mock(HealthSystemResources.class);
+        diseaseBehavior = spy(new DiseaseBehavior(buildEpidemicProperties(), healthSystemResources));
     }
 
     @Test
@@ -43,21 +44,22 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionBeforeReachingRecoveryTime() {
+    public void testUpdateHealthConditionGivenInfectedIndividualBeforeReachingRecoveryTime() {
         // Given
         Individual individual = buildIndividual();
+        individual.gotInfected(SIMULATION_START_DAY);
 
         // When
         Integer currentSimulatedDay = 5;
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
-        assertEquals(HealthStatus.NORMAL, individual.getHealthCondition().getHealthStatus());
+        assertEquals(HealthStatus.INFECTED, individual.getHealthCondition().getHealthStatus());
         assertEquals(SIMULATION_START_DAY, individual.getHealthCondition().getStartDay());
     }
 
     @Test
-    public void testUpdateHealthConditionToRecovered() {
+    public void testUpdateHealthConditionFromInfectedToRecovered() {
         // Given
         Integer currentSimulatedDay = 15;
         Individual individual = buildIndividual();
@@ -73,7 +75,24 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionToDead() {
+    public void testUpdateHealthConditionFromHospitalizedToRecovered() {
+        // Given
+        Integer currentSimulatedDay = 15;
+        Individual individual = buildIndividual();
+        individual.gotHospitalized(SIMULATION_START_DAY);
+
+        // When
+        when(diseaseBehavior.hasDied()).thenReturn(Boolean.FALSE);
+        diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
+
+        // Then
+        verify(healthSystemResources, times(ONE_INVOCATION)).releaseICUBed();
+        assertEquals(HealthStatus.RECOVERED, individual.getHealthCondition().getHealthStatus());
+        assertEquals(currentSimulatedDay, individual.getHealthCondition().getStartDay());
+    }
+
+    @Test
+    public void testUpdateHealthConditionFromInfectedToDead() {
         // Given
         Integer currentSimulatedDay = 15;
         Individual individual = buildIndividual();
@@ -89,6 +108,23 @@ class DiseaseBehaviorTest {
     }
 
     @Test
+    public void testUpdateHealthConditionFromHospitalizedToDead() {
+        // Given
+        Integer currentSimulatedDay = 15;
+        Individual individual = buildIndividual();
+        individual.gotHospitalized(SIMULATION_START_DAY);
+
+        // When
+        when(diseaseBehavior.hasDied()).thenReturn(Boolean.TRUE);
+        diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
+
+        // Then
+        verify(healthSystemResources, times(ONE_INVOCATION)).releaseICUBed();
+        assertEquals(HealthStatus.DEAD, individual.getHealthCondition().getHealthStatus());
+        assertEquals(currentSimulatedDay, individual.getHealthCondition().getStartDay());
+    }
+
+    @Test
     public void testUpdateHealthConditionToHospitalized() {
         // Given
         Integer currentSimulatedDay = 7;
@@ -97,11 +133,30 @@ class DiseaseBehaviorTest {
 
         // When
         when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.TRUE);
+        when(healthSystemResources.hasAvailableICUBed()).thenReturn(Boolean.TRUE);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
+        verify(healthSystemResources, times(ONE_INVOCATION)).fillICUBed();
         assertEquals(HealthStatus.HOSPITALIZED, individual.getHealthCondition().getHealthStatus());
         assertEquals(SIMULATION_START_DAY, individual.getHealthCondition().getStartDay());
+    }
+
+    @Test
+    public void testUpdateHealthConditionToDeadDueToICUBedUnavailability() {
+        // Given
+        Integer currentSimulatedDay = 7;
+        Individual individual = buildIndividual();
+        individual.gotInfected(SIMULATION_START_DAY);
+
+        // When
+        when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.TRUE);
+        when(healthSystemResources.hasAvailableICUBed()).thenReturn(Boolean.FALSE);
+        diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
+
+        // Then
+        assertEquals(HealthStatus.DEAD, individual.getHealthCondition().getHealthStatus());
+        assertEquals(currentSimulatedDay, individual.getHealthCondition().getStartDay());
     }
 
     @Test

@@ -2,21 +2,25 @@ package com.leohoc.ets.application;
 
 public class HealthSystemResources {
 
-    private int availableUCIBeds;
+    private int availableICUBeds;
 
-    public HealthSystemResources(int availableUCIBeds) {
-        this.availableUCIBeds = availableUCIBeds;
+    public HealthSystemResources(int availableICUBeds) {
+        this.availableICUBeds = availableICUBeds;
     }
 
-    public boolean hasAvailableUCIBed() {
-        return availableUCIBeds > 0;
+    public boolean hasAvailableICUBed() {
+        return availableICUBeds > 0;
     }
 
-    public void fillUCIBed() {
-        availableUCIBeds--;
+    public void fillICUBed() {
+        availableICUBeds--;
     }
 
-    public void releaseUCIBed() {
-        availableUCIBeds++;
+    public void releaseICUBed() {
+        availableICUBeds++;
+    }
+
+    public int getAvailableICUBeds() {
+        return availableICUBeds;
     }
 }
