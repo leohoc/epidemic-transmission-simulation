@@ -57,6 +57,22 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
+    public void testDrawHospitalizedIndividual() {
+        // Given
+        Individual individual = buildIndividual();
+        individual.gotHospitalized(CURRENT_SIMULATED_DAY);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties());
+
+        // When
+        Graphics graphics = spy(Graphics.class);
+        graphicalEnvironment.drawIndividual(graphics, individual);
+
+        // Then
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.BLUE));
+        verify(graphics, times(ONE_INVOCATION)).fillRect(eq(individual.getX()), eq(individual.getY()), eq(individual.getWidth()), eq(individual.getHeight()));
+    }
+
+    @Test
     public void testDrawRecoveredIndividual() {
         // Given
         Individual individual = buildIndividual();
@@ -127,10 +143,11 @@ class GraphicalEnvironmentTest {
         verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.DARK_GRAY));
         verify(graphics, times(ONE_INVOCATION)).fillRect(eq(properties.getMapWidth()), eq(INITIAL_Y), eq(properties.getAreaChartWidth()), eq(properties.getMapHeight()));
         verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.WHITE));
-        verify(graphics, times(ONE_INVOCATION)).drawString(any(String.class), eq(properties.getMapWidth()), eq(properties.getInfectedCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(any(String.class), eq(properties.getMapWidth()), eq(properties.getRecoveredCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(any(String.class), eq(properties.getMapWidth()), eq(properties.getDeadCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(any(String.class), eq(properties.getMapWidth()), eq(properties.getEpidemicRunningDaysY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getInfectedCountY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getHospitalizedCountY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getRecoveredCountY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getDeadCountY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getEpidemicRunningDaysY()));
     }
 
     @Test
@@ -163,6 +180,7 @@ class GraphicalEnvironmentTest {
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
         epidemicStatistics.updateStatistics(HealthStatus.NORMAL);
         epidemicStatistics.updateStatistics(HealthStatus.INFECTED);
+        epidemicStatistics.updateStatistics(HealthStatus.HOSPITALIZED);
         epidemicStatistics.updateStatistics(HealthStatus.RECOVERED);
         epidemicStatistics.updateStatistics(HealthStatus.DEAD);
         return epidemicStatistics;
