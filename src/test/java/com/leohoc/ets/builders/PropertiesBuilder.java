@@ -20,8 +20,8 @@ public class PropertiesBuilder {
     private static final int RECOVERED_COUNT_Y = 3;
     private static final int DEAD_COUNT_Y = 4;
     private static final int RUNNING_DAYS_Y = 5;
-    private static final Integer TOTAL_ITERATIONS = 100;
-    private static final Integer ITERATIONS_PER_DAY = 10;
+    private static final int TOTAL_ITERATIONS = 100;
+    private static final int ITERATIONS_PER_DAY = 10;
 
     public static SimulationIndividualProperties buildIndividualProperties() {
         return new SimulationIndividualProperties(
@@ -31,6 +31,7 @@ public class PropertiesBuilder {
                 INDIVIDUAL_END_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,
                 INDIVIDUAL_INITIAL_BOUNDARY,
+                DEFAULT_PROPERTY_VALUE,
                 DEFAULT_PROPERTY_VALUE
         );
     }

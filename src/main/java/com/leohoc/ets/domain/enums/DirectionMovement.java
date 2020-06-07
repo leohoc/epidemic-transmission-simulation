@@ -2,6 +2,9 @@ package com.leohoc.ets.domain.enums;
 
 import com.leohoc.ets.util.RandomUtil;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum DirectionMovement {
 
     STANDING(Movements.STAND, Movements.STAND),
@@ -13,6 +16,11 @@ public enum DirectionMovement {
     DOWN_LEFT(-Movements.STEP, Movements.STEP),
     LEFT(-Movements.STEP, Movements.STAND),
     UP_LEFT(-Movements.STEP, -Movements.STEP);
+
+    private static class Movements {
+        public static final int STAND = 0;
+        public static final int STEP = 1;
+    }
 
     DirectionMovement(final int xAxisMovement, final int yAxisMovement) {
         this.xAxisMovement = xAxisMovement;
@@ -30,13 +38,21 @@ public enum DirectionMovement {
         return yAxisMovement;
     }
 
-    public static DirectionMovement randomDirectionMovement() {
-        final int bound = DirectionMovement.values().length;
-        return DirectionMovement.values()[RandomUtil.generateIntLessThan(bound)];
+    public static DirectionMovement randomDirectionMovement(final double socialIsolationPercent) {
+
+        if (shouldRespectSocialIsolation(socialIsolationPercent)) {
+            return STANDING;
+        }
+
+        final int bound = movementDirections().size();
+        return movementDirections().get(RandomUtil.generateIntLessThan(bound));
     }
 
-    private static class Movements {
-        public static final int STAND = 0;
-        public static final int STEP = 1;
+    private static boolean shouldRespectSocialIsolation(double socialIsolationPercent) {
+        return RandomUtil.generatePercentWithTwoDigitsScale() < socialIsolationPercent;
+    }
+
+    private static List<DirectionMovement> movementDirections() {
+        return Arrays.asList(UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT);
     }
 }

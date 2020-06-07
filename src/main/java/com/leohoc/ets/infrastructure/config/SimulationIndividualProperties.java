@@ -9,6 +9,7 @@ public class SimulationIndividualProperties {
     private final int downBoundary;
     private final int leftBoundary;
     private final double directionChangeProbability;
+    private final double socialIsolationPercent;
 
     public SimulationIndividualProperties(final int individualWidth,
                                           final int individualHeight,
@@ -16,7 +17,8 @@ public class SimulationIndividualProperties {
                                           final int rightBoundary,
                                           final int downBoundary,
                                           final int leftBoundary,
-                                          final double directionChangeProbability) {
+                                          final double directionChangeProbability,
+                                          final double socialIsolationPercent) {
         this.individualWidth = individualWidth;
         this.individualHeight = individualHeight;
         this.upBoundary = upBoundary;
@@ -24,6 +26,7 @@ public class SimulationIndividualProperties {
         this.downBoundary = downBoundary;
         this.leftBoundary = leftBoundary;
         this.directionChangeProbability = directionChangeProbability;
+        this.socialIsolationPercent = socialIsolationPercent;
     }
 
     public int getIndividualWidth() {
@@ -52,5 +55,9 @@ public class SimulationIndividualProperties {
 
     public double getDirectionChangeProbability() {
         return directionChangeProbability;
+    }
+
+    public double getSocialIsolationPercent() {
+        return socialIsolationPercent;
     }
 }

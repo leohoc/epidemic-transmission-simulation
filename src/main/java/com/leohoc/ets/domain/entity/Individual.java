@@ -20,7 +20,7 @@ public class Individual {
         return new Individual(
                 RandomUtil.generateIntBetween(individualProperties.getLeftBoundary(), individualProperties.getRightBoundary()),
                 RandomUtil.generateIntBetween(individualProperties.getUpBoundary(), individualProperties.getDownBoundary()),
-                randomDirectionMovement(),
+                randomDirectionMovement(individualProperties.getSocialIsolationPercent()),
                 individualProperties
         );
     }
@@ -149,6 +149,6 @@ public class Individual {
     }
 
     protected void changeDirection() {
-        this.directionMovement = randomDirectionMovement();
+        this.directionMovement = randomDirectionMovement(individualProperties.getSocialIsolationPercent());
     }
 }
