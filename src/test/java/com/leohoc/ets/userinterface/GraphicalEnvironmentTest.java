@@ -1,6 +1,6 @@
 package com.leohoc.ets.userinterface;
 
-import com.leohoc.ets.application.IterationEvolution;
+import com.leohoc.ets.simulation.IterationEvolution;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;

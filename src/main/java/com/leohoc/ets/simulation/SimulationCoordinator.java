@@ -1,4 +1,4 @@
-package com.leohoc.ets.application;
+package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
@@ -9,7 +9,7 @@ import com.leohoc.ets.util.RandomUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class SimulationCoordinator {
 
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
 
@@ -21,7 +21,7 @@ public class Simulation {
     private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
 
-    public Simulation(final SimulationPropertiesLoader propertiesLoader) {
+    public SimulationCoordinator(final SimulationPropertiesLoader propertiesLoader) {
         final SimulationHealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
         this.simulationProperties = propertiesLoader.loadSimulationProperties();
         this.individualProperties = propertiesLoader.loadIndividualProperties();

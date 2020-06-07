@@ -1,4 +1,4 @@
-package com.leohoc.ets.application;
+package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
@@ -46,7 +46,7 @@ public class DiseaseBehavior {
 
         if (!individual.getHealthCondition().isHospitalizationNeedVerified() && reachedHospitalizationTime(individualInfectionStartDay, currentSimulatedDay)) {
             individual.getHealthCondition().hospitalizationNeedVerified();
-            if (shouldBeHospitalized()) {
+            if (!individual.isHospitalized() && shouldBeHospitalized()) {
                 sendToICU(individual, currentSimulatedDay, individualInfectionStartDay);
             }
         }

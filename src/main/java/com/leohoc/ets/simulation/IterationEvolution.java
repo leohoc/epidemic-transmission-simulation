@@ -1,4 +1,4 @@
-package com.leohoc.ets.application;
+package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 

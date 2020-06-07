@@ -1,4 +1,4 @@
-package com.leohoc.ets.application;
+package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.builders.PropertiesBuilder;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;

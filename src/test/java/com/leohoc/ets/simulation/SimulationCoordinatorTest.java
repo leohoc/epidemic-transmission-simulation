@@ -1,4 +1,4 @@
-package com.leohoc.ets.application;
+package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.infrastructure.config.SimulationHealthSystemCapacityProperties;
@@ -14,7 +14,7 @@ import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualPropertie
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class SimulationTest {
+class SimulationCoordinatorTest {
 
     private static final int POPULATION_SIZE = 10;
     private static final int ZERO_INITIAL_INFECTED_PERCENT = 0;
@@ -23,7 +23,7 @@ class SimulationTest {
     private static final int ITERATIONS_PER_DAY = 1;
     private static final int AVAILABLE_BEDS = 2;
 
-    private Simulation simulation;
+    private SimulationCoordinator simulationCoordinator;
     private SimulationPropertiesLoader simulationPropertiesLoader = mock(SimulationPropertiesLoader.class);
 
     @Test
@@ -32,10 +32,10 @@ class SimulationTest {
         when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ZERO_INITIAL_INFECTED_PERCENT));
         when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(buildIndividualProperties());
-        simulation = new Simulation(simulationPropertiesLoader);
+        simulationCoordinator = new SimulationCoordinator(simulationPropertiesLoader);
 
         // When
-        List<Individual> population = simulation.generatePopulation();
+        List<Individual> population = simulationCoordinator.generatePopulation();
 
         // Then
         assertEquals(POPULATION_SIZE, population.size());
@@ -49,10 +49,10 @@ class SimulationTest {
         when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ONE_HUNDRED_INITIAL_INFECTED_PERCENT));
         when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(buildIndividualProperties());
         when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
-        simulation = new Simulation(simulationPropertiesLoader);
+        simulationCoordinator = new SimulationCoordinator(simulationPropertiesLoader);
 
         // When
-        List<Individual> population = simulation.generatePopulation();
+        List<Individual> population = simulationCoordinator.generatePopulation();
 
         // Then
         assertEquals(POPULATION_SIZE, population.size());
@@ -64,13 +64,13 @@ class SimulationTest {
         // Given
         when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
-        simulation = spy(new Simulation(simulationPropertiesLoader));
+        simulationCoordinator = spy(new SimulationCoordinator(simulationPropertiesLoader));
 
         // When
-        simulation.runSimulation();
+        simulationCoordinator.runSimulation();
 
         // Then
-        verify(simulation, Mockito.times(TOTAL_ITERATIONS)).runDynamicsIteration();
+        verify(simulationCoordinator, Mockito.times(TOTAL_ITERATIONS)).runDynamicsIteration();
     }
 
     private SimulationProperties buildSimulationProperties(final int initialInfectedPercent) {
