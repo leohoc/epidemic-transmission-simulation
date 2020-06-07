@@ -4,10 +4,12 @@ public class SimulationProperties {
 
     private final int populationSize;
     private final double initialInfectedPercent;
+    private final boolean graphicsEnabled;
 
-    public SimulationProperties(final int populationSize, final double initialInfectedPercent) {
+    public SimulationProperties(final int populationSize, final double initialInfectedPercent, final boolean graphicsEnabled) {
         this.populationSize = populationSize;
         this.initialInfectedPercent = initialInfectedPercent;
+        this.graphicsEnabled = graphicsEnabled;
     }
 
     public int getPopulationSize() {
@@ -16,5 +18,9 @@ public class SimulationProperties {
 
     public double getInitialInfectedPercent() {
         return initialInfectedPercent;
+    }
+
+    public boolean isGraphicsEnabled() {
+        return graphicsEnabled;
     }
 }

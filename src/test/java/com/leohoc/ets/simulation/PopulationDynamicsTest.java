@@ -35,7 +35,7 @@ class PopulationDynamicsTest {
         verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(1)), eq(currentSimulatedDay));
         verify(populationDynamics, times(ONE_INVOCATION)).executeIndividualInteractionWithPopulation(eq(population.get(0)), eq(population), eq(currentSimulatedDay));
         verify(populationDynamics, times(ONE_INVOCATION)).executeIndividualInteractionWithPopulation(eq(population.get(1)), eq(population), eq(currentSimulatedDay));
-        assertEquals(population.size(), statistics.getNormalCount().intValue());
+        assertEquals(population.size(), statistics.getCurrentNormalCount().intValue());
     }
 
     @Test

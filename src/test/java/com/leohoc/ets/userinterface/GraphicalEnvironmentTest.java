@@ -115,15 +115,15 @@ class GraphicalEnvironmentTest {
         List<AreaChartElement> areaChartContent = graphicalEnvironment.buildAreaChartContent(epidemicStatistics);
 
         // Then
-        assertEquals(epidemicStatistics.getHospitalizedCount(), areaChartContent.get(0).getCount());
+        assertEquals(epidemicStatistics.getCurrentHospitalizedCount(), areaChartContent.get(0).getCount());
         assertEquals(Color.BLUE, areaChartContent.get(0).getColor());
-        assertEquals(epidemicStatistics.getInfectedCount(), areaChartContent.get(1).getCount());
+        assertEquals(epidemicStatistics.getCurrentInfectedCount(), areaChartContent.get(1).getCount());
         assertEquals(Color.CYAN, areaChartContent.get(1).getColor());
-        assertEquals(epidemicStatistics.getNormalCount(), areaChartContent.get(2).getCount());
+        assertEquals(epidemicStatistics.getCurrentNormalCount(), areaChartContent.get(2).getCount());
         assertEquals(Color.LIGHT_GRAY, areaChartContent.get(2).getColor());
-        assertEquals(epidemicStatistics.getRecoveredCount(), areaChartContent.get(3).getCount());
+        assertEquals(epidemicStatistics.getTotalRecoveredCount(), areaChartContent.get(3).getCount());
         assertEquals(Color.GREEN, areaChartContent.get(3).getColor());
-        assertEquals(epidemicStatistics.getDeadCount(), areaChartContent.get(4).getCount());
+        assertEquals(epidemicStatistics.getTotalDeadCount(), areaChartContent.get(4).getCount());
         assertEquals(Color.RED, areaChartContent.get(4).getColor());
     }
 
@@ -144,11 +144,14 @@ class GraphicalEnvironmentTest {
         verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.DARK_GRAY));
         verify(graphics, times(ONE_INVOCATION)).fillRect(eq(properties.getMapWidth()), eq(INITIAL_Y), eq(properties.getAreaChartWidth()), eq(properties.getMapHeight()));
         verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.WHITE));
-        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getInfectedCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getHospitalizedCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getRecoveredCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getDeadCountY()));
-        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getMapWidth()), eq(properties.getEpidemicRunningDaysY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getCurrentInfoX()), eq(properties.getCurrentNotExposedY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getCurrentInfoX()), eq(properties.getCurrentInfectedY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getCurrentInfoX()), eq(properties.getCurrentHospitalizedY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getCurrentInfoX()), eq(properties.getCurrentSimulationDayY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getTotalInfoX()), eq(properties.getTotalInfectedY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getTotalInfoX()), eq(properties.getTotalHospitalizedY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getTotalInfoX()), eq(properties.getTotalRecoveredY()));
+        verify(graphics, times(ONE_INVOCATION)).drawString(anyString(), eq(properties.getTotalInfoX()), eq(properties.getTotalDeadY()));
     }
 
     @Test

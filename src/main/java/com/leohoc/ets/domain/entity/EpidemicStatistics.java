@@ -1,50 +1,80 @@
 package com.leohoc.ets.domain.entity;
 
 import com.leohoc.ets.domain.enums.HealthStatus;
+import com.leohoc.ets.simulation.IterationEvolution;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class EpidemicStatistics {
 
-    private HashMap<HealthStatus, Integer> healthStatusStatistic = new HashMap<>();
+    private static final Logger LOGGER = Logger.getLogger(IterationEvolution.class.getName());
+
+    private HashMap<HealthStatus, Integer> currentHealthStatusStatistic = new HashMap<>();
+    private Integer totalHospitalizedCount = 0;
 
     public EpidemicStatistics() {
         for (HealthStatus healthStatus : Arrays.asList(HealthStatus.values())) {
-            healthStatusStatistic.put(healthStatus, 0);
+            currentHealthStatusStatistic.put(healthStatus, 0);
         }
     }
 
     public void updateStatistics(final HealthStatus healthStatus) {
-        Integer healthStatusCount = healthStatusStatistic.get(healthStatus);
-        healthStatusStatistic.put(healthStatus, ++healthStatusCount);
+        Integer healthStatusCount = currentHealthStatusStatistic.get(healthStatus);
+        currentHealthStatusStatistic.put(healthStatus, ++healthStatusCount);
     }
 
     public void updateAllStatistics(final EpidemicStatistics epidemicStatistics) {
-        this.healthStatusStatistic = epidemicStatistics.getHealthStatusStatistic();
+        this.currentHealthStatusStatistic = epidemicStatistics.getCurrentHealthStatusStatistic();
+        this.totalHospitalizedCount += epidemicStatistics.totalHospitalizedCount;
     }
 
-    public HashMap<HealthStatus, Integer> getHealthStatusStatistic() {
-        return healthStatusStatistic;
+    public void increaseHospitalizedCount() {
+        totalHospitalizedCount++;
     }
 
-    public Integer getHospitalizedCount() {
-        return healthStatusStatistic.get(HealthStatus.HOSPITALIZED);
+    public HashMap<HealthStatus, Integer> getCurrentHealthStatusStatistic() {
+        return currentHealthStatusStatistic;
     }
 
-    public Integer getInfectedCount() {
-        return healthStatusStatistic.get(HealthStatus.INFECTED);
+    public Integer getCurrentHospitalizedCount() {
+        return currentHealthStatusStatistic.get(HealthStatus.HOSPITALIZED);
     }
 
-    public Integer getNormalCount() {
-        return healthStatusStatistic.get(HealthStatus.NORMAL);
+    public Integer getCurrentInfectedCount() {
+        return currentHealthStatusStatistic.get(HealthStatus.INFECTED);
     }
 
-    public Integer getRecoveredCount() {
-        return healthStatusStatistic.get(HealthStatus.RECOVERED);
+    public Integer getCurrentNormalCount() {
+        return currentHealthStatusStatistic.get(HealthStatus.NORMAL);
     }
 
-    public Integer getDeadCount() {
-        return healthStatusStatistic.get(HealthStatus.DEAD);
+    public Integer getTotalRecoveredCount() {
+        return currentHealthStatusStatistic.get(HealthStatus.RECOVERED);
+    }
+
+    public Integer getTotalDeadCount() {
+        return currentHealthStatusStatistic.get(HealthStatus.DEAD);
+    }
+
+    public Integer getTotalHospitalizedCount() {
+        return totalHospitalizedCount;
+    }
+
+    public int getTotalInfectedCount() {
+        return getCurrentInfectedCount() + getCurrentHospitalizedCount() + getTotalRecoveredCount() + getTotalDeadCount();
+    }
+
+    public void printStatisticsGlimpse(final int currentDay) {
+        System.out.println("-------------------------------------");
+        System.out.println("CURRENT DAY: " + currentDay);
+        System.out.println("CURRENT NORMAL COUNT: " + getCurrentNormalCount());
+        System.out.println("CURRENT INFECTED COUNT: " + getCurrentInfectedCount());
+        System.out.println("CURRENT HOSPITALIZED COUNT: " + getCurrentHospitalizedCount());
+        System.out.println("TOTAL INFECTED COUNT: " + getTotalInfectedCount());
+        System.out.println("TOTAL HOSPITALIZED COUNT: " + getTotalHospitalizedCount());
+        System.out.println("TOTAL RECOVERED COUNT: " + getTotalRecoveredCount());
+        System.out.println("TOTAL DEAD COUNT: " + getTotalDeadCount());
     }
 }

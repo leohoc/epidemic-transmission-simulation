@@ -36,7 +36,9 @@ public class SimulationCoordinator {
     public void startSimulation() {
         this.population.addAll(generatePopulation());
         new Thread(() -> runSimulation()).start();
-        new Thread(() -> runGraphicalEnvironment()).start();
+        if (simulationProperties.isGraphicsEnabled()) {
+            new Thread(() -> runGraphicalEnvironment()).start();
+        }
     }
 
     protected List<Individual> generatePopulation() {
@@ -59,6 +61,9 @@ public class SimulationCoordinator {
         do {
             runDynamicsIteration();
             iterationEvolution.iterate();
+            if (iterationEvolution.dawnOfANewDay()) {
+                epidemicStatistics.printStatisticsGlimpse(iterationEvolution.getCurrentSimulatedDay());
+            }
         } while (!iterationEvolution.hasSimulationFinished());
     }
 

@@ -6,30 +6,45 @@ public class SimulationGraphicsProperties {
     private final int mapHeight;
     private final int areaChartWidth;
     private final int areaChartHeight;
-    private final int infectedCountY;
-    private final int hospitalizedCountY;
-    private final int recoveredCountY;
-    private final int deadCountY;
-    private final int epidemicRunningDaysY;
+    private final int currentInfoX;
+    private final int currentNotExposedY;
+    private final int currentInfectedY;
+    private final int currentHospitalizedY;
+    private final int currentSimulationDayY;
+    private final int totalInfoX;
+    private final int totalInfectedY;
+    private final int totalHospitalizedY;
+    private final int totalRecoveredY;
+    private final int totalDeadY;
 
     public SimulationGraphicsProperties(final int mapWidth,
                                         final int mapHeight,
                                         final int areaChartWidth,
                                         final int areaChartHeight,
-                                        final int infectedCountY,
-                                        final int hospitalizedCountY,
-                                        final int recoveredCountY,
-                                        final int deadCountY,
-                                        final int epidemicRunningDaysY) {
+                                        final int currentInfoX,
+                                        final int currentNotExposedY,
+                                        final int currentInfectedY,
+                                        final int currentHospitalizedY,
+                                        final int currentSimulationDayY,
+                                        final int totalInfoX,
+                                        final int totalInfectedY,
+                                        final int totalHospitalizedY,
+                                        final int totalRecoveredY,
+                                        final int totalDeadY) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.areaChartWidth = areaChartWidth;
         this.areaChartHeight = areaChartHeight;
-        this.infectedCountY = infectedCountY;
-        this.hospitalizedCountY = hospitalizedCountY;
-        this.recoveredCountY = recoveredCountY;
-        this.deadCountY = deadCountY;
-        this.epidemicRunningDaysY = epidemicRunningDaysY;
+        this.currentInfoX = currentInfoX;
+        this.currentNotExposedY = currentNotExposedY;
+        this.currentInfectedY = currentInfectedY;
+        this.currentHospitalizedY = currentHospitalizedY;
+        this.currentSimulationDayY = currentSimulationDayY;
+        this.totalInfoX = totalInfoX;
+        this.totalInfectedY = totalInfectedY;
+        this.totalHospitalizedY = totalHospitalizedY;
+        this.totalRecoveredY = totalRecoveredY;
+        this.totalDeadY = totalDeadY;
     }
 
     public int getMapWidth() {
@@ -48,23 +63,43 @@ public class SimulationGraphicsProperties {
         return areaChartHeight;
     }
 
-    public int getInfectedCountY() {
-        return infectedCountY;
+    public int getCurrentInfoX() {
+        return currentInfoX;
     }
 
-    public int getHospitalizedCountY() {
-        return hospitalizedCountY;
+    public int getCurrentNotExposedY() {
+        return currentNotExposedY;
     }
 
-    public int getRecoveredCountY() {
-        return recoveredCountY;
+    public int getCurrentInfectedY() {
+        return currentInfectedY;
     }
 
-    public int getDeadCountY() {
-        return deadCountY;
+    public int getCurrentHospitalizedY() {
+        return currentHospitalizedY;
     }
 
-    public int getEpidemicRunningDaysY() {
-        return epidemicRunningDaysY;
+    public int getCurrentSimulationDayY() {
+        return currentSimulationDayY;
+    }
+
+    public int getTotalInfoX() {
+        return totalInfoX;
+    }
+
+    public int getTotalInfectedY() {
+        return totalInfectedY;
+    }
+
+    public int getTotalHospitalizedY() {
+        return totalHospitalizedY;
+    }
+
+    public int getTotalRecoveredY() {
+        return totalRecoveredY;
+    }
+
+    public int getTotalDeadY() {
+        return totalDeadY;
     }
 }

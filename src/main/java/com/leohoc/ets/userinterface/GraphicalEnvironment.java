@@ -19,11 +19,14 @@ public class GraphicalEnvironment extends JFrame {
 
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
     private static final String TITLE = "Epidemic Transmission Simulation";
-    private static final String TOTAL_INFECTED = "Current infected: %s";
-    private static final String TOTAL_HOSPITALIZED = "Current hospitalized: %s";
-    private static final String TOTAL_RECOVERED = "Current recovered: %s";
-    private static final String TOTAL_DEAD = "Current dead: %s";
-    private static final String EPIDEMIC_RUNNING_DAYS = "Epidemic running days: %s";
+    private static final String NOT_EXPOSED = "Not exposed: %s";
+    private static final String CURRENT_INFECTED = "Current infected: %s";
+    private static final String CURRENT_HOSPITALIZED = "Current hospitalized: %s";
+    private static final String CURRENT_SIMULATION_DAY = "Current Simulation Day: %s";
+    private static final String TOTAL_INFECTED = "Total infected: %s";
+    private static final String TOTAL_HOSPITALIZED = "Total hospitalized: %s";
+    private static final String TOTAL_RECOVERED = "Total recovered: %s";
+    private static final String TOTAL_DEAD = "Total dead: %s";
 
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
@@ -91,11 +94,11 @@ public class GraphicalEnvironment extends JFrame {
 
     protected List<AreaChartElement> buildAreaChartContent(final EpidemicStatistics epidemicStatistics) {
         List<AreaChartElement> areaChartContent = new ArrayList<>();
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getHospitalizedCount(), getColorFor(HOSPITALIZED)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getInfectedCount(), getColorFor(INFECTED)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getNormalCount(), getColorFor(HealthStatus.NORMAL)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getRecoveredCount(), getColorFor(RECOVERED)));
-        areaChartContent.add(new AreaChartElement(epidemicStatistics.getDeadCount(), getColorFor(DEAD)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getCurrentHospitalizedCount(), getColorFor(HOSPITALIZED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getCurrentInfectedCount(), getColorFor(INFECTED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getCurrentNormalCount(), getColorFor(HealthStatus.NORMAL)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getTotalRecoveredCount(), getColorFor(RECOVERED)));
+        areaChartContent.add(new AreaChartElement(epidemicStatistics.getTotalDeadCount(), getColorFor(DEAD)));
         return areaChartContent;
     }
 
@@ -128,11 +131,14 @@ public class GraphicalEnvironment extends JFrame {
 
     private void drawCountInformation(final Graphics graphics, final EpidemicStatistics epidemicStatistics, final Integer currentSimulatedDay) {
         graphics.setColor(Color.WHITE);
-        graphics.drawString(format(TOTAL_INFECTED, epidemicStatistics.getInfectedCount()), graphicsProperties.getMapWidth(), graphicsProperties.getInfectedCountY());
-        graphics.drawString(format(TOTAL_HOSPITALIZED, epidemicStatistics.getHospitalizedCount()), graphicsProperties.getMapWidth(), graphicsProperties.getHospitalizedCountY());
-        graphics.drawString(format(TOTAL_RECOVERED, epidemicStatistics.getRecoveredCount()), graphicsProperties.getMapWidth(), graphicsProperties.getRecoveredCountY());
-        graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getDeadCount()), graphicsProperties.getMapWidth(), graphicsProperties.getDeadCountY());
-        graphics.drawString(format(EPIDEMIC_RUNNING_DAYS, currentSimulatedDay), graphicsProperties.getMapWidth(), graphicsProperties.getEpidemicRunningDaysY());
+        graphics.drawString(format(NOT_EXPOSED, epidemicStatistics.getCurrentNormalCount()), graphicsProperties.getCurrentInfoX(), graphicsProperties.getCurrentNotExposedY());
+        graphics.drawString(format(CURRENT_INFECTED, epidemicStatistics.getCurrentInfectedCount()), graphicsProperties.getCurrentInfoX(), graphicsProperties.getCurrentInfectedY());
+        graphics.drawString(format(CURRENT_HOSPITALIZED, epidemicStatistics.getCurrentHospitalizedCount()), graphicsProperties.getCurrentInfoX(), graphicsProperties.getCurrentHospitalizedY());
+        graphics.drawString(format(CURRENT_SIMULATION_DAY, currentSimulatedDay), graphicsProperties.getCurrentInfoX(), graphicsProperties.getCurrentSimulationDayY());
+        graphics.drawString(format(TOTAL_INFECTED, epidemicStatistics.getTotalInfectedCount()), graphicsProperties.getTotalInfoX(), graphicsProperties.getTotalInfectedY());
+        graphics.drawString(format(TOTAL_HOSPITALIZED, epidemicStatistics.getTotalHospitalizedCount()), graphicsProperties.getTotalInfoX(), graphicsProperties.getTotalHospitalizedY());
+        graphics.drawString(format(TOTAL_RECOVERED, epidemicStatistics.getTotalRecoveredCount()), graphicsProperties.getTotalInfoX(), graphicsProperties.getTotalRecoveredY());
+        graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getTotalDeadCount()), graphicsProperties.getTotalInfoX(), graphicsProperties.getTotalDeadY());
     }
 
     private Color getColorFor(final HealthStatus healthStatus) {

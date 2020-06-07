@@ -16,6 +16,7 @@ import static org.mockito.Mockito.*;
 
 class SimulationCoordinatorTest {
 
+    private static final boolean GRAPHICS_ENABLED = Boolean.FALSE;
     private static final int POPULATION_SIZE = 10;
     private static final int ZERO_INITIAL_INFECTED_PERCENT = 0;
     private static final int ONE_HUNDRED_INITIAL_INFECTED_PERCENT = 100;
@@ -74,7 +75,7 @@ class SimulationCoordinatorTest {
     }
 
     private SimulationProperties buildSimulationProperties(final int initialInfectedPercent) {
-        return new SimulationProperties(POPULATION_SIZE, initialInfectedPercent);
+        return new SimulationProperties(POPULATION_SIZE, initialInfectedPercent, GRAPHICS_ENABLED);
     }
 
     private SimulationIterationsProperties buildIterationsProperties() {

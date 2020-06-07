@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
@@ -24,7 +25,8 @@ public class SimulationPropertiesLoader {
     public SimulationProperties loadSimulationProperties() {
         final int populationSize = parseInt(properties.getProperty("simulation.population.size"));
         final double initialInfectedPercent = parseDouble(properties.getProperty("simulation.initialconditions.infectedpercent"));
-        return new SimulationProperties(populationSize, initialInfectedPercent);
+        final boolean graphicsEnabled = parseBoolean(properties.getProperty("simulation.graphics.enabled"));
+        return new SimulationProperties(populationSize, initialInfectedPercent, graphicsEnabled);
     }
 
     public SimulationIterationsProperties loadIterationsProperties() {
@@ -58,12 +60,19 @@ public class SimulationPropertiesLoader {
         final int mapHeight = parseInt(properties.getProperty("simulation.graphics.map.height"));
         final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
         final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
-        final int infectedCountY = parseInt(properties.getProperty("simulation.graphics.info.infected.y"));
-        final int hospitalizedCountY = parseInt(properties.getProperty("simulation.graphics.info.hospitalized.y"));
-        final int recoveredCountY = parseInt(properties.getProperty("simulation.graphics.info.recovered.y"));
-        final int deadCountY = parseInt(properties.getProperty("simulation.graphics.info.dead.y"));
-        final int epidemicRunningDaysY = parseInt(properties.getProperty("simulation.graphics.info.runningdays.y"));
-        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, infectedCountY, hospitalizedCountY, recoveredCountY, deadCountY, epidemicRunningDaysY);
+        final int currentInfoX = parseInt(properties.getProperty("simulation.graphics.info.current.x"));
+        final int currentNotExposedY = parseInt(properties.getProperty("simulation.graphics.info.current.notexposed.y"));
+        final int currentInfectedY = parseInt(properties.getProperty("simulation.graphics.info.current.infected.y"));
+        final int currentHospitalizedY = parseInt(properties.getProperty("simulation.graphics.info.current.hospitalized.y"));
+        final int currentSimulationDayY = parseInt(properties.getProperty("simulation.graphics.info.current.simulationday.y"));
+        final int totalInfoX = parseInt(properties.getProperty("simulation.graphics.info.total.x"));
+        final int totalInfectedY = parseInt(properties.getProperty("simulation.graphics.info.total.infected.y"));
+        final int totalHospitalizedY = parseInt(properties.getProperty("simulation.graphics.info.total.hospitalized.y"));
+        final int totalRecoveredY = parseInt(properties.getProperty("simulation.graphics.info.total.recovered.y"));
+        final int totalDeadY = parseInt(properties.getProperty("simulation.graphics.info.total.dead.y"));
+        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight,
+                currentInfoX, currentNotExposedY, currentInfectedY, currentHospitalizedY, currentSimulationDayY,
+                totalInfoX, totalInfectedY, totalHospitalizedY, totalRecoveredY, totalDeadY);
     }
 
     public SimulationHealthSystemCapacityProperties loadHealthSystemCapacityProperties() {

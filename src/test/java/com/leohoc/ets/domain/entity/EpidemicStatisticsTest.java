@@ -20,10 +20,10 @@ class EpidemicStatisticsTest {
         epidemicStatistics.updateStatistics(healthStatus);
 
         // Then
-        assertEquals(ONE_COUNT, epidemicStatistics.getNormalCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getInfectedCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getRecoveredCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getDeadCount().intValue());
+        assertEquals(ONE_COUNT, epidemicStatistics.getCurrentNormalCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getCurrentInfectedCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalRecoveredCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalDeadCount().intValue());
     }
 
     @Test
@@ -36,10 +36,10 @@ class EpidemicStatisticsTest {
         epidemicStatistics.updateStatistics(healthStatus);
 
         // Then
-        assertEquals(ZERO_COUNT, epidemicStatistics.getNormalCount().intValue());
-        assertEquals(ONE_COUNT, epidemicStatistics.getInfectedCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getRecoveredCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getDeadCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getCurrentNormalCount().intValue());
+        assertEquals(ONE_COUNT, epidemicStatistics.getCurrentInfectedCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalRecoveredCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalDeadCount().intValue());
     }
 
     @Test
@@ -52,10 +52,10 @@ class EpidemicStatisticsTest {
         epidemicStatistics.updateStatistics(healthStatus);
 
         // Then
-        assertEquals(ZERO_COUNT, epidemicStatistics.getNormalCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getInfectedCount().intValue());
-        assertEquals(ONE_COUNT, epidemicStatistics.getRecoveredCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getDeadCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getCurrentNormalCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getCurrentInfectedCount().intValue());
+        assertEquals(ONE_COUNT, epidemicStatistics.getTotalRecoveredCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalDeadCount().intValue());
     }
 
     @Test
@@ -68,9 +68,9 @@ class EpidemicStatisticsTest {
         epidemicStatistics.updateStatistics(healthStatus);
 
         // Then
-        assertEquals(ZERO_COUNT, epidemicStatistics.getNormalCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getInfectedCount().intValue());
-        assertEquals(ZERO_COUNT, epidemicStatistics.getRecoveredCount().intValue());
-        assertEquals(ONE_COUNT, epidemicStatistics.getDeadCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getCurrentNormalCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getCurrentInfectedCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalRecoveredCount().intValue());
+        assertEquals(ONE_COUNT, epidemicStatistics.getTotalDeadCount().intValue());
     }
 }

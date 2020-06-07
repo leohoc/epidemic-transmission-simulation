@@ -18,10 +18,14 @@ public class PopulationDynamics {
         EpidemicStatistics iterationStatistics = new EpidemicStatistics();
 
         for (Individual individual : population) {
+            final boolean individualStartedIterationHospitalized = individual.isHospitalized();
             executeMovementBehaviorOn(individual);
             diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
             executeIndividualInteractionWithPopulation(individual, population, currentSimulatedDay);
             iterationStatistics.updateStatistics(individual.getHealthStatus());
+            if (!individualStartedIterationHospitalized && individual.isHospitalized()) {
+                iterationStatistics.increaseHospitalizedCount();
+            }
         }
         return iterationStatistics;
     }
