@@ -41,13 +41,13 @@ public class DiseaseBehavior {
     }
 
     private void checkHospitalizationNeeds(final Individual individual, final int currentSimulatedDay) {
+
         final int individualInfectionStartDay = individual.getHealthCondition().getStartDay();
-        if (!individual.isHospitalized() && reachedHospitalizationTime(individualInfectionStartDay, currentSimulatedDay) && shouldBeHospitalized()) {
-            if (healthSystemResources.hasAvailableICUBed()) {
-                healthSystemResources.fillICUBed();
-                individual.gotHospitalized(individualInfectionStartDay);
-            } else {
-                individual.died(currentSimulatedDay);
+
+        if (!individual.getHealthCondition().isHospitalizationNeedVerified() && reachedHospitalizationTime(individualInfectionStartDay, currentSimulatedDay)) {
+            individual.getHealthCondition().hospitalizationNeedVerified();
+            if (shouldBeHospitalized()) {
+                sendToICU(individual, currentSimulatedDay, individualInfectionStartDay);
             }
         }
     }
@@ -66,5 +66,14 @@ public class DiseaseBehavior {
 
     protected boolean hasDied() {
         return RandomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getDeathPercentage();
+    }
+
+    private void sendToICU(Individual individual, int currentSimulatedDay, int individualInfectionStartDay) {
+        if (healthSystemResources.hasAvailableICUBed()) {
+            healthSystemResources.fillICUBed();
+            individual.gotHospitalized(individualInfectionStartDay);
+        } else {
+            individual.died(currentSimulatedDay);
+        }
     }
 }

@@ -70,7 +70,7 @@ public class Individual {
     }
 
     public boolean isHospitalized() {
-        return healthCondition.getHealthStatus().hospitalized();
+        return healthCondition.getHealthStatus().equals(HOSPITALIZED);
     }
 
     public void gotInfected(final int currentDay) {

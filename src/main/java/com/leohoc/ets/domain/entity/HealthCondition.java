@@ -8,10 +8,12 @@ public class HealthCondition {
 
     private final HealthStatus healthStatus;
     private final Integer startDay;
+    private boolean hospitalizationNeedVerified;
 
     public HealthCondition(final HealthStatus healthStatus, final Integer startDay) {
         this.healthStatus = healthStatus;
         this.startDay = startDay;
+        this.hospitalizationNeedVerified = Boolean.FALSE;
     }
 
     public HealthCondition(final HealthStatus healthStatus) {
@@ -24,5 +26,13 @@ public class HealthCondition {
 
     public Integer getStartDay() {
         return startDay;
+    }
+
+    public boolean isHospitalizationNeedVerified() {
+        return hospitalizationNeedVerified;
+    }
+
+    public void hospitalizationNeedVerified() {
+        this.hospitalizationNeedVerified = Boolean.TRUE;
     }
 }
