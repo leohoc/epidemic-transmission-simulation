@@ -1,15 +1,11 @@
 package com.leohoc.ets.domain.entity;
 
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.simulation.IterationEvolution;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 public class EpidemicStatistics {
-
-    private static final Logger LOGGER = Logger.getLogger(IterationEvolution.class.getName());
 
     private HashMap<HealthStatus, Integer> currentHealthStatusStatistic = new HashMap<>();
     private Integer totalHospitalizedCount = 0;
