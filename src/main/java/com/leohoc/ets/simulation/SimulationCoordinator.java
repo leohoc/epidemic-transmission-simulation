@@ -12,8 +12,6 @@ import java.util.List;
 public class SimulationCoordinator {
 
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
-
-    private final EpidemicStatistics epidemicStatistics = new EpidemicStatistics();;
     private final List<Individual> population = new ArrayList<>();
     private final SimulationProperties simulationProperties;
     private final SimulationIndividualProperties individualProperties;
@@ -21,18 +19,22 @@ public class SimulationCoordinator {
     private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
     private final MovementBehavior movementBehavior;
+    private final EpidemicStatistics epidemicStatistics;
 
-    public SimulationCoordinator(final SimulationPropertiesLoader propertiesLoader) {
-        final SimulationHealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
-        this.simulationProperties = propertiesLoader.loadSimulationProperties();
-        this.individualProperties = propertiesLoader.loadIndividualProperties();
-        this.iterationEvolution = new IterationEvolution(propertiesLoader.loadIterationsProperties());
-        this.graphicalEnvironment = new GraphicalEnvironment(propertiesLoader.loadGraphicsProperties(), healthSystemCapacityProperties.getAvailableBeds());
-        this.movementBehavior = new MovementBehavior(propertiesLoader.loadMovementProperties());
-
-        final HealthSystemResources healthSystemResources = new HealthSystemResources(healthSystemCapacityProperties.getAvailableBeds());
-        final DiseaseBehavior diseaseBehavior = new DiseaseBehavior(propertiesLoader.loadEpidemicProperties(), healthSystemResources);
-        this.populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
+    public SimulationCoordinator(final SimulationProperties simulationProperties,
+                                 final SimulationIndividualProperties individualProperties,
+                                 final IterationEvolution iterationEvolution,
+                                 final PopulationDynamics populationDynamics,
+                                 final GraphicalEnvironment graphicalEnvironment,
+                                 final MovementBehavior movementBehavior,
+                                 final EpidemicStatistics epidemicStatistics) {
+        this.simulationProperties = simulationProperties;
+        this.individualProperties = individualProperties;
+        this.iterationEvolution = iterationEvolution;
+        this.populationDynamics = populationDynamics;
+        this.graphicalEnvironment = graphicalEnvironment;
+        this.movementBehavior = movementBehavior;
+        this.epidemicStatistics = epidemicStatistics;
     }
 
     public void startSimulation() {
@@ -64,7 +66,7 @@ public class SimulationCoordinator {
         );
     }
 
-    protected boolean shouldGotInfected(final double initialInfectedPercent) {
+    private boolean shouldGotInfected(final double initialInfectedPercent) {
         return RandomUtil.generatePercentWithTwoDigitsScale() < initialInfectedPercent;
     }
 
@@ -76,7 +78,7 @@ public class SimulationCoordinator {
         printStatistics();
     }
 
-    protected void runDynamicsIteration() {
+    private void runDynamicsIteration() {
         EpidemicStatistics iterationStatistics = populationDynamics.executeDynamicsIterationOn(population, iterationEvolution.getCurrentSimulatedDay());
         epidemicStatistics.updateAllStatistics(iterationStatistics);
     }

@@ -16,46 +16,63 @@ import static org.mockito.Mockito.*;
 class PopulationDynamicsTest {
 
     private static final int ONE_INVOCATION = 1;
+    private static final int ZERO_COUNT = 0;
+    private static final int ONE_COUNT = 1;
 
     @Test
     public void testExecuteDynamicsIteration() {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
         MovementBehavior movementBehavior = mock(MovementBehavior.class);
-        PopulationDynamics populationDynamics = spy(new PopulationDynamics(diseaseBehavior, movementBehavior));
-        List<Individual> population = buildPopulation();
-        int currentSimulatedDay = 1;
+        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
+        final List<Individual> population = buildPopulation();
+        final int currentSimulatedDay = 1;
 
         // When
-        EpidemicStatistics statistics = populationDynamics.executeDynamicsIterationOn(population, currentSimulatedDay);
+        EpidemicStatistics epidemicStatistics = populationDynamics.executeDynamicsIterationOn(population, currentSimulatedDay);
 
         // Then
         verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(0)));
-        verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(1)));
         verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(0)), eq(currentSimulatedDay));
+        verify(diseaseBehavior, times(ONE_INVOCATION)).interactionBetween(eq(population.get(0)), eq(population.get(1)), eq(currentSimulatedDay));
+        verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(1)));
         verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(1)), eq(currentSimulatedDay));
-        verify(populationDynamics, times(ONE_INVOCATION)).executeIndividualInteractionWithPopulation(eq(population.get(0)), eq(population), eq(currentSimulatedDay));
-        verify(populationDynamics, times(ONE_INVOCATION)).executeIndividualInteractionWithPopulation(eq(population.get(1)), eq(population), eq(currentSimulatedDay));
-        assertEquals(population.size(), statistics.getCurrentNormalCount().intValue());
+        verify(diseaseBehavior, times(ONE_INVOCATION)).interactionBetween(eq(population.get(1)), eq(population.get(0)), eq(currentSimulatedDay));
+        verify(diseaseBehavior, never()).interactionBetween(eq(population.get(0)), eq(population.get(0)), eq(currentSimulatedDay));
+        verify(diseaseBehavior, never()).interactionBetween(eq(population.get(1)), eq(population.get(1)), eq(currentSimulatedDay));
+        assertEquals(population.size(), epidemicStatistics.getCurrentNormalCount().intValue());
+        assertEquals(ZERO_COUNT, epidemicStatistics.getTotalHospitalizedCount().intValue());
     }
 
     @Test
-    public void testExecuteIndividualInteractionWithPopulation() {
+    public void testExecuteDynamicsIterationWithHospitalization() {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
         MovementBehavior movementBehavior = mock(MovementBehavior.class);
         PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
-        List<Individual> population = buildPopulation();
-        int currentSimulatedDay = 0;
+        final List<Individual> population = buildPopulation();
+        final int currentSimulatedDay = 1;
 
         // When
-        populationDynamics.executeIndividualInteractionWithPopulation(population.get(0), population, currentSimulatedDay);
+        doAnswer(invocation -> {
+            final int individualIndex = 0;
+            invocation.getArgument(individualIndex, Individual.class).gotHospitalized(currentSimulatedDay);
+            return null;
+        }).when(diseaseBehavior).updateHealthCondition(eq(population.get(1)), eq(currentSimulatedDay));
+        EpidemicStatistics epidemicStatistics = populationDynamics.executeDynamicsIterationOn(population, currentSimulatedDay);
 
         // Then
+        verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(0)));
+        verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(0)), eq(currentSimulatedDay));
         verify(diseaseBehavior, times(ONE_INVOCATION)).interactionBetween(eq(population.get(0)), eq(population.get(1)), eq(currentSimulatedDay));
+        verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(1)));
+        verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(1)), eq(currentSimulatedDay));
+        verify(diseaseBehavior, times(ONE_INVOCATION)).interactionBetween(eq(population.get(1)), eq(population.get(0)), eq(currentSimulatedDay));
         verify(diseaseBehavior, never()).interactionBetween(eq(population.get(0)), eq(population.get(0)), eq(currentSimulatedDay));
-        verify(diseaseBehavior, never()).interactionBetween(eq(population.get(1)), eq(population.get(0)), eq(currentSimulatedDay));
         verify(diseaseBehavior, never()).interactionBetween(eq(population.get(1)), eq(population.get(1)), eq(currentSimulatedDay));
+        assertEquals(ONE_COUNT, epidemicStatistics.getCurrentNormalCount().intValue());
+        assertEquals(ONE_COUNT, epidemicStatistics.getCurrentHospitalizedCount().intValue());
+        assertEquals(ONE_COUNT, epidemicStatistics.getTotalHospitalizedCount().intValue());
     }
 
     private List<Individual> buildPopulation() {

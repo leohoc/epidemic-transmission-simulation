@@ -38,7 +38,7 @@ public class PopulationDynamics {
         }
     }
 
-    protected void executeIndividualInteractionWithPopulation(final Individual individual,
+    private void executeIndividualInteractionWithPopulation(final Individual individual,
                                                               final List<Individual> population,
                                                               final int currentSimulatedDay) {
         for (Individual passerby : population) {

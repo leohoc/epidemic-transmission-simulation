@@ -52,7 +52,7 @@ public enum DirectionMovement {
         return RandomUtil.generatePercentWithTwoDigitsScale() < socialIsolationPercent;
     }
 
-    private static List<DirectionMovement> movementDirections() {
+    protected static List<DirectionMovement> movementDirections() {
         return Arrays.asList(UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT);
     }
 }

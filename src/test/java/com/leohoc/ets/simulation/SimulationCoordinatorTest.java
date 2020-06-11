@@ -1,91 +1,105 @@
 package com.leohoc.ets.simulation;
 
+import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
-import com.leohoc.ets.infrastructure.config.SimulationHealthSystemCapacityProperties;
-import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
-import com.leohoc.ets.infrastructure.config.SimulationProperties;
-import com.leohoc.ets.infrastructure.config.SimulationPropertiesLoader;
+import com.leohoc.ets.domain.enums.DirectionMovement;
+import com.leohoc.ets.infrastructure.config.*;
+import com.leohoc.ets.userinterface.GraphicalEnvironment;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 
-import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
-import static com.leohoc.ets.generators.PropertiesGenerator.generateMovementProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SimulationCoordinatorTest {
 
-    private static final boolean GRAPHICS_ENABLED = Boolean.FALSE;
-    private static final int POPULATION_SIZE = 10;
-    private static final int ZERO_INITIAL_INFECTED_PERCENT = 0;
-    private static final int ONE_HUNDRED_INITIAL_INFECTED_PERCENT = 100;
-    private static final int TOTAL_ITERATIONS = 10;
-    private static final int ITERATIONS_PER_DAY = 1;
-    private static final int AVAILABLE_BEDS = 2;
+    private static final int ONE_INVOCATION = 1;
+    private static final int TWO_INVOCATIONS = 2;
 
+    private final SimulationProperties simulationProperties = mock(SimulationProperties.class);
+    private final SimulationIndividualProperties individualProperties = mock(SimulationIndividualProperties.class);
+    private final IterationEvolution iterationEvolution = mock(IterationEvolution.class);
+    private final PopulationDynamics populationDynamics = mock(PopulationDynamics.class);
+    private final GraphicalEnvironment graphicalEnvironment = mock(GraphicalEnvironment.class);
+    private final MovementBehavior movementBehavior = mock(MovementBehavior.class);
+    private final EpidemicStatistics epidemicStatistics = mock(EpidemicStatistics.class);
     private SimulationCoordinator simulationCoordinator;
-    private SimulationPropertiesLoader simulationPropertiesLoader = mock(SimulationPropertiesLoader.class);
+
+    @BeforeEach
+    public void setup() {
+        simulationCoordinator = new SimulationCoordinator(
+                simulationProperties,
+                individualProperties,
+                iterationEvolution,
+                populationDynamics,
+                graphicalEnvironment,
+                movementBehavior,
+                epidemicStatistics
+        );
+    }
 
     @Test
     public void testGenerateEntirelyHealthyPopulation() {
         // Given
-        when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
-        when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ZERO_INITIAL_INFECTED_PERCENT));
-        when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(generateIndividualProperties());
-        when(simulationPropertiesLoader.loadMovementProperties()).thenReturn(generateMovementProperties());
-        simulationCoordinator = new SimulationCoordinator(simulationPropertiesLoader);
+        final int populationSize = 10;
+        final int mapStartPoint = 0;
+        final double initialInfectedPercent = 0.0;
 
         // When
+        when(simulationProperties.getPopulationSize()).thenReturn(populationSize);
+        when(movementBehavior.generateRandomXPointWithinMapBoundaries()).thenReturn(mapStartPoint);
+        when(movementBehavior.generateRandomYPointWithinMapBoundaries()).thenReturn(mapStartPoint);
+        when(movementBehavior.newRandomDirection()).thenReturn(DirectionMovement.STANDING);
+        when(simulationProperties.getInitialInfectedPercent()).thenReturn(initialInfectedPercent);
         List<Individual> population = simulationCoordinator.generatePopulation();
 
         // Then
-        assertEquals(POPULATION_SIZE, population.size());
+        assertEquals(populationSize, population.size());
         assertFalse(population.stream().allMatch(Individual::isInfected));
     }
 
     @Test
     public void testGenerateEntirelyInfectedPopulation() {
         // Given
-        when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
-        when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ONE_HUNDRED_INITIAL_INFECTED_PERCENT));
-        when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(generateIndividualProperties());
-        when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
-        when(simulationPropertiesLoader.loadMovementProperties()).thenReturn(generateMovementProperties());
-        simulationCoordinator = new SimulationCoordinator(simulationPropertiesLoader);
+        final int populationSize = 10;
+        final int mapStartPoint = 0;
+        final double initialInfectedPercent = 100.0;
 
         // When
+        when(simulationProperties.getPopulationSize()).thenReturn(populationSize);
+        when(movementBehavior.generateRandomXPointWithinMapBoundaries()).thenReturn(mapStartPoint);
+        when(movementBehavior.generateRandomYPointWithinMapBoundaries()).thenReturn(mapStartPoint);
+        when(movementBehavior.newRandomDirection()).thenReturn(DirectionMovement.STANDING);
+        when(simulationProperties.getInitialInfectedPercent()).thenReturn(initialInfectedPercent);
         List<Individual> population = simulationCoordinator.generatePopulation();
 
         // Then
-        assertEquals(POPULATION_SIZE, population.size());
+        assertEquals(populationSize, population.size());
         assertTrue(population.stream().allMatch(Individual::isInfected));
     }
 
     @Test
     public void testRunSimulation() {
         // Given
-        when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
-        when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
-        simulationCoordinator = spy(new SimulationCoordinator(simulationPropertiesLoader));
+        final EpidemicStatistics iterationEpidemicStatistics = new EpidemicStatistics();
 
         // When
+        when(populationDynamics.executeDynamicsIterationOn(anyList(), anyInt())).thenReturn(iterationEpidemicStatistics);
+        when(iterationEvolution.hasSimulationFinished()).thenReturn(Boolean.TRUE);
         simulationCoordinator.runSimulation();
 
         // Then
-        verify(simulationCoordinator, Mockito.times(TOTAL_ITERATIONS)).runDynamicsIteration();
-    }
-
-    private SimulationProperties buildSimulationProperties(final int initialInfectedPercent) {
-        return new SimulationProperties(POPULATION_SIZE, initialInfectedPercent, GRAPHICS_ENABLED);
-    }
-
-    private SimulationIterationsProperties buildIterationsProperties() {
-        return new SimulationIterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY);
-    }
-
-    private SimulationHealthSystemCapacityProperties buildHealthSystemProperties() {
-        return new SimulationHealthSystemCapacityProperties(AVAILABLE_BEDS);
+        verify(iterationEvolution, times(ONE_INVOCATION)).iterate();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).updateAllStatistics(eq(iterationEpidemicStatistics));
+        verify(iterationEvolution, times(TWO_INVOCATIONS)).getCurrentSimulatedDay();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getCurrentNormalCount();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getCurrentInfectedCount();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getCurrentHospitalizedCount();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalInfectedCount();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalHospitalizedCount();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalRecoveredCount();
+        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalDeadCount();
     }
 }

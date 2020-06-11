@@ -11,8 +11,8 @@ public class Individual {
 
     private int x;
     private int y;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private DirectionMovement directionMovement;
     private HealthCondition healthCondition;
 
