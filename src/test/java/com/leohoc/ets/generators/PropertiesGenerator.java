@@ -1,9 +1,6 @@
 package com.leohoc.ets.generators;
 
-import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
-import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
-import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
-import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
+import com.leohoc.ets.infrastructure.config.*;
 
 public class PropertiesGenerator {
 
@@ -31,7 +28,12 @@ public class PropertiesGenerator {
     public static SimulationIndividualProperties generateIndividualProperties() {
         return new SimulationIndividualProperties(
                 DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE,
+                DEFAULT_PROPERTY_VALUE
+        );
+    }
+
+    public static SimulationMovementProperties generateMovementProperties() {
+        return new SimulationMovementProperties(
                 INDIVIDUAL_INITIAL_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,

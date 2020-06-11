@@ -1,10 +1,10 @@
 package com.leohoc.ets.simulation;
 
+import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.generators.PropertiesGenerator;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,8 @@ class PopulationDynamicsTest {
     public void testExecuteDynamicsIteration() {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
-        PopulationDynamics populationDynamics = spy(new PopulationDynamics(diseaseBehavior));
+        MovementBehavior movementBehavior = mock(MovementBehavior.class);
+        PopulationDynamics populationDynamics = spy(new PopulationDynamics(diseaseBehavior, movementBehavior));
         List<Individual> population = buildPopulation();
         int currentSimulatedDay = 1;
 
@@ -29,8 +30,8 @@ class PopulationDynamicsTest {
         EpidemicStatistics statistics = populationDynamics.executeDynamicsIterationOn(population, currentSimulatedDay);
 
         // Then
-        verify(populationDynamics, times(ONE_INVOCATION)).executeMovementBehaviorOn(eq(population.get(0)));
-        verify(populationDynamics, times(ONE_INVOCATION)).executeMovementBehaviorOn(eq(population.get(1)));
+        verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(0)));
+        verify(movementBehavior, times(ONE_INVOCATION)).adjustDirectionOf(eq(population.get(1)));
         verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(0)), eq(currentSimulatedDay));
         verify(diseaseBehavior, times(ONE_INVOCATION)).updateHealthCondition(eq(population.get(1)), eq(currentSimulatedDay));
         verify(populationDynamics, times(ONE_INVOCATION)).executeIndividualInteractionWithPopulation(eq(population.get(0)), eq(population), eq(currentSimulatedDay));
@@ -39,23 +40,11 @@ class PopulationDynamicsTest {
     }
 
     @Test
-    public void testExecuteMovementBehaviorOnIndividual() {
-        // Given
-        Individual individual = Mockito.spy(buildIndividual());
-        PopulationDynamics populationDynamics = new PopulationDynamics(mock(DiseaseBehavior.class));
-
-        // When
-        populationDynamics.executeMovementBehaviorOn(individual);
-
-        // Then
-        verify(individual, times(ONE_INVOCATION)).move();
-    }
-
-    @Test
     public void testExecuteIndividualInteractionWithPopulation() {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
-        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior);
+        MovementBehavior movementBehavior = mock(MovementBehavior.class);
+        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
         List<Individual> population = buildPopulation();
         int currentSimulatedDay = 0;
 
@@ -74,6 +63,9 @@ class PopulationDynamicsTest {
     }
 
     private Individual buildIndividual() {
-        return Individual.randomIndividual(PropertiesGenerator.generateIndividualProperties());
+        final int x = 0;
+        final int y = 0;
+        final DirectionMovement directionMovement = DirectionMovement.STANDING;
+        return new Individual(x, y, directionMovement, PropertiesGenerator.generateIndividualProperties());
     }
 }

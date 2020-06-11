@@ -20,6 +20,7 @@ public class SimulationCoordinator {
     private final IterationEvolution iterationEvolution;
     private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
+    private final MovementBehavior movementBehavior;
 
     public SimulationCoordinator(final SimulationPropertiesLoader propertiesLoader) {
         final SimulationHealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
@@ -27,10 +28,11 @@ public class SimulationCoordinator {
         this.individualProperties = propertiesLoader.loadIndividualProperties();
         this.iterationEvolution = new IterationEvolution(propertiesLoader.loadIterationsProperties());
         this.graphicalEnvironment = new GraphicalEnvironment(propertiesLoader.loadGraphicsProperties(), healthSystemCapacityProperties.getAvailableBeds());
+        this.movementBehavior = new MovementBehavior(propertiesLoader.loadMovementProperties());
 
         final HealthSystemResources healthSystemResources = new HealthSystemResources(healthSystemCapacityProperties.getAvailableBeds());
         final DiseaseBehavior diseaseBehavior = new DiseaseBehavior(propertiesLoader.loadEpidemicProperties(), healthSystemResources);
-        this.populationDynamics = new PopulationDynamics(diseaseBehavior);
+        this.populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
     }
 
     public void startSimulation() {
@@ -44,13 +46,22 @@ public class SimulationCoordinator {
     protected List<Individual> generatePopulation() {
         List<Individual> initialPopulation = new ArrayList<>();
         for (int i = 0; i < simulationProperties.getPopulationSize(); i++) {
-            Individual individual = Individual.randomIndividual(individualProperties);
+            Individual individual = randomIndividual();
             if (shouldGotInfected(simulationProperties.getInitialInfectedPercent())) {
                 individual.gotInfected(iterationEvolution.getCurrentSimulatedDay());
             }
             initialPopulation.add(individual);
         }
         return initialPopulation;
+    }
+
+    private Individual randomIndividual() {
+        return new Individual(
+                movementBehavior.generateRandomXPointWithinMapBoundaries(),
+                movementBehavior.generateRandomYPointWithinMapBoundaries(),
+                movementBehavior.newRandomDirection(),
+                individualProperties
+        );
     }
 
     protected boolean shouldGotInfected(final double initialInfectedPercent) {

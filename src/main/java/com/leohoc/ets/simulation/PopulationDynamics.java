@@ -8,9 +8,11 @@ import java.util.List;
 public class PopulationDynamics {
 
     private final DiseaseBehavior diseaseBehavior;
+    private final MovementBehavior movementBehavior;
 
-    public PopulationDynamics(final DiseaseBehavior diseaseBehavior) {
+    public PopulationDynamics(final DiseaseBehavior diseaseBehavior, final MovementBehavior movementBehavior) {
         this.diseaseBehavior = diseaseBehavior;
+        this.movementBehavior = movementBehavior;
     }
 
     public EpidemicStatistics executeDynamicsIterationOn(final List<Individual> population, final int currentSimulatedDay){
@@ -19,19 +21,21 @@ public class PopulationDynamics {
 
         for (Individual individual : population) {
             final boolean individualStartedIterationHospitalized = individual.isHospitalized();
-            executeMovementBehaviorOn(individual);
+            movementBehavior.adjustDirectionOf(individual);
             diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
             executeIndividualInteractionWithPopulation(individual, population, currentSimulatedDay);
-            iterationStatistics.updateStatistics(individual.getHealthStatus());
-            if (!individualStartedIterationHospitalized && individual.isHospitalized()) {
-                iterationStatistics.increaseHospitalizedCount();
-            }
+            updateIterationStatistics(iterationStatistics, individual, individualStartedIterationHospitalized);
         }
         return iterationStatistics;
     }
 
-    protected void executeMovementBehaviorOn(final Individual individual) {
-        individual.move();
+    private void updateIterationStatistics(final EpidemicStatistics iterationStatistics,
+                                           final Individual individual,
+                                           final boolean individualStartedIterationHospitalized) {
+        iterationStatistics.updateStatistics(individual.getHealthStatus());
+        if (!individualStartedIterationHospitalized && individual.isHospitalized()) {
+            iterationStatistics.increaseHospitalizedCount();
+        }
     }
 
     protected void executeIndividualInteractionWithPopulation(final Individual individual,

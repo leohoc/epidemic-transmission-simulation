@@ -46,13 +46,17 @@ public class SimulationPropertiesLoader {
     public SimulationIndividualProperties loadIndividualProperties() {
         final int individualWidth = parseInt(properties.getProperty("simulation.individual.width"));
         final int individualHeight = parseInt(properties.getProperty("simulation.individual.height"));
-        final int upBoundary = parseInt(properties.getProperty("simulation.individual.boundary.up"));
-        final int rightBoundary = parseInt(properties.getProperty("simulation.individual.boundary.right"));
-        final int downBoundary = parseInt(properties.getProperty("simulation.individual.boundary.down"));
-        final int leftBoundary = parseInt(properties.getProperty("simulation.individual.boundary.left"));
-        final double directionChangeProbability = parseDouble(properties.getProperty("simulation.individual.movement.changeprobability"));
-        final double socialIsolationPercent = parseDouble(properties.getProperty("simulation.individual.movement.socialisolationpercent"));
-        return new SimulationIndividualProperties(individualWidth, individualHeight, upBoundary, rightBoundary, downBoundary, leftBoundary, directionChangeProbability, socialIsolationPercent);
+        return new SimulationIndividualProperties(individualWidth, individualHeight);
+    }
+
+    public SimulationMovementProperties loadMovementProperties() {
+        final int upBoundary = parseInt(properties.getProperty("simulation.movement.boundary.up"));
+        final int rightBoundary = parseInt(properties.getProperty("simulation.movement.boundary.right"));
+        final int downBoundary = parseInt(properties.getProperty("simulation.movement.boundary.down"));
+        final int leftBoundary = parseInt(properties.getProperty("simulation.movement.boundary.left"));
+        final double directionChangeProbability = parseDouble(properties.getProperty("simulation.movement.changeprobability"));
+        final double socialIsolationPercent = parseDouble(properties.getProperty("simulation.movement.socialisolationpercent"));
+        return new SimulationMovementProperties(upBoundary, rightBoundary, downBoundary, leftBoundary, directionChangeProbability, socialIsolationPercent);
     }
 
     public SimulationGraphicsProperties loadGraphicsProperties() {

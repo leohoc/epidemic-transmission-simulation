@@ -3,7 +3,6 @@ package com.leohoc.ets.domain.entity;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
 import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
-import com.leohoc.ets.util.RandomUtil;
 
 import static com.leohoc.ets.domain.enums.DirectionMovement.*;
 import static com.leohoc.ets.domain.enums.HealthStatus.*;
@@ -12,25 +11,18 @@ public class Individual {
 
     private int x;
     private int y;
+    private int width;
+    private int height;
     private DirectionMovement directionMovement;
     private HealthCondition healthCondition;
-    private SimulationIndividualProperties individualProperties;
-
-    public static Individual randomIndividual(SimulationIndividualProperties individualProperties) {
-        return new Individual(
-                RandomUtil.generateIntBetween(individualProperties.getLeftBoundary(), individualProperties.getRightBoundary()),
-                RandomUtil.generateIntBetween(individualProperties.getUpBoundary(), individualProperties.getDownBoundary()),
-                randomDirectionMovement(individualProperties.getSocialIsolationPercent()),
-                individualProperties
-        );
-    }
 
     public Individual(final int x, final int y, final DirectionMovement directionMovement, final SimulationIndividualProperties individualProperties) {
         this.x = x;
         this.y = y;
+        this.width = individualProperties.getIndividualWidth();
+        this.height = individualProperties.getIndividualHeight();
         this.directionMovement = directionMovement;
         this.healthCondition = new HealthCondition(NORMAL);
-        this.individualProperties = individualProperties;
     }
 
     public int getX() {
@@ -42,11 +34,15 @@ public class Individual {
     }
 
     public int getWidth() {
-        return individualProperties.getIndividualWidth();
+        return width;
     }
 
     public int getHeight() {
-        return individualProperties.getIndividualHeight();
+        return height;
+    }
+
+    public DirectionMovement getDirectionMovement() {
+        return this.directionMovement;
     }
 
     public HealthCondition getHealthCondition() {
@@ -57,9 +53,9 @@ public class Individual {
         return healthCondition.getHealthStatus();
     }
 
-    public void move() {
+    public void moveTo(final DirectionMovement newDirectionMovement) {
         if (healthCondition.getHealthStatus().allowedToMove()) {
-            adjustDirection();
+            this.directionMovement = newDirectionMovement;
             x += directionMovement.xAxisMovement();
             y += directionMovement.yAxisMovement();
         }
@@ -91,64 +87,7 @@ public class Individual {
         healthCondition = new HealthCondition(RECOVERED, recoveryDay);
     }
 
-    protected void adjustDirection() {
-        changeDirectionByReachingMapBoundaries();
-        if (shouldChangeDirectionRandomly()) {
-            changeDirection();
-        }
-    }
-
     public boolean crossedWayWith(final Individual passerby) {
         return (passerby.getX() >= x) && (passerby.getX() < x + getWidth()) && (passerby.getY() >= y) && (passerby.getY() < y + getHeight());
-    }
-
-    protected DirectionMovement getDirectionMovement() {
-        return this.directionMovement;
-    }
-
-    protected void changeDirectionByReachingMapBoundaries() {
-
-        if (reachedLeftBoundary()) {
-            directionMovement = RIGHT;
-            return;
-        }
-
-        if (reachedRightBoundary()) {
-            directionMovement = LEFT;
-            return;
-        }
-
-        if (reachedUpBoundary()) {
-            directionMovement = DOWN;
-            return;
-        }
-
-        if (reachedDownBoundary()) {
-            directionMovement = UP;
-        }
-    }
-
-    protected boolean reachedLeftBoundary() {
-        return x <= individualProperties.getLeftBoundary();
-    }
-
-    protected boolean reachedRightBoundary() {
-        return x >= individualProperties.getRightBoundary();
-    }
-
-    protected boolean reachedUpBoundary() {
-        return y <= individualProperties.getUpBoundary();
-    }
-
-    protected boolean reachedDownBoundary() {
-        return y >= individualProperties.getDownBoundary();
-    }
-
-    protected boolean shouldChangeDirectionRandomly() {
-        return RandomUtil.generatePercentWithTwoDigitsScale() < individualProperties.getDirectionChangeProbability();
-    }
-
-    protected void changeDirection() {
-        this.directionMovement = randomDirectionMovement(individualProperties.getSocialIsolationPercent());
     }
 }
