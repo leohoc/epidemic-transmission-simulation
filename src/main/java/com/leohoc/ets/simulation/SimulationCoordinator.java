@@ -61,10 +61,8 @@ public class SimulationCoordinator {
         do {
             runDynamicsIteration();
             iterationEvolution.iterate();
-            if (iterationEvolution.dawnOfANewDay()) {
-                epidemicStatistics.printStatisticsGlimpse(iterationEvolution.getCurrentSimulatedDay());
-            }
         } while (!iterationEvolution.hasSimulationFinished());
+        printStatistics();
     }
 
     protected void runDynamicsIteration() {
@@ -88,5 +86,16 @@ public class SimulationCoordinator {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void printStatistics() {
+        System.out.println("TOTAL RUNNING DAYS: " + iterationEvolution.getCurrentSimulatedDay());
+        System.out.println("CURRENT NORMAL COUNT: " + epidemicStatistics.getCurrentNormalCount());
+        System.out.println("CURRENT INFECTED COUNT: " + epidemicStatistics.getCurrentInfectedCount());
+        System.out.println("CURRENT HOSPITALIZED COUNT: " + epidemicStatistics.getCurrentHospitalizedCount());
+        System.out.println("TOTAL INFECTED COUNT: " + epidemicStatistics.getTotalInfectedCount());
+        System.out.println("TOTAL HOSPITALIZED COUNT: " + epidemicStatistics.getTotalHospitalizedCount());
+        System.out.println("TOTAL RECOVERED COUNT: " + epidemicStatistics.getTotalRecoveredCount());
+        System.out.println("TOTAL DEAD COUNT: " + epidemicStatistics.getTotalDeadCount());
     }
 }

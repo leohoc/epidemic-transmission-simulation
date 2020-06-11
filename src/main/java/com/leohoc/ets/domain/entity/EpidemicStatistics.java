@@ -21,19 +21,6 @@ public class EpidemicStatistics {
         currentHealthStatusStatistic.put(healthStatus, ++healthStatusCount);
     }
 
-    public void updateAllStatistics(final EpidemicStatistics epidemicStatistics) {
-        this.currentHealthStatusStatistic = epidemicStatistics.getCurrentHealthStatusStatistic();
-        this.totalHospitalizedCount += epidemicStatistics.totalHospitalizedCount;
-    }
-
-    public void increaseHospitalizedCount() {
-        totalHospitalizedCount++;
-    }
-
-    public HashMap<HealthStatus, Integer> getCurrentHealthStatusStatistic() {
-        return currentHealthStatusStatistic;
-    }
-
     public Integer getCurrentHospitalizedCount() {
         return currentHealthStatusStatistic.get(HealthStatus.HOSPITALIZED);
     }
@@ -54,6 +41,10 @@ public class EpidemicStatistics {
         return currentHealthStatusStatistic.get(HealthStatus.DEAD);
     }
 
+    public void increaseHospitalizedCount() {
+        totalHospitalizedCount++;
+    }
+
     public Integer getTotalHospitalizedCount() {
         return totalHospitalizedCount;
     }
@@ -62,15 +53,12 @@ public class EpidemicStatistics {
         return getCurrentInfectedCount() + getCurrentHospitalizedCount() + getTotalRecoveredCount() + getTotalDeadCount();
     }
 
-    public void printStatisticsGlimpse(final int currentDay) {
-        System.out.println("-------------------------------------");
-        System.out.println("CURRENT DAY: " + currentDay);
-        System.out.println("CURRENT NORMAL COUNT: " + getCurrentNormalCount());
-        System.out.println("CURRENT INFECTED COUNT: " + getCurrentInfectedCount());
-        System.out.println("CURRENT HOSPITALIZED COUNT: " + getCurrentHospitalizedCount());
-        System.out.println("TOTAL INFECTED COUNT: " + getTotalInfectedCount());
-        System.out.println("TOTAL HOSPITALIZED COUNT: " + getTotalHospitalizedCount());
-        System.out.println("TOTAL RECOVERED COUNT: " + getTotalRecoveredCount());
-        System.out.println("TOTAL DEAD COUNT: " + getTotalDeadCount());
+    public void updateAllStatistics(final EpidemicStatistics epidemicStatistics) {
+        this.currentHealthStatusStatistic = epidemicStatistics.getCurrentHealthStatusStatistic();
+        this.totalHospitalizedCount += epidemicStatistics.totalHospitalizedCount;
+    }
+
+    public HashMap<HealthStatus, Integer> getCurrentHealthStatusStatistic() {
+        return currentHealthStatusStatistic;
     }
 }

@@ -2,8 +2,6 @@ package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 
-import java.util.logging.Logger;
-
 public class IterationEvolution {
 
     private final SimulationIterationsProperties properties;
@@ -36,9 +34,5 @@ public class IterationEvolution {
 
     protected void setCurrentIteration(final int currentIteration) {
         this.currentIteration = currentIteration;
-    }
-
-    public boolean dawnOfANewDay() {
-        return getCurrentIteration() % properties.getIterationsPerDay() == 0;
     }
 }
