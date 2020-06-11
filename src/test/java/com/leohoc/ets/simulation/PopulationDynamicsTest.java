@@ -1,6 +1,6 @@
 package com.leohoc.ets.simulation;
 
-import com.leohoc.ets.builders.PropertiesBuilder;
+import com.leohoc.ets.generators.PropertiesGenerator;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import org.junit.jupiter.api.Test;
@@ -74,6 +74,6 @@ class PopulationDynamicsTest {
     }
 
     private Individual buildIndividual() {
-        return Individual.randomIndividual(PropertiesBuilder.buildIndividualProperties());
+        return Individual.randomIndividual(PropertiesGenerator.generateIndividualProperties());
     }
 }

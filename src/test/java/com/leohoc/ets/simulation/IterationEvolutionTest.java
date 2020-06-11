@@ -3,7 +3,7 @@ package com.leohoc.ets.simulation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.leohoc.ets.builders.PropertiesBuilder.buildIterationsProperties;
+import static com.leohoc.ets.generators.PropertiesGenerator.generateIterationsProperties;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IterationEvolutionTest {
@@ -12,7 +12,7 @@ class IterationEvolutionTest {
 
     @BeforeEach
     public void setup() {
-        iterationEvolution = new IterationEvolution(buildIterationsProperties());
+        iterationEvolution = new IterationEvolution(generateIterationsProperties());
     }
 
     @Test

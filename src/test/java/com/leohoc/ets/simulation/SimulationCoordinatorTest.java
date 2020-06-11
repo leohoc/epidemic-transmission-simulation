@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualProperties;
+import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -32,7 +32,7 @@ class SimulationCoordinatorTest {
         // Given
         when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ZERO_INITIAL_INFECTED_PERCENT));
-        when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(buildIndividualProperties());
+        when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(generateIndividualProperties());
         simulationCoordinator = new SimulationCoordinator(simulationPropertiesLoader);
 
         // When
@@ -48,7 +48,7 @@ class SimulationCoordinatorTest {
         // Given
         when(simulationPropertiesLoader.loadHealthSystemCapacityProperties()).thenReturn(buildHealthSystemProperties());
         when(simulationPropertiesLoader.loadSimulationProperties()).thenReturn(buildSimulationProperties(ONE_HUNDRED_INITIAL_INFECTED_PERCENT));
-        when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(buildIndividualProperties());
+        when(simulationPropertiesLoader.loadIndividualProperties()).thenReturn(generateIndividualProperties());
         when(simulationPropertiesLoader.loadIterationsProperties()).thenReturn(buildIterationsProperties());
         simulationCoordinator = new SimulationCoordinator(simulationPropertiesLoader);
 

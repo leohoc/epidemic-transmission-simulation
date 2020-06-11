@@ -1,11 +1,11 @@
-package com.leohoc.ets.builders;
+package com.leohoc.ets.generators;
 
 import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
 import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
 import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
 import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
 
-public class PropertiesBuilder {
+public class PropertiesGenerator {
 
     private static final int DEFAULT_PROPERTY_VALUE = 1;
     private static final int INDIVIDUAL_INITIAL_BOUNDARY = 0;
@@ -28,7 +28,7 @@ public class PropertiesBuilder {
     private static final int TOTAL_ITERATIONS = 100;
     private static final int ITERATIONS_PER_DAY = 10;
 
-    public static SimulationIndividualProperties buildIndividualProperties() {
+    public static SimulationIndividualProperties generateIndividualProperties() {
         return new SimulationIndividualProperties(
                 DEFAULT_PROPERTY_VALUE,
                 DEFAULT_PROPERTY_VALUE,
@@ -41,11 +41,11 @@ public class PropertiesBuilder {
         );
     }
 
-    public static SimulationEpidemicProperties buildEpidemicProperties() {
+    public static SimulationEpidemicProperties generateEpidemicProperties() {
         return new SimulationEpidemicProperties(RECOVERY_DAYS, ZERO_DEATH_PERCENTAGE, ZERO_HOSPITALIZATION_PERCENTAGE, HOSPITALIZATION_DAYS);
     }
 
-    public static SimulationGraphicsProperties buildGraphicsProperties() {
+    public static SimulationGraphicsProperties generateGraphicsProperties() {
         return new SimulationGraphicsProperties(
                 DEFAULT_MAP_PROPERTY_VALUE,
                 DEFAULT_MAP_PROPERTY_VALUE,
@@ -63,7 +63,7 @@ public class PropertiesBuilder {
                 TOTAL_DEAD_Y);
     }
 
-    public static SimulationIterationsProperties buildIterationsProperties() {
+    public static SimulationIterationsProperties generateIterationsProperties() {
         return new SimulationIterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY);
     }
 }

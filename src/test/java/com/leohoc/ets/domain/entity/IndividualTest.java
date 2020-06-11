@@ -6,7 +6,7 @@ import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualProperties;
+import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -21,7 +21,7 @@ class IndividualTest {
     public void testLivingIndividualMovement() {
         // Given
         DirectionMovement directionMovement = DirectionMovement.RIGHT;
-        Individual individual = spy(new Individual(INITIAL_X, INITIAL_Y, directionMovement, buildIndividualProperties()));
+        Individual individual = spy(new Individual(INITIAL_X, INITIAL_Y, directionMovement, generateIndividualProperties()));
 
         // When
         doNothing().when(individual).adjustDirection();
@@ -37,7 +37,7 @@ class IndividualTest {
     public void testDeadIndividualMovement() {
         // Given
         DirectionMovement directionMovement = DirectionMovement.RIGHT;
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, directionMovement, buildIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, directionMovement, generateIndividualProperties());
         individual.died(CURRENT_SIMULATED_DAY);
 
         // When
@@ -53,7 +53,7 @@ class IndividualTest {
     @Test
     public void testIndividualGotInfected() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, buildIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
 
         // When
         individual.gotInfected(CURRENT_SIMULATED_DAY);
@@ -65,7 +65,7 @@ class IndividualTest {
     @Test
     public void testIndividualDied() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, buildIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties());
 
         // When
         individual.died(CURRENT_SIMULATED_DAY);
@@ -79,7 +79,7 @@ class IndividualTest {
     @Test
     public void testIndividualRecovered() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, buildIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties());
 
         // When
         individual.recovered(CURRENT_SIMULATED_DAY);
@@ -92,7 +92,7 @@ class IndividualTest {
     @Test
     public void testAdjustDirectionWithoutChangingIt() {
         // Given
-        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, buildIndividualProperties()));
+        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties()));
 
         // When
         when(individual.shouldChangeDirectionRandomly()).thenReturn(Boolean.FALSE);
@@ -106,7 +106,7 @@ class IndividualTest {
     @Test
     public void testAdjustDirectionChangingIt() {
         // Given
-        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, buildIndividualProperties()));
+        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties()));
 
         // When
         when(individual.shouldChangeDirectionRandomly()).thenReturn(Boolean.TRUE);
@@ -120,7 +120,7 @@ class IndividualTest {
     @Test
     public void testChangeDirectionByReachingLeftMapBoundary() {
         // Given
-        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.LEFT, buildIndividualProperties()));
+        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.LEFT, generateIndividualProperties()));
 
         // When
         when(individual.reachedLeftBoundary()).thenReturn(Boolean.TRUE);
@@ -133,7 +133,7 @@ class IndividualTest {
     @Test
     public void testChangeDirectionByReachingRightMapBoundary() {
         // Given
-        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, buildIndividualProperties()));
+        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties()));
 
         // When
         when(individual.reachedLeftBoundary()).thenReturn(Boolean.FALSE);
@@ -147,7 +147,7 @@ class IndividualTest {
     @Test
     public void testChangeDirectionByReachingUpMapBoundary() {
         // Given
-        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.UP, buildIndividualProperties()));
+        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.UP, generateIndividualProperties()));
 
         // When
         when(individual.reachedLeftBoundary()).thenReturn(Boolean.FALSE);
@@ -162,7 +162,7 @@ class IndividualTest {
     @Test
     public void testChangeDirectionByReachingDownMapBoundary() {
         // Given
-        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.DOWN, buildIndividualProperties()));
+        Individual individual = Mockito.spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.DOWN, generateIndividualProperties()));
 
         // When
         when(individual.reachedLeftBoundary()).thenReturn(Boolean.FALSE);
@@ -328,10 +328,10 @@ class IndividualTest {
         // Given
         int individualX = 0;
         int individualY = 0;
-        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, buildIndividualProperties()));
+        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, generateIndividualProperties()));
         int passerbyX = 1;
         int passerbyY = 1;
-        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, buildIndividualProperties());
+        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, generateIndividualProperties());
 
         // When
         when(individual.getWidth()).thenReturn(2);
@@ -347,10 +347,10 @@ class IndividualTest {
         // Given
         int individualX = 0;
         int individualY = 0;
-        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, buildIndividualProperties()));
+        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, generateIndividualProperties()));
         int passerbyX = 1;
         int passerbyY = 1;
-        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, buildIndividualProperties());
+        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, generateIndividualProperties());
 
         // When
         when(individual.getWidth()).thenReturn(1);

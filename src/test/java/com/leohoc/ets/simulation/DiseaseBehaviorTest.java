@@ -6,8 +6,8 @@ import com.leohoc.ets.domain.enums.HealthStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.leohoc.ets.builders.PropertiesBuilder.buildEpidemicProperties;
-import static com.leohoc.ets.builders.PropertiesBuilder.buildIndividualProperties;
+import static com.leohoc.ets.generators.PropertiesGenerator.generateEpidemicProperties;
+import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -26,7 +26,7 @@ class DiseaseBehaviorTest {
     @BeforeEach
     public void setup() {
         healthSystemResources = mock(HealthSystemResources.class);
-        diseaseBehavior = spy(new DiseaseBehavior(buildEpidemicProperties(), healthSystemResources));
+        diseaseBehavior = spy(new DiseaseBehavior(generateEpidemicProperties(), healthSystemResources));
     }
 
     @Test
@@ -278,6 +278,6 @@ class DiseaseBehaviorTest {
     }
 
     private Individual buildIndividual(final Integer x, final Integer y) {
-        return new Individual(x, y, DirectionMovement.STANDING, buildIndividualProperties());
+        return new Individual(x, y, DirectionMovement.STANDING, generateIndividualProperties());
     }
 }

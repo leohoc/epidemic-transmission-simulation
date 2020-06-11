@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.leohoc.ets.builders.PropertiesBuilder.*;
+import static com.leohoc.ets.generators.PropertiesGenerator.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -30,7 +30,7 @@ class GraphicalEnvironmentTest {
     public void testDrawHealthyIndividual() {
         // Given
         Individual individual = buildIndividual();
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -46,7 +46,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.gotInfected(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -62,7 +62,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.gotHospitalized(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -78,7 +78,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.recovered(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -94,7 +94,7 @@ class GraphicalEnvironmentTest {
         // Given
         Individual individual = buildIndividual();
         individual.died(CURRENT_SIMULATED_DAY);
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
 
         // When
         Graphics graphics = spy(Graphics.class);
@@ -108,7 +108,7 @@ class GraphicalEnvironmentTest {
     @Test
     public void testBuildAreaChartContent() {
         // Given
-        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(buildGraphicsProperties(), AVAILABLE_BEDS);
+        GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
         EpidemicStatistics epidemicStatistics = buildEpidemicStatistics();
 
         // When
@@ -130,9 +130,9 @@ class GraphicalEnvironmentTest {
     @Test
     public void testDrawChartPanel() {
         // Given
-        SimulationGraphicsProperties properties = buildGraphicsProperties();
+        SimulationGraphicsProperties properties = generateGraphicsProperties();
         GraphicalEnvironment graphicalEnvironment = Mockito.spy(new GraphicalEnvironment(properties, AVAILABLE_BEDS));
-        IterationEvolution iterationEvolution = new IterationEvolution(buildIterationsProperties());
+        IterationEvolution iterationEvolution = new IterationEvolution(generateIterationsProperties());
         EpidemicStatistics epidemicStatistics = buildEpidemicStatistics();
 
         // When
@@ -157,8 +157,8 @@ class GraphicalEnvironmentTest {
     @Test
     public void testBuildAreaChart() {
         // Given
-        IterationEvolution iterationEvolution = new IterationEvolution(buildIterationsProperties());
-        SimulationGraphicsProperties properties = buildGraphicsProperties();
+        IterationEvolution iterationEvolution = new IterationEvolution(generateIterationsProperties());
+        SimulationGraphicsProperties properties = generateGraphicsProperties();
         GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(properties, AVAILABLE_BEDS);
 
         // When
@@ -177,7 +177,7 @@ class GraphicalEnvironmentTest {
     private Individual buildIndividual() {
         final int x = 0;
         final int y = 0;
-        return new Individual(x, y, DirectionMovement.STANDING, buildIndividualProperties());
+        return new Individual(x, y, DirectionMovement.STANDING, generateIndividualProperties());
     }
 
     private EpidemicStatistics buildEpidemicStatistics() {
