@@ -15,7 +15,7 @@ import java.util.List;
 import static com.leohoc.ets.domain.enums.HealthStatus.*;
 import static java.lang.String.format;
 
-public class GraphicalEnvironment extends JFrame {
+public class GraphicalEnvironment {
 
     private static final int GRAPHICS_Y_AXIS_START_POINT = 0;
     private static final String TITLE = "Epidemic Transmission Simulation";
@@ -28,6 +28,7 @@ public class GraphicalEnvironment extends JFrame {
     private static final String TOTAL_RECOVERED = "Total recovered: %s";
     private static final String TOTAL_DEAD = "Total dead: %s";
 
+    private JFrame jFrame = null;
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
     private final SimulationGraphicsProperties graphicsProperties;
@@ -44,12 +45,14 @@ public class GraphicalEnvironment extends JFrame {
                            final IterationEvolution iterationEvolution,
                            final EpidemicStatistics epidemicStatistics) {
         final int totalWidth = graphicsProperties.getMapWidth() + graphicsProperties.getAreaChartWidth();
-        this.setSize(totalWidth, graphicsProperties.getMapHeight());
-        this.setContentPane(getJContentPane(population, iterationEvolution, epidemicStatistics));
-        this.setTitle(TITLE);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
+        jFrame = new JFrame();
+        jFrame.setSize(totalWidth, graphicsProperties.getMapHeight());
+        jFrame.setContentPane(getJContentPane(population, iterationEvolution, epidemicStatistics));
+        jFrame.setTitle(TITLE);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setResizable(false);
+        jFrame.setLocationRelativeTo(null);
+        jFrame.setVisible(true);
     }
 
     private JPanel getJContentPane(final List<Individual> population,

@@ -39,10 +39,11 @@ public class SimulationCoordinator {
 
     public void startSimulation() {
         this.population.addAll(generatePopulation());
-        new Thread(() -> runSimulation()).start();
         if (simulationProperties.isGraphicsEnabled()) {
+            graphicalEnvironment.initialize(population, iterationEvolution, epidemicStatistics);
             new Thread(() -> runGraphicalEnvironment()).start();
         }
+        new Thread(() -> runSimulation()).start();
     }
 
     protected List<Individual> generatePopulation() {
@@ -84,9 +85,6 @@ public class SimulationCoordinator {
     }
 
     private void runGraphicalEnvironment() {
-        graphicalEnvironment.initialize(population, iterationEvolution, epidemicStatistics);
-        graphicalEnvironment.setVisible(true);
-
         while (!iterationEvolution.hasSimulationFinished()) {
             sleepFor(GRAPHICS_UPDATE_TIME_MS);
             graphicalEnvironment.getImagePanel(population, iterationEvolution, epidemicStatistics).repaint();
