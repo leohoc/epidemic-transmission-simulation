@@ -36,7 +36,6 @@ public class GraphicalEnvironment extends JFrame {
 
     public GraphicalEnvironment(final SimulationGraphicsProperties graphicsProperties,
                                 final int availableBeds) {
-        super();
         this.graphicsProperties = graphicsProperties;
         this.availableBeds = availableBeds;
     }
