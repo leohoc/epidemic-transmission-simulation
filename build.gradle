@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id "org.sonarqube" version "2.8"
 }
 
 group = 'com.leohoc'
@@ -7,6 +8,12 @@ version = '0.0.1-SNAPSHOT'
 
 repositories {
 	mavenCentral()
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "leohoc_epidemic-transmission-simulation"
+	}
 }
 
 dependencies {
