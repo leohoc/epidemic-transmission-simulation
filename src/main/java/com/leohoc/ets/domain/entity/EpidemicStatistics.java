@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class EpidemicStatistics {
 
-    private EnumMap<HealthStatus, Integer> currentHealthStatusStatistic = new EnumMap<>(HealthStatus.class);
+    private Map<HealthStatus, Integer> currentHealthStatusStatistic = new EnumMap<>(HealthStatus.class);
     private Integer totalHospitalizedCount = 0;
 
     public EpidemicStatistics() {
@@ -59,7 +59,7 @@ public class EpidemicStatistics {
         this.totalHospitalizedCount += epidemicStatistics.totalHospitalizedCount;
     }
 
-    public EnumMap<HealthStatus, Integer> getCurrentHealthStatusStatistic() {
+    public Map<HealthStatus, Integer> getCurrentHealthStatusStatistic() {
         return currentHealthStatusStatistic;
     }
 }
