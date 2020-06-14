@@ -8,8 +8,11 @@ import com.leohoc.ets.util.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SimulationCoordinator {
+
+    private static final Logger logger = Logger.getLogger(SimulationCoordinator.class.getName());
 
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
     private final List<Individual> population = new ArrayList<>();
@@ -41,9 +44,9 @@ public class SimulationCoordinator {
         this.population.addAll(generatePopulation());
         if (simulationProperties.isGraphicsEnabled()) {
             graphicalEnvironment.initialize(population, iterationEvolution, epidemicStatistics);
-            new Thread(() -> runGraphicalEnvironment()).start();
+            new Thread(this::runGraphicalEnvironment).start();
         }
-        new Thread(() -> runSimulation()).start();
+        new Thread(this::runSimulation).start();
     }
 
     protected List<Individual> generatePopulation() {
@@ -95,18 +98,18 @@ public class SimulationCoordinator {
         try {
             Thread.sleep(timeInMs);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 
     private void printStatistics() {
-        System.out.println("TOTAL RUNNING DAYS: " + iterationEvolution.getCurrentSimulatedDay());
-        System.out.println("CURRENT NORMAL COUNT: " + epidemicStatistics.getCurrentNormalCount());
-        System.out.println("CURRENT INFECTED COUNT: " + epidemicStatistics.getCurrentInfectedCount());
-        System.out.println("CURRENT HOSPITALIZED COUNT: " + epidemicStatistics.getCurrentHospitalizedCount());
-        System.out.println("TOTAL INFECTED COUNT: " + epidemicStatistics.getTotalInfectedCount());
-        System.out.println("TOTAL HOSPITALIZED COUNT: " + epidemicStatistics.getTotalHospitalizedCount());
-        System.out.println("TOTAL RECOVERED COUNT: " + epidemicStatistics.getTotalRecoveredCount());
-        System.out.println("TOTAL DEAD COUNT: " + epidemicStatistics.getTotalDeadCount());
+        logger.info("TOTAL RUNNING DAYS: " + iterationEvolution.getCurrentSimulatedDay());
+        logger.info("CURRENT NORMAL COUNT: " + epidemicStatistics.getCurrentNormalCount());
+        logger.info("CURRENT INFECTED COUNT: " + epidemicStatistics.getCurrentInfectedCount());
+        logger.info("CURRENT HOSPITALIZED COUNT: " + epidemicStatistics.getCurrentHospitalizedCount());
+        logger.info("TOTAL INFECTED COUNT: " + epidemicStatistics.getTotalInfectedCount());
+        logger.info("TOTAL HOSPITALIZED COUNT: " + epidemicStatistics.getTotalHospitalizedCount());
+        logger.info("TOTAL RECOVERED COUNT: " + epidemicStatistics.getTotalRecoveredCount());
+        logger.info("TOTAL DEAD COUNT: " + epidemicStatistics.getTotalDeadCount());
     }
 }

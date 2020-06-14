@@ -93,7 +93,7 @@ public class AreaChart {
     }
 
     private int calculateY(BigDecimal count) {
-        final BigDecimal height = new BigDecimal(chartPanel.getHeight());
+        final BigDecimal height = BigDecimal.valueOf(chartPanel.getHeight());
         final BigDecimal total = new BigDecimal(totalItemsCount);
         return count.multiply(height).divide(total, RoundingMode.UP).intValue();
     }
