@@ -28,7 +28,7 @@ class SimulationCoordinatorTest {
     private SimulationCoordinator simulationCoordinator;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         simulationCoordinator = new SimulationCoordinator(
                 simulationProperties,
                 individualProperties,
@@ -41,7 +41,7 @@ class SimulationCoordinatorTest {
     }
 
     @Test
-    public void testGenerateEntirelyHealthyPopulation() {
+    void testGenerateEntirelyHealthyPopulation() {
         // Given
         final int populationSize = 10;
         final int mapStartPoint = 0;
@@ -61,7 +61,7 @@ class SimulationCoordinatorTest {
     }
 
     @Test
-    public void testGenerateEntirelyInfectedPopulation() {
+    void testGenerateEntirelyInfectedPopulation() {
         // Given
         final int populationSize = 10;
         final int mapStartPoint = 0;
@@ -81,7 +81,7 @@ class SimulationCoordinatorTest {
     }
 
     @Test
-    public void testRunSimulation() {
+    void testRunSimulation() {
         // Given
         final EpidemicStatistics iterationEpidemicStatistics = new EpidemicStatistics();
 

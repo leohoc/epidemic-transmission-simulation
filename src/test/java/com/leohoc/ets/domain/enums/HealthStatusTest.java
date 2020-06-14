@@ -103,7 +103,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testRecoveredHealthStatusAllowedToMove() {
+    void testRecoveredHealthStatusAllowedToMove() {
         // Given
         HealthStatus healthStatus = HealthStatus.RECOVERED;
 
@@ -115,7 +115,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testDeadHealthStatusNotAllowedToMove() {
+    void testDeadHealthStatusNotAllowedToMove() {
         // Given
         HealthStatus healthStatus = HealthStatus.DEAD;
 
@@ -127,7 +127,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testNormalHealthStatusHasNotAntibodies() {
+    void testNormalHealthStatusHasNotAntibodies() {
         // Given
         HealthStatus healthStatus = HealthStatus.NORMAL;
 
@@ -139,7 +139,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testInfectedHealthStatusHasAntibodies() {
+    void testInfectedHealthStatusHasAntibodies() {
         // Given
         HealthStatus healthStatus = HealthStatus.INFECTED;
 
@@ -151,7 +151,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testHospitalizedHealthStatusHasAntibodies() {
+    void testHospitalizedHealthStatusHasAntibodies() {
         // Given
         HealthStatus healthStatus = HealthStatus.HOSPITALIZED;
 
@@ -163,7 +163,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testRecoveredHealthStatusHasAntibodies() {
+    void testRecoveredHealthStatusHasAntibodies() {
         // Given
         HealthStatus healthStatus = HealthStatus.RECOVERED;
 
@@ -175,7 +175,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testDeadHealthStatusHasAntibodies() {
+    void testDeadHealthStatusHasAntibodies() {
         // Given
         HealthStatus healthStatus = HealthStatus.DEAD;
 

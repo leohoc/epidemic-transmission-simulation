@@ -11,12 +11,12 @@ class IterationEvolutionTest {
     private IterationEvolution iterationEvolution;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         iterationEvolution = new IterationEvolution(generateIterationsProperties());
     }
 
     @Test
-    public void testIterate() {
+    void testIterate() {
         // Given
         iterationEvolution.setCurrentIteration(10);
 
@@ -29,7 +29,7 @@ class IterationEvolutionTest {
     }
 
     @Test
-    public void testGetCurrentSimulatedDays() {
+    void testGetCurrentSimulatedDays() {
         // Given
         iterationEvolution.setCurrentIteration(50);
 
@@ -42,7 +42,7 @@ class IterationEvolutionTest {
     }
 
     @Test
-    public void testSimulationFinished() {
+    void testSimulationFinished() {
         // Given
         iterationEvolution.setCurrentIteration(101);
 
@@ -54,7 +54,7 @@ class IterationEvolutionTest {
     }
 
     @Test
-    public void testSimulationNotFinished() {
+    void testSimulationNotFinished() {
         // Given
         iterationEvolution.setCurrentIteration(60);
 

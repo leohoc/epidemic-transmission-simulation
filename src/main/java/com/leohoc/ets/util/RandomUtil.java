@@ -8,8 +8,8 @@ public class RandomUtil {
     private static final int HUNDRED_PERCENT = 100;
     private static final Random random = new Random();
 
-    public static int generatePercent() {
-        return random.nextInt(HUNDRED_PERCENT);
+    private RandomUtil() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static double generatePercentWithTwoDigitsScale() {

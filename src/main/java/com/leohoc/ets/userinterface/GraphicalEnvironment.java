@@ -28,7 +28,6 @@ public class GraphicalEnvironment {
     private static final String TOTAL_RECOVERED = "Total recovered: %s";
     private static final String TOTAL_DEAD = "Total dead: %s";
 
-    private JFrame jFrame = null;
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
     private final SimulationGraphicsProperties graphicsProperties;
@@ -45,7 +44,7 @@ public class GraphicalEnvironment {
                            final IterationEvolution iterationEvolution,
                            final EpidemicStatistics epidemicStatistics) {
         final int totalWidth = graphicsProperties.getMapWidth() + graphicsProperties.getAreaChartWidth();
-        jFrame = new JFrame();
+        JFrame jFrame = new JFrame();
         jFrame.setSize(totalWidth, graphicsProperties.getMapHeight());
         jFrame.setContentPane(getJContentPane(population, iterationEvolution, epidemicStatistics));
         jFrame.setTitle(TITLE);

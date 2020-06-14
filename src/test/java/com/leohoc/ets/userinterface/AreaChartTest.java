@@ -16,7 +16,7 @@ class AreaChartTest {
     private static final int BOUNDARY_LINE_COUNT = 2;
 
     @Test
-    public void testDraw() {
+    void testDraw() {
         // Given
         Rectangle chartPanel = buildChartPanel();
         HashMap<Integer, List<AreaChartElement>> iterationsContent = buildIterationsContent();

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DirectionMovementTest {
 
     @Test
-    public void testRandomDirectionMovementWithHundredPercentSocialIsolation() {
+    void testRandomDirectionMovementWithHundredPercentSocialIsolation() {
         // Given
         final double socialIsolationPercent = 100.0;
 
@@ -19,7 +19,7 @@ class DirectionMovementTest {
     }
 
     @Test
-    public void testRandomDirectionMovementWithZeroPercentSocialIsolation() {
+    void testRandomDirectionMovementWithZeroPercentSocialIsolation() {
         // Given
         final double socialIsolationPercent = 0.0;
 

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HealthConditionTest {
 
     @Test
-    public void testHospitalizationNeedVerified() {
+    void testHospitalizationNeedVerified() {
         // Given
         HealthCondition healthCondition = new HealthCondition(HealthStatus.INFECTED);
 

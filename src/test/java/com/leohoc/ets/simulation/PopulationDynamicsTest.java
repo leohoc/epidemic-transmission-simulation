@@ -20,7 +20,7 @@ class PopulationDynamicsTest {
     private static final int ONE_COUNT = 1;
 
     @Test
-    public void testExecuteDynamicsIteration() {
+    void testExecuteDynamicsIteration() {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
         MovementBehavior movementBehavior = mock(MovementBehavior.class);
@@ -45,7 +45,7 @@ class PopulationDynamicsTest {
     }
 
     @Test
-    public void testExecuteDynamicsIterationWithHospitalization() {
+    void testExecuteDynamicsIterationWithHospitalization() {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
         MovementBehavior movementBehavior = mock(MovementBehavior.class);

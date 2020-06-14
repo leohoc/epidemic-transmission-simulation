@@ -18,7 +18,7 @@ class MovementBehaviorTest {
     private static final int FINAL_POINT = 10;
 
     @Test
-    public void testAdjustDirectionWithoutChangingIt() {
+    void testAdjustDirectionWithoutChangingIt() {
         // Given
         DirectionMovement currentDirectionMovement = DirectionMovement.RIGHT;
         Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, generateIndividualProperties());
@@ -33,7 +33,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testAdjustDirectionChangingIt() {
+    void testAdjustDirectionChangingIt() {
         // Given
         DirectionMovement currentDirectionMovement = DirectionMovement.LEFT;
         Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, generateIndividualProperties());
@@ -50,7 +50,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testChangeDirectionByReachingLeftMapBoundary() {
+    void testChangeDirectionByReachingLeftMapBoundary() {
         // Given
         Individual individual = new Individual(INITIAL_POINT, MIDDLE_POINT, DirectionMovement.LEFT, generateIndividualProperties());
         MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
@@ -64,7 +64,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testChangeDirectionByReachingRightMapBoundary() {
+    void testChangeDirectionByReachingRightMapBoundary() {
         // Given
         Individual individual = new Individual(FINAL_POINT, MIDDLE_POINT, DirectionMovement.RIGHT, generateIndividualProperties());
         MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
@@ -78,7 +78,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testChangeDirectionByReachingUpMapBoundary() {
+    void testChangeDirectionByReachingUpMapBoundary() {
         // Given
         Individual individual = new Individual(MIDDLE_POINT, INITIAL_POINT, DirectionMovement.UP, generateIndividualProperties());
         MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
@@ -92,7 +92,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testChangeDirectionByReachingDownMapBoundary() {
+    void testChangeDirectionByReachingDownMapBoundary() {
         // Given
         Individual individual = new Individual(MIDDLE_POINT, FINAL_POINT, DirectionMovement.DOWN, generateIndividualProperties());
         MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
@@ -106,7 +106,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testShouldChangeDirectionWithZeroPercentChance() {
+    void testShouldChangeDirectionWithZeroPercentChance() {
         // Given
         SimulationMovementProperties movementProperties = mock(SimulationMovementProperties.class);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties);
@@ -120,7 +120,7 @@ class MovementBehaviorTest {
     }
 
     @Test
-    public void testShouldChangeDirectionWithOneHundredPercentChance() {
+    void testShouldChangeDirectionWithOneHundredPercentChance() {
         // Given
         SimulationMovementProperties movementProperties = mock(SimulationMovementProperties.class);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties);

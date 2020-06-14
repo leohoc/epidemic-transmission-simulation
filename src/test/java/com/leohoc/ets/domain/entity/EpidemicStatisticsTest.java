@@ -13,7 +13,7 @@ class EpidemicStatisticsTest {
     private static final int TWO_COUNT = 2;
 
     @Test
-    public void testUpdateStatisticsWithNormalHealthStatus() {
+    void testUpdateStatisticsWithNormalHealthStatus() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
         HealthStatus healthStatus = HealthStatus.NORMAL;
@@ -30,7 +30,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testUpdateStatisticsWithInfectedHealthStatus() {
+    void testUpdateStatisticsWithInfectedHealthStatus() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
         HealthStatus healthStatus = HealthStatus.INFECTED;
@@ -47,7 +47,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testUpdateStatisticsWithHospitalizedStatus() {
+    void testUpdateStatisticsWithHospitalizedStatus() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
         HealthStatus healthStatus = HealthStatus.HOSPITALIZED;
@@ -64,7 +64,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testUpdateStatisticsWithRecoveredHealthStatus() {
+    void testUpdateStatisticsWithRecoveredHealthStatus() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
         HealthStatus healthStatus = HealthStatus.RECOVERED;
@@ -81,7 +81,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testUpdateStatisticsWithDeadHealthStatus() {
+    void testUpdateStatisticsWithDeadHealthStatus() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
         HealthStatus healthStatus = HealthStatus.DEAD;
@@ -98,7 +98,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testUpdateTotalHospitalizedCount() {
+    void testUpdateTotalHospitalizedCount() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
 
@@ -110,7 +110,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testGetTotalInfectedCount() {
+    void testGetTotalInfectedCount() {
         // Given
         EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
 
@@ -126,7 +126,7 @@ class EpidemicStatisticsTest {
     }
 
     @Test
-    public void testUpdateAllStatistics() {
+    void testUpdateAllStatistics() {
         // Given
         EpidemicStatistics totalEpidemicStatistics = new EpidemicStatistics();
         totalEpidemicStatistics.updateStatistics(HealthStatus.NORMAL);

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HealthSystemResourcesTest {
 
     @Test
-    public void testHasAvailableICUBeds() {
+    void testHasAvailableICUBeds() {
         // Given
         final int availableICUBeds = 1;
         HealthSystemResources healthSystemResource = new HealthSystemResources(availableICUBeds);
@@ -20,7 +20,7 @@ class HealthSystemResourcesTest {
     }
 
     @Test
-    public void testHasNotAvailableICUBeds() {
+    void testHasNotAvailableICUBeds() {
         // Given
         final int availableICUBeds = 0;
         HealthSystemResources healthSystemResource = new HealthSystemResources(availableICUBeds);
@@ -33,7 +33,7 @@ class HealthSystemResourcesTest {
     }
 
     @Test
-    public void testFillICUBed() {
+    void testFillICUBed() {
         // Given
         final int availableICUBeds = 5;
         HealthSystemResources healthSystemResource = new HealthSystemResources(availableICUBeds);
@@ -47,7 +47,7 @@ class HealthSystemResourcesTest {
     }
 
     @Test
-    public void testReleaseICUBed() {
+    void testReleaseICUBed() {
         // Given
         final int availableICUBeds = 5;
         HealthSystemResources healthSystemResource = new HealthSystemResources(availableICUBeds);

@@ -15,7 +15,7 @@ class IndividualTest {
     private static final int INITIAL_Y = 0;
 
     @Test
-    public void testLivingIndividualMovement() {
+    void testLivingIndividualMovement() {
         // Given
         DirectionMovement newDirectionMovement = DirectionMovement.RIGHT;
         Individual individual = spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties()));
@@ -31,7 +31,7 @@ class IndividualTest {
     }
 
     @Test
-    public void testDeadIndividualMovement() {
+    void testDeadIndividualMovement() {
         // Given
         DirectionMovement newDirectionMovement = DirectionMovement.RIGHT;
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
@@ -48,7 +48,7 @@ class IndividualTest {
     }
 
     @Test
-    public void testIndividualGotInfected() {
+    void testIndividualGotInfected() {
         // Given
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
 
@@ -60,7 +60,7 @@ class IndividualTest {
     }
 
     @Test
-    public void testIndividualGotHospitalized() {
+    void testIndividualGotHospitalized() {
         // Given
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
 
@@ -72,7 +72,7 @@ class IndividualTest {
     }
 
     @Test
-    public void testIndividualDied() {
+    void testIndividualDied() {
         // Given
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties());
 
@@ -86,7 +86,7 @@ class IndividualTest {
     }
 
     @Test
-    public void testIndividualRecovered() {
+    void testIndividualRecovered() {
         // Given
         Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties());
 
@@ -101,7 +101,7 @@ class IndividualTest {
 
 
     @Test
-    public void testIndividualCrossedWayWithPasserBy() {
+    void testIndividualCrossedWayWithPasserBy() {
         // Given
         int individualX = 0;
         int individualY = 0;
@@ -120,7 +120,7 @@ class IndividualTest {
     }
 
     @Test
-    public void testIndividualHasNotCrossedWayWithPasserBy() {
+    void testIndividualHasNotCrossedWayWithPasserBy() {
         // Given
         int individualX = 0;
         int individualY = 0;

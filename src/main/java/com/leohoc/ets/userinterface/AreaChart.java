@@ -3,8 +3,8 @@ package com.leohoc.ets.userinterface;
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AreaChart {
 
@@ -13,13 +13,13 @@ public class AreaChart {
     private final Rectangle chartPanel;
     private final long totalIterations;
     private final int totalItemsCount;
-    private final HashMap<Integer, List<AreaChartElement>> iterationsContent;
+    private final Map<Integer, List<AreaChartElement>> iterationsContent;
     private final int boundaryLineCount;
 
     public AreaChart(final Rectangle chartPanel,
                      final long totalIterations,
                      final int totalItemsCount,
-                     final HashMap<Integer, List<AreaChartElement>> iterationsContent,
+                     final Map<Integer, List<AreaChartElement>> iterationsContent,
                      final int boundaryLineCount) {
         this.chartPanel = chartPanel;
         this.totalIterations = totalIterations;
@@ -40,7 +40,7 @@ public class AreaChart {
         return totalItemsCount;
     }
 
-    protected HashMap<Integer, List<AreaChartElement>> getIterationsContent() {
+    protected Map<Integer, List<AreaChartElement>> getIterationsContent() {
         return iterationsContent;
     }
 

@@ -24,13 +24,13 @@ class DiseaseBehaviorTest {
     private HealthSystemResources healthSystemResources;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         healthSystemResources = mock(HealthSystemResources.class);
         diseaseBehavior = spy(new DiseaseBehavior(generateEpidemicProperties(), healthSystemResources));
     }
 
     @Test
-    public void testUpdateHealthConditionGivenUninfectedIndividual() {
+    void testUpdateHealthConditionGivenUninfectedIndividual() {
         // Given
         Individual individual = buildIndividual();
 
@@ -44,7 +44,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionGivenInfectedIndividualBeforeReachingRecoveryTime() {
+    void testUpdateHealthConditionGivenInfectedIndividualBeforeReachingRecoveryTime() {
         // Given
         Individual individual = buildIndividual();
         individual.gotInfected(SIMULATION_START_DAY);
@@ -59,7 +59,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionFromInfectedToRecovered() {
+    void testUpdateHealthConditionFromInfectedToRecovered() {
         // Given
         Integer currentSimulatedDay = 15;
         Individual individual = buildIndividual();
@@ -75,7 +75,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionFromHospitalizedToRecovered() {
+    void testUpdateHealthConditionFromHospitalizedToRecovered() {
         // Given
         Integer currentSimulatedDay = 15;
         Individual individual = buildIndividual();
@@ -92,7 +92,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionFromInfectedToDead() {
+    void testUpdateHealthConditionFromInfectedToDead() {
         // Given
         Integer currentSimulatedDay = 15;
         Individual individual = buildIndividual();
@@ -108,7 +108,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionFromHospitalizedToDead() {
+    void testUpdateHealthConditionFromHospitalizedToDead() {
         // Given
         Integer currentSimulatedDay = 15;
         Individual individual = buildIndividual();
@@ -125,7 +125,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionToHospitalized() {
+    void testUpdateHealthConditionToHospitalized() {
         // Given
         Integer currentSimulatedDay = 7;
         Individual individual = buildIndividual();
@@ -143,7 +143,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionToDeadDueToICUBedUnavailability() {
+    void testUpdateHealthConditionToDeadDueToICUBedUnavailability() {
         // Given
         Integer currentSimulatedDay = 7;
         Individual individual = buildIndividual();
@@ -160,7 +160,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testUpdateHealthConditionShouldNotBeHospitalized() {
+    void testUpdateHealthConditionShouldNotBeHospitalized() {
         // Given
         Integer currentSimulatedDay = 7;
         Individual individual = buildIndividual();
@@ -176,7 +176,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testInteractionBetweenHealthyIndividualAndInfectedPasserby() {
+    void testInteractionBetweenHealthyIndividualAndInfectedPasserby() {
         // Given
         Individual individual = buildIndividual();
         Individual passerby = buildIndividual();
@@ -192,7 +192,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testInteractionBetweenRecoveredIndividualAndInfectedPasserby() {
+    void testInteractionBetweenRecoveredIndividualAndInfectedPasserby() {
         // Given
         Individual individual = buildIndividual();
         individual.recovered(SIMULATION_START_DAY);
@@ -209,7 +209,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testInteractionBetweenDeadIndividualAndInfectedPasserby() {
+    void testInteractionBetweenDeadIndividualAndInfectedPasserby() {
         // Given
         Individual individual = buildIndividual();
         individual.died(SIMULATION_START_DAY);
@@ -226,7 +226,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testInteractionBetweenInfectedIndividualAndInfectedPasserby() {
+    void testInteractionBetweenInfectedIndividualAndInfectedPasserby() {
         // Given
         Individual individual = buildIndividual();
         individual.gotInfected(SIMULATION_START_DAY);
@@ -243,7 +243,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testInteractionBetweenIndividualAndHealthyPasserby() {
+    void testInteractionBetweenIndividualAndHealthyPasserby() {
         // Given
         Individual individual = buildIndividual();
         Individual passerby = buildIndividual();
@@ -258,7 +258,7 @@ class DiseaseBehaviorTest {
     }
 
     @Test
-    public void testInteractionBetweenHealthyIndividualAndInfectedPasserbyWithoutCrossingWays() {
+    void testInteractionBetweenHealthyIndividualAndInfectedPasserbyWithoutCrossingWays() {
         // Given
         Individual individual = buildIndividual();
         Individual passerby = buildIndividual(POINT_B_X, POINT_B_Y);

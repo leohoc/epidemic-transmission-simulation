@@ -27,7 +27,7 @@ class GraphicalEnvironmentTest {
     private static final int AVAILABLE_BEDS = 2;
 
     @Test
-    public void testDrawHealthyIndividual() {
+    void testDrawHealthyIndividual() {
         // Given
         Individual individual = buildIndividual();
         GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
@@ -42,7 +42,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testDrawInfectedIndividual() {
+    void testDrawInfectedIndividual() {
         // Given
         Individual individual = buildIndividual();
         individual.gotInfected(CURRENT_SIMULATED_DAY);
@@ -58,7 +58,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testDrawHospitalizedIndividual() {
+    void testDrawHospitalizedIndividual() {
         // Given
         Individual individual = buildIndividual();
         individual.gotHospitalized(CURRENT_SIMULATED_DAY);
@@ -74,7 +74,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testDrawRecoveredIndividual() {
+    void testDrawRecoveredIndividual() {
         // Given
         Individual individual = buildIndividual();
         individual.recovered(CURRENT_SIMULATED_DAY);
@@ -90,7 +90,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testDrawDeadIndividual() {
+    void testDrawDeadIndividual() {
         // Given
         Individual individual = buildIndividual();
         individual.died(CURRENT_SIMULATED_DAY);
@@ -106,7 +106,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testBuildAreaChartContent() {
+    void testBuildAreaChartContent() {
         // Given
         GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(generateGraphicsProperties(), AVAILABLE_BEDS);
         EpidemicStatistics epidemicStatistics = buildEpidemicStatistics();
@@ -128,7 +128,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testDrawChartPanel() {
+    void testDrawChartPanel() {
         // Given
         SimulationGraphicsProperties properties = generateGraphicsProperties();
         GraphicalEnvironment graphicalEnvironment = Mockito.spy(new GraphicalEnvironment(properties, AVAILABLE_BEDS));
@@ -155,7 +155,7 @@ class GraphicalEnvironmentTest {
     }
 
     @Test
-    public void testBuildAreaChart() {
+    void testBuildAreaChart() {
         // Given
         IterationEvolution iterationEvolution = new IterationEvolution(generateIterationsProperties());
         SimulationGraphicsProperties properties = generateGraphicsProperties();
