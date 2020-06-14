@@ -30,6 +30,28 @@ test {
 	useJUnitPlatform()
 }
 
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			element = 'CLASS'
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.7
+			}
+			excludes = [
+					'com.leohoc.ets.infrastructure.config.*',
+					'com.leohoc.ets.ETSApplication',
+					'com.leohoc.ets.userinterface.GraphicalEnvironment.*',
+					'com.leohoc.ets.util.RandomUtil'
+			]
+		}
+	}
+}
+
+check.dependsOn jacocoTestCoverageVerification
+
+
 task fatJar(type: Jar) {
 	zip64 true
 	manifest {
