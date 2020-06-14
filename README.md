@@ -10,7 +10,7 @@ A JAVA simulation of the dynamics of an epidemic disease spread.
 
 ### Introduction
 
-Given an initial population moving within a map boundaries and a set of parameters describing the disease spread 
+Given an initial population moving within a delimited map and a set of parameters describing the disease spread 
 and the population dynamics behavior, this application will perform a simulation and output the following results:
 
 - Not exposed to the disease count;
@@ -87,7 +87,7 @@ overlaps another individual with no antibodies in the simulation map.
 The simulation takes place in a 2D map with an X and a Y axis. To confine the population in a finite map, the boundary
 properties sets the limits of the individuals' movement.
 
-To match the inverted Y axis of the Java AWS lib, the Y axis starts in the `simulation.movement.boundary.up` point and
+To match the inverted Y axis of the Java AWT lib, the Y axis starts in the `simulation.movement.boundary.up` point and
 **increases** downward until the `simulation.movement.boundary.down` point.
 
 At each iteration, the individuals can choose to maintain its direction, change its direction or to stand still.
@@ -96,7 +96,7 @@ At each iteration, the individuals can choose to maintain its direction, change 
 |--------------------------------------------|---------|-----------------------------------------------------------------------|
 | simulation.movement.boundary.up            | Integer | Upper limit of the map Y axis.                                        |
 | simulation.movement.boundary.right         | Integer | Right limit of the map X axis.                                        |
-| simulation.movement.boundary.down          | Integer | Lower limit of the map y axis.                                        |
+| simulation.movement.boundary.down          | Integer | Lower limit of the map Y axis.                                        |
 | simulation.movement.boundary.left          | Integer | Left limit of the map X axis.                                         |
 | simulation.movement.changeprobability      | Double  | Probability of an individual change its direction at each iteration.  |
 | simulation.movement.socialisolationpercent | Double  | Probability of an individual choose to stand still at each iteration. |
@@ -123,7 +123,7 @@ After a configured number of days, *infected* and *hospitalized* individuals wil
 
 #### Health System Properties
 
-When an individual needs hospitalization, it will fill one the available ICUs beds, releasing it after it's recovery 
+When an individual needs hospitalization, it will fill one of the available ICUs beds, releasing it after it's recovery 
 time. If there is no bed available when an individual needs, it will change its status to *died* instead of 
 *hospitalized*.
 
