@@ -4,7 +4,7 @@ import com.leohoc.ets.domain.enums.HealthStatus;
 
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.HashMap;
+import java.util.Map;
 
 public class EpidemicStatistics {
 
@@ -59,7 +59,7 @@ public class EpidemicStatistics {
         this.totalHospitalizedCount += epidemicStatistics.totalHospitalizedCount;
     }
 
-    public EnumMap getCurrentHealthStatusStatistic() {
+    public EnumMap<HealthStatus, Integer> getCurrentHealthStatusStatistic() {
         return currentHealthStatusStatistic;
     }
 }

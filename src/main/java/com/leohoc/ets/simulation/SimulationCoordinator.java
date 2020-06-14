@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class SimulationCoordinator {
 
-    private static final Logger logger = Logger.getLogger(SimulationCoordinator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SimulationCoordinator.class.getName());
 
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
     private final List<Individual> population = new ArrayList<>();
@@ -103,13 +103,13 @@ public class SimulationCoordinator {
     }
 
     private void printStatistics() {
-        logger.info("TOTAL RUNNING DAYS: " + iterationEvolution.getCurrentSimulatedDay());
-        logger.info("CURRENT NORMAL COUNT: " + epidemicStatistics.getCurrentNormalCount());
-        logger.info("CURRENT INFECTED COUNT: " + epidemicStatistics.getCurrentInfectedCount());
-        logger.info("CURRENT HOSPITALIZED COUNT: " + epidemicStatistics.getCurrentHospitalizedCount());
-        logger.info("TOTAL INFECTED COUNT: " + epidemicStatistics.getTotalInfectedCount());
-        logger.info("TOTAL HOSPITALIZED COUNT: " + epidemicStatistics.getTotalHospitalizedCount());
-        logger.info("TOTAL RECOVERED COUNT: " + epidemicStatistics.getTotalRecoveredCount());
-        logger.info("TOTAL DEAD COUNT: " + epidemicStatistics.getTotalDeadCount());
+        LOGGER.info("TOTAL RUNNING DAYS: " + iterationEvolution.getCurrentSimulatedDay());
+        LOGGER.info("CURRENT NORMAL COUNT: " + epidemicStatistics.getCurrentNormalCount());
+        LOGGER.info("CURRENT INFECTED COUNT: " + epidemicStatistics.getCurrentInfectedCount());
+        LOGGER.info("CURRENT HOSPITALIZED COUNT: " + epidemicStatistics.getCurrentHospitalizedCount());
+        LOGGER.info("TOTAL INFECTED COUNT: " + epidemicStatistics.getTotalInfectedCount());
+        LOGGER.info("TOTAL HOSPITALIZED COUNT: " + epidemicStatistics.getTotalHospitalizedCount());
+        LOGGER.info("TOTAL RECOVERED COUNT: " + epidemicStatistics.getTotalRecoveredCount());
+        LOGGER.info("TOTAL DEAD COUNT: " + epidemicStatistics.getTotalDeadCount());
     }
 }

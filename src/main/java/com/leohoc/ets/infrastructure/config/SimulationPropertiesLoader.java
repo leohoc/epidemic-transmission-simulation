@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
@@ -11,6 +13,8 @@ import static java.lang.Integer.parseInt;
 
 public class SimulationPropertiesLoader {
 
+    private static final Logger LOGGER = Logger.getLogger(SimulationPropertiesLoader.class.getName());
+    private static final String PROPERTIES_FILE_ERROR = "Error loading properties file";
     private static final String PROPERTIES_FILE_PATH = "src/main/resources/application.properties";
     private static final Properties properties = new Properties();
 
@@ -18,7 +22,7 @@ public class SimulationPropertiesLoader {
         try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH)) {
             properties.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, PROPERTIES_FILE_ERROR, e);
         }
     }
 

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HealthStatusTest {
 
     @Test
-    public void testNormalHealthStatusNotInfected() {
+    void testNormalHealthStatusNotInfected() {
         // Given
         HealthStatus healthStatus = HealthStatus.NORMAL;
 
@@ -19,7 +19,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testInfectedHealthStatusInfected() {
+    void testInfectedHealthStatusInfected() {
         // Given
         HealthStatus healthStatus = HealthStatus.INFECTED;
 
@@ -31,7 +31,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testHospitalizedHealthStatusInfected() {
+    void testHospitalizedHealthStatusInfected() {
         // Given
         HealthStatus healthStatus = HealthStatus.HOSPITALIZED;
 
@@ -43,7 +43,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testRecoveredHealthStatusNotInfected() {
+    void testRecoveredHealthStatusNotInfected() {
         // Given
         HealthStatus healthStatus = HealthStatus.RECOVERED;
 
@@ -55,7 +55,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testDeadHealthStatusNotInfected() {
+    void testDeadHealthStatusNotInfected() {
         // Given
         HealthStatus healthStatus = HealthStatus.DEAD;
 
@@ -67,7 +67,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testNormalHealthStatusAllowedToMove() {
+    void testNormalHealthStatusAllowedToMove() {
         // Given
         HealthStatus healthStatus = HealthStatus.NORMAL;
 
@@ -79,7 +79,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testInfectedHealthStatusAllowedToMove() {
+    void testInfectedHealthStatusAllowedToMove() {
         // Given
         HealthStatus healthStatus = HealthStatus.INFECTED;
 
@@ -91,7 +91,7 @@ class HealthStatusTest {
     }
 
     @Test
-    public void testHospitalizedHealthStatusNotAllowedToMove() {
+    void testHospitalizedHealthStatusNotAllowedToMove() {
         // Given
         HealthStatus healthStatus = HealthStatus.HOSPITALIZED;
 

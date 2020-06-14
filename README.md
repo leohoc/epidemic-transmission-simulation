@@ -1,4 +1,10 @@
 # EPIDEMIC-TRANSMISSION-SIMULATION
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=leohoc_epidemic-transmission-simulation&metric=coverage)](https://sonarcloud.io/dashboard?id=leohoc_epidemic-transmission-simulation)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=leohoc_epidemic-transmission-simulation&metric=alert_status)](https://sonarcloud.io/dashboard?id=leohoc_epidemic-transmission-simulation)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=leohoc_epidemic-transmission-simulation&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=leohoc_epidemic-transmission-simulation)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=leohoc_epidemic-transmission-simulation&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=leohoc_epidemic-transmission-simulation)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=leohoc_epidemic-transmission-simulation&metric=security_rating)](https://sonarcloud.io/dashboard?id=leohoc_epidemic-transmission-simulation)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=leohoc_epidemic-transmission-simulation&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=leohoc_epidemic-transmission-simulation)
 
 A JAVA simulation of the dynamics of an epidemic disease spread.
 
