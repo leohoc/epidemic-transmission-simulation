@@ -1,16 +1,16 @@
 package com.leohoc.ets.infrastructure.config;
 
-public class SimulationEpidemicProperties {
+public class EpidemicProperties {
 
     private final int recoveryDays;
     private final double deathPercentage;
     private final double hospitalizationPercentage;
     private final int hospitalizationDays;
 
-    public SimulationEpidemicProperties(final int recoveryDays,
-                                        final double deathPercentage,
-                                        final double hospitalizationPercentage,
-                                        final int hospitalizationDays) {
+    public EpidemicProperties(final int recoveryDays,
+                              final double deathPercentage,
+                              final double hospitalizationPercentage,
+                              final int hospitalizationDays) {
         this.recoveryDays = recoveryDays;
         this.deathPercentage = deathPercentage;
         this.hospitalizationPercentage = hospitalizationPercentage;

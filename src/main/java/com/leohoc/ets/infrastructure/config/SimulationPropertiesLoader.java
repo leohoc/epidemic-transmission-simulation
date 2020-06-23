@@ -33,58 +33,62 @@ public class SimulationPropertiesLoader {
         return new SimulationProperties(populationSize, initialInfectedPercent, graphicsEnabled);
     }
 
-    public SimulationIterationsProperties loadIterationsProperties() {
+    public IterationsProperties loadIterationsProperties() {
         final int totalIterations = parseInt(properties.getProperty("simulation.iterations.totaliterations"));
         final int iterationsPerDay = parseInt(properties.getProperty("simulation.iterations.iterationsperday"));
-        return new SimulationIterationsProperties(totalIterations, iterationsPerDay);
+        return new IterationsProperties(totalIterations, iterationsPerDay);
     }
 
-    public SimulationEpidemicProperties loadEpidemicProperties() {
+    public EpidemicProperties loadEpidemicProperties() {
         final int recoveryDays = parseInt(properties.getProperty("simulation.epidemic.recoverydays"));
         final double deathPercentage = parseDouble(properties.getProperty("simulation.epidemic.deathpercentage"));
         final double hospitalizationPercentage = parseDouble(properties.getProperty("simulation.epidemic.hospitalizationpercentage"));
         final int hospitalizationDays = parseInt(properties.getProperty("simulation.epidemic.hospitalizationdays"));
-        return new SimulationEpidemicProperties(recoveryDays, deathPercentage, hospitalizationPercentage, hospitalizationDays);
+        return new EpidemicProperties(recoveryDays, deathPercentage, hospitalizationPercentage, hospitalizationDays);
     }
 
-    public SimulationIndividualProperties loadIndividualProperties() {
+    public IndividualProperties loadIndividualProperties() {
         final int individualWidth = parseInt(properties.getProperty("simulation.individual.width"));
         final int individualHeight = parseInt(properties.getProperty("simulation.individual.height"));
-        return new SimulationIndividualProperties(individualWidth, individualHeight);
+        return new IndividualProperties(individualWidth, individualHeight);
     }
 
-    public SimulationMovementProperties loadMovementProperties() {
+    public MovementProperties loadMovementProperties() {
         final int upBoundary = parseInt(properties.getProperty("simulation.movement.boundary.up"));
         final int rightBoundary = parseInt(properties.getProperty("simulation.movement.boundary.right"));
         final int downBoundary = parseInt(properties.getProperty("simulation.movement.boundary.down"));
         final int leftBoundary = parseInt(properties.getProperty("simulation.movement.boundary.left"));
         final double directionChangeProbability = parseDouble(properties.getProperty("simulation.movement.changeprobability"));
         final double socialIsolationPercent = parseDouble(properties.getProperty("simulation.movement.socialisolationpercent"));
-        return new SimulationMovementProperties(upBoundary, rightBoundary, downBoundary, leftBoundary, directionChangeProbability, socialIsolationPercent);
+        return new MovementProperties(upBoundary, rightBoundary, downBoundary, leftBoundary, directionChangeProbability, socialIsolationPercent);
     }
 
-    public SimulationGraphicsProperties loadGraphicsProperties() {
+    public GraphicsProperties loadGraphicsProperties() {
+
         final int mapWidth = parseInt(properties.getProperty("simulation.graphics.map.width"));
         final int mapHeight = parseInt(properties.getProperty("simulation.graphics.map.height"));
         final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
         final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
+
         final int currentInfoX = parseInt(properties.getProperty("simulation.graphics.info.current.x"));
         final int currentNotExposedY = parseInt(properties.getProperty("simulation.graphics.info.current.notexposed.y"));
         final int currentInfectedY = parseInt(properties.getProperty("simulation.graphics.info.current.infected.y"));
         final int currentHospitalizedY = parseInt(properties.getProperty("simulation.graphics.info.current.hospitalized.y"));
         final int currentSimulationDayY = parseInt(properties.getProperty("simulation.graphics.info.current.simulationday.y"));
+        final CurrentInfoLocation currentInfoLocation = new CurrentInfoLocation(currentInfoX, currentNotExposedY, currentInfectedY, currentHospitalizedY, currentSimulationDayY);
+
         final int totalInfoX = parseInt(properties.getProperty("simulation.graphics.info.total.x"));
         final int totalInfectedY = parseInt(properties.getProperty("simulation.graphics.info.total.infected.y"));
         final int totalHospitalizedY = parseInt(properties.getProperty("simulation.graphics.info.total.hospitalized.y"));
         final int totalRecoveredY = parseInt(properties.getProperty("simulation.graphics.info.total.recovered.y"));
         final int totalDeadY = parseInt(properties.getProperty("simulation.graphics.info.total.dead.y"));
-        return new SimulationGraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight,
-                currentInfoX, currentNotExposedY, currentInfectedY, currentHospitalizedY, currentSimulationDayY,
-                totalInfoX, totalInfectedY, totalHospitalizedY, totalRecoveredY, totalDeadY);
+        final TotalInfoLocation totalInfoLocation = new TotalInfoLocation(totalInfoX, totalInfectedY, totalHospitalizedY, totalRecoveredY, totalDeadY);
+
+        return new GraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, currentInfoLocation, totalInfoLocation);
     }
 
-    public SimulationHealthSystemCapacityProperties loadHealthSystemCapacityProperties() {
+    public HealthSystemCapacityProperties loadHealthSystemCapacityProperties() {
         final int availableBeds = parseInt(properties.getProperty("simulation.healthsystem.icus.availablebeds"));
-        return new SimulationHealthSystemCapacityProperties(availableBeds);
+        return new HealthSystemCapacityProperties(availableBeds);
     }
 }

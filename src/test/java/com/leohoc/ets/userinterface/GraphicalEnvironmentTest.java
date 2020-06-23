@@ -5,7 +5,7 @@ import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
+import com.leohoc.ets.infrastructure.config.GraphicsProperties;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -130,7 +130,7 @@ class GraphicalEnvironmentTest {
     @Test
     void testDrawChartPanel() {
         // Given
-        SimulationGraphicsProperties properties = generateGraphicsProperties();
+        GraphicsProperties properties = generateGraphicsProperties();
         GraphicalEnvironment graphicalEnvironment = Mockito.spy(new GraphicalEnvironment(properties, AVAILABLE_BEDS));
         IterationEvolution iterationEvolution = new IterationEvolution(generateIterationsProperties());
         EpidemicStatistics epidemicStatistics = buildEpidemicStatistics();
@@ -158,7 +158,7 @@ class GraphicalEnvironmentTest {
     void testBuildAreaChart() {
         // Given
         IterationEvolution iterationEvolution = new IterationEvolution(generateIterationsProperties());
-        SimulationGraphicsProperties properties = generateGraphicsProperties();
+        GraphicsProperties properties = generateGraphicsProperties();
         GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(properties, AVAILABLE_BEDS);
 
         // When

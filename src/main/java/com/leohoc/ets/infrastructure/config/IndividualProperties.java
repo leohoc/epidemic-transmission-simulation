@@ -1,12 +1,12 @@
 package com.leohoc.ets.infrastructure.config;
 
-public class SimulationIndividualProperties {
+public class IndividualProperties {
 
     private final int individualWidth;
     private final int individualHeight;
 
-    public SimulationIndividualProperties(final int individualWidth,
-                                          final int individualHeight) {
+    public IndividualProperties(final int individualWidth,
+                                final int individualHeight) {
         this.individualWidth = individualWidth;
         this.individualHeight = individualHeight;
     }

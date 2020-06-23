@@ -1,11 +1,11 @@
 package com.leohoc.ets.infrastructure.config;
 
-public class SimulationIterationsProperties {
+public class IterationsProperties {
 
     private final int totalIterations;
     private final int iterationsPerDay;
 
-    public SimulationIterationsProperties(final int totalIterations, final int iterationsPerDay) {
+    public IterationsProperties(final int totalIterations, final int iterationsPerDay) {
         this.totalIterations = totalIterations;
         this.iterationsPerDay = iterationsPerDay;
     }

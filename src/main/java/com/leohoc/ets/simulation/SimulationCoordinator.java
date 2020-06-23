@@ -17,7 +17,7 @@ public class SimulationCoordinator {
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
     private final List<Individual> population = new ArrayList<>();
     private final SimulationProperties simulationProperties;
-    private final SimulationIndividualProperties individualProperties;
+    private final IndividualProperties individualProperties;
     private final IterationEvolution iterationEvolution;
     private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
@@ -25,7 +25,7 @@ public class SimulationCoordinator {
     private final EpidemicStatistics epidemicStatistics;
 
     public SimulationCoordinator(final SimulationProperties simulationProperties,
-                                 final SimulationIndividualProperties individualProperties,
+                                 final IndividualProperties individualProperties,
                                  final IterationEvolution iterationEvolution,
                                  final PopulationDynamics populationDynamics,
                                  final GraphicalEnvironment graphicalEnvironment,

@@ -1,10 +1,10 @@
 package com.leohoc.ets.infrastructure.config;
 
-public class SimulationHealthSystemCapacityProperties {
+public class HealthSystemCapacityProperties {
 
     private final int availableBeds;
 
-    public SimulationHealthSystemCapacityProperties(final int availableBeds) {
+    public HealthSystemCapacityProperties(final int availableBeds) {
         this.availableBeds = availableBeds;
     }
 

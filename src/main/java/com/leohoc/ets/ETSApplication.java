@@ -1,7 +1,7 @@
 package com.leohoc.ets;
 
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
-import com.leohoc.ets.infrastructure.config.SimulationHealthSystemCapacityProperties;
+import com.leohoc.ets.infrastructure.config.HealthSystemCapacityProperties;
 import com.leohoc.ets.simulation.*;
 import com.leohoc.ets.infrastructure.config.SimulationPropertiesLoader;
 import com.leohoc.ets.userinterface.GraphicalEnvironment;
@@ -11,7 +11,7 @@ public class ETSApplication {
 	public static void main(String[] args) {
 
 		SimulationPropertiesLoader propertiesLoader = new SimulationPropertiesLoader();
-		final SimulationHealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
+		final HealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
 		final GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(propertiesLoader.loadGraphicsProperties(), healthSystemCapacityProperties.getAvailableBeds());
 		final MovementBehavior movementBehavior = new MovementBehavior(propertiesLoader.loadMovementProperties());
 		final HealthSystemResources healthSystemResources = new HealthSystemResources(healthSystemCapacityProperties.getAvailableBeds());

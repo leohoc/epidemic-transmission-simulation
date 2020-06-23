@@ -1,15 +1,15 @@
 package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.entity.Individual;
-import com.leohoc.ets.infrastructure.config.SimulationEpidemicProperties;
+import com.leohoc.ets.infrastructure.config.EpidemicProperties;
 import com.leohoc.ets.util.RandomUtil;
 
 public class DiseaseBehavior {
 
-    private final SimulationEpidemicProperties epidemicProperties;
+    private final EpidemicProperties epidemicProperties;
     private final HealthSystemResources healthSystemResources;
 
-    public DiseaseBehavior(final SimulationEpidemicProperties epidemicProperties, final HealthSystemResources healthSystemResources) {
+    public DiseaseBehavior(final EpidemicProperties epidemicProperties, final HealthSystemResources healthSystemResources) {
         this.epidemicProperties = epidemicProperties;
         this.healthSystemResources = healthSystemResources;
     }

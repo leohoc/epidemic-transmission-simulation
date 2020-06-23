@@ -19,7 +19,7 @@ class SimulationCoordinatorTest {
     private static final int TWO_INVOCATIONS = 2;
 
     private final SimulationProperties simulationProperties = mock(SimulationProperties.class);
-    private final SimulationIndividualProperties individualProperties = mock(SimulationIndividualProperties.class);
+    private final IndividualProperties individualProperties = mock(IndividualProperties.class);
     private final IterationEvolution iterationEvolution = mock(IterationEvolution.class);
     private final PopulationDynamics populationDynamics = mock(PopulationDynamics.class);
     private final GraphicalEnvironment graphicalEnvironment = mock(GraphicalEnvironment.class);

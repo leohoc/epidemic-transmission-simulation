@@ -3,7 +3,7 @@ package com.leohoc.ets.simulation;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.generators.PropertiesGenerator;
-import com.leohoc.ets.infrastructure.config.SimulationMovementProperties;
+import com.leohoc.ets.infrastructure.config.MovementProperties;
 import org.junit.jupiter.api.Test;
 
 import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
@@ -108,7 +108,7 @@ class MovementBehaviorTest {
     @Test
     void testShouldChangeDirectionWithZeroPercentChance() {
         // Given
-        SimulationMovementProperties movementProperties = mock(SimulationMovementProperties.class);
+        MovementProperties movementProperties = mock(MovementProperties.class);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties);
 
         // When
@@ -122,7 +122,7 @@ class MovementBehaviorTest {
     @Test
     void testShouldChangeDirectionWithOneHundredPercentChance() {
         // Given
-        SimulationMovementProperties movementProperties = mock(SimulationMovementProperties.class);
+        MovementProperties movementProperties = mock(MovementProperties.class);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties);
 
         // When

@@ -25,15 +25,15 @@ public class PropertiesGenerator {
     private static final int TOTAL_ITERATIONS = 100;
     private static final int ITERATIONS_PER_DAY = 10;
 
-    public static SimulationIndividualProperties generateIndividualProperties() {
-        return new SimulationIndividualProperties(
+    public static IndividualProperties generateIndividualProperties() {
+        return new IndividualProperties(
                 DEFAULT_PROPERTY_VALUE,
                 DEFAULT_PROPERTY_VALUE
         );
     }
 
-    public static SimulationMovementProperties generateMovementProperties() {
-        return new SimulationMovementProperties(
+    public static MovementProperties generateMovementProperties() {
+        return new MovementProperties(
                 INDIVIDUAL_INITIAL_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,
                 INDIVIDUAL_END_BOUNDARY,
@@ -43,21 +43,26 @@ public class PropertiesGenerator {
         );
     }
 
-    public static SimulationEpidemicProperties generateEpidemicProperties() {
-        return new SimulationEpidemicProperties(RECOVERY_DAYS, ZERO_DEATH_PERCENTAGE, ZERO_HOSPITALIZATION_PERCENTAGE, HOSPITALIZATION_DAYS);
+    public static EpidemicProperties generateEpidemicProperties() {
+        return new EpidemicProperties(RECOVERY_DAYS, ZERO_DEATH_PERCENTAGE, ZERO_HOSPITALIZATION_PERCENTAGE, HOSPITALIZATION_DAYS);
     }
 
-    public static SimulationGraphicsProperties generateGraphicsProperties() {
-        return new SimulationGraphicsProperties(
+    public static GraphicsProperties generateGraphicsProperties() {
+        return new GraphicsProperties(
                 DEFAULT_MAP_PROPERTY_VALUE,
                 DEFAULT_MAP_PROPERTY_VALUE,
                 DEFAULT_MAP_PROPERTY_VALUE,
                 DEFAULT_MAP_PROPERTY_VALUE,
-                CURRENT_INFO_X,
-                CURRENT_NOT_EXPOSED_Y,
-                CURRENT_INFECTED_Y,
-                CURRENT_HOSPITALIZED_Y,
-                CURRENT_SIMULATION_DAY_Y,
+                generateCurrentInfoLocation(),
+                generateTotalInfoLocation());
+    }
+
+    public static IterationsProperties generateIterationsProperties() {
+        return new IterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY);
+    }
+
+    private static TotalInfoLocation generateTotalInfoLocation() {
+        return new TotalInfoLocation(
                 TOTAL_INFO_X,
                 TOTAL_INFECTED_Y,
                 TOTAL_HOSPITALIZED_Y,
@@ -65,7 +70,12 @@ public class PropertiesGenerator {
                 TOTAL_DEAD_Y);
     }
 
-    public static SimulationIterationsProperties generateIterationsProperties() {
-        return new SimulationIterationsProperties(TOTAL_ITERATIONS, ITERATIONS_PER_DAY);
+    private static CurrentInfoLocation generateCurrentInfoLocation() {
+        return new CurrentInfoLocation(
+                CURRENT_INFO_X,
+                CURRENT_NOT_EXPOSED_Y,
+                CURRENT_INFECTED_Y,
+                CURRENT_HOSPITALIZED_Y,
+                CURRENT_SIMULATION_DAY_Y);
     }
 }

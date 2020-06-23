@@ -1,13 +1,13 @@
 package com.leohoc.ets.simulation;
 
-import com.leohoc.ets.infrastructure.config.SimulationIterationsProperties;
+import com.leohoc.ets.infrastructure.config.IterationsProperties;
 
 public class IterationEvolution {
 
-    private final SimulationIterationsProperties properties;
+    private final IterationsProperties properties;
     private int currentIteration;
 
-    public IterationEvolution(final SimulationIterationsProperties properties) {
+    public IterationEvolution(final IterationsProperties properties) {
         this.properties = properties;
         this.currentIteration = 0;
     }

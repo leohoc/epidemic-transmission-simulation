@@ -4,7 +4,7 @@ import com.leohoc.ets.simulation.IterationEvolution;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.infrastructure.config.SimulationGraphicsProperties;
+import com.leohoc.ets.infrastructure.config.GraphicsProperties;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,11 +30,11 @@ public class GraphicalEnvironment {
 
     private JPanel jContentPane = null;
     private JPanel imagePanel = null;
-    private final SimulationGraphicsProperties graphicsProperties;
+    private final GraphicsProperties graphicsProperties;
     private final int availableBeds;
     private final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
 
-    public GraphicalEnvironment(final SimulationGraphicsProperties graphicsProperties,
+    public GraphicalEnvironment(final GraphicsProperties graphicsProperties,
                                 final int availableBeds) {
         this.graphicsProperties = graphicsProperties;
         this.availableBeds = availableBeds;

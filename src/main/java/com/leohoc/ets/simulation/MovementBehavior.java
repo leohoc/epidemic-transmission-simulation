@@ -2,16 +2,16 @@ package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
-import com.leohoc.ets.infrastructure.config.SimulationMovementProperties;
+import com.leohoc.ets.infrastructure.config.MovementProperties;
 import com.leohoc.ets.util.RandomUtil;
 
 import static com.leohoc.ets.domain.enums.DirectionMovement.*;
 
 public class MovementBehavior {
 
-    private final SimulationMovementProperties movementProperties;
+    private final MovementProperties movementProperties;
 
-    public MovementBehavior(final SimulationMovementProperties movementProperties) {
+    public MovementBehavior(final MovementProperties movementProperties) {
         this.movementProperties = movementProperties;
     }
 

@@ -2,7 +2,7 @@ package com.leohoc.ets.domain.entity;
 
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.infrastructure.config.SimulationIndividualProperties;
+import com.leohoc.ets.infrastructure.config.IndividualProperties;
 
 import static com.leohoc.ets.domain.enums.DirectionMovement.*;
 import static com.leohoc.ets.domain.enums.HealthStatus.*;
@@ -16,7 +16,7 @@ public class Individual {
     private DirectionMovement directionMovement;
     private HealthCondition healthCondition;
 
-    public Individual(final int x, final int y, final DirectionMovement directionMovement, final SimulationIndividualProperties individualProperties) {
+    public Individual(final int x, final int y, final DirectionMovement directionMovement, final IndividualProperties individualProperties) {
         this.x = x;
         this.y = y;
         this.width = individualProperties.getIndividualWidth();

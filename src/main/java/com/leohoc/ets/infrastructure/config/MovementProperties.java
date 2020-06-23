@@ -1,6 +1,6 @@
 package com.leohoc.ets.infrastructure.config;
 
-public class SimulationMovementProperties {
+public class MovementProperties {
 
     private final int upBoundary;
     private final int rightBoundary;
@@ -9,12 +9,12 @@ public class SimulationMovementProperties {
     private final double directionChangeProbability;
     private final double socialIsolationPercent;
 
-    public SimulationMovementProperties(final int upBoundary,
-                                        final int rightBoundary,
-                                        final int downBoundary,
-                                        final int leftBoundary,
-                                        final double directionChangeProbability,
-                                        final double socialIsolationPercent) {
+    public MovementProperties(final int upBoundary,
+                              final int rightBoundary,
+                              final int downBoundary,
+                              final int leftBoundary,
+                              final double directionChangeProbability,
+                              final double socialIsolationPercent) {
         this.upBoundary = upBoundary;
         this.rightBoundary = rightBoundary;
         this.downBoundary = downBoundary;
