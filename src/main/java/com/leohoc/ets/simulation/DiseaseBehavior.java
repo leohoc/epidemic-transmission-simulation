@@ -8,10 +8,12 @@ public class DiseaseBehavior {
 
     private final EpidemicProperties epidemicProperties;
     private final HealthSystemResources healthSystemResources;
+    private final RandomUtil randomUtil;
 
-    public DiseaseBehavior(final EpidemicProperties epidemicProperties, final HealthSystemResources healthSystemResources) {
+    public DiseaseBehavior(final EpidemicProperties epidemicProperties, final HealthSystemResources healthSystemResources, final RandomUtil randomUtil) {
         this.epidemicProperties = epidemicProperties;
         this.healthSystemResources = healthSystemResources;
+        this.randomUtil = randomUtil;
     }
 
     public void updateHealthCondition(final Individual individual, final int currentSimulatedDay) {
@@ -57,7 +59,7 @@ public class DiseaseBehavior {
     }
 
     protected boolean shouldBeHospitalized() {
-        return RandomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getHospitalizationPercentage();
+        return randomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getHospitalizationPercentage();
     }
 
     private boolean reachedRecoveryTime(final int individualInfectionDay, final long currentSimulatedDay) {
@@ -65,7 +67,7 @@ public class DiseaseBehavior {
     }
 
     protected boolean hasDied() {
-        return RandomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getDeathPercentage();
+        return randomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getDeathPercentage();
     }
 
     private void sendToICU(Individual individual, int currentSimulatedDay, int individualInfectionStartDay) {

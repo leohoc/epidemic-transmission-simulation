@@ -6,25 +6,25 @@ import java.security.SecureRandom;
 public class RandomUtil {
 
     private static final int HUNDRED_PERCENT = 100;
-    private static final SecureRandom random = new SecureRandom();
+    private final SecureRandom secureRandom;
 
-    private RandomUtil() {
-        throw new IllegalStateException("Utility class");
+    public RandomUtil(SecureRandom secureRandom) {
+        this.secureRandom = secureRandom;
     }
 
-    public static double generatePercentWithTwoDigitsScale() {
+    public double generatePercentWithTwoDigitsScale() {
         final int twoDigitsScaleFactor = 100;
         final int bound = HUNDRED_PERCENT * twoDigitsScaleFactor;
-        final BigDecimal generatedPercent = new BigDecimal(random.nextInt(bound));
+        final BigDecimal generatedPercent = new BigDecimal(secureRandom.nextInt(bound));
         return generatedPercent.divide(new BigDecimal(twoDigitsScaleFactor)).doubleValue();
     }
 
-    public static int generateIntLessThan(final int endLimit) {
-        return random.nextInt(endLimit);
+    public int generateIntLessThan(final int endLimit) {
+        return secureRandom.nextInt(endLimit);
     }
 
-    public static int generateIntBetween(final int startLimit, final int endLimit) {
+    public int generateIntBetween(final int startLimit, final int endLimit) {
         final int bound = endLimit - startLimit;
-        return random.nextInt(bound) + startLimit;
+        return secureRandom.nextInt(bound) + startLimit;
     }
 }

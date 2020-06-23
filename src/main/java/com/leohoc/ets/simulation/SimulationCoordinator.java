@@ -23,6 +23,7 @@ public class SimulationCoordinator {
     private final GraphicalEnvironment graphicalEnvironment;
     private final MovementBehavior movementBehavior;
     private final EpidemicStatistics epidemicStatistics;
+    private final RandomUtil randomUtil;
 
     public SimulationCoordinator(final SimulationProperties simulationProperties,
                                  final IndividualProperties individualProperties,
@@ -30,7 +31,8 @@ public class SimulationCoordinator {
                                  final PopulationDynamics populationDynamics,
                                  final GraphicalEnvironment graphicalEnvironment,
                                  final MovementBehavior movementBehavior,
-                                 final EpidemicStatistics epidemicStatistics) {
+                                 final EpidemicStatistics epidemicStatistics,
+                                 final RandomUtil randomUtil) {
         this.simulationProperties = simulationProperties;
         this.individualProperties = individualProperties;
         this.iterationEvolution = iterationEvolution;
@@ -38,6 +40,7 @@ public class SimulationCoordinator {
         this.graphicalEnvironment = graphicalEnvironment;
         this.movementBehavior = movementBehavior;
         this.epidemicStatistics = epidemicStatistics;
+        this.randomUtil = randomUtil;
     }
 
     public void startSimulation() {
@@ -71,7 +74,7 @@ public class SimulationCoordinator {
     }
 
     private boolean shouldGotInfected(final double initialInfectedPercent) {
-        return RandomUtil.generatePercentWithTwoDigitsScale() < initialInfectedPercent;
+        return randomUtil.generatePercentWithTwoDigitsScale() < initialInfectedPercent;
     }
 
     protected void runSimulation() {

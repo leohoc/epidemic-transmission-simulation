@@ -4,7 +4,10 @@ import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.generators.PropertiesGenerator;
 import com.leohoc.ets.infrastructure.config.MovementProperties;
+import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.Test;
+
+import java.security.SecureRandom;
 
 import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +25,7 @@ class MovementBehaviorTest {
         // Given
         DirectionMovement currentDirectionMovement = DirectionMovement.RIGHT;
         Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, generateIndividualProperties());
-        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
+        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties(), new RandomUtil(new SecureRandom())));
 
         // When
         when(movementBehavior.shouldChangeDirectionRandomly()).thenReturn(Boolean.FALSE);
@@ -37,7 +40,7 @@ class MovementBehaviorTest {
         // Given
         DirectionMovement currentDirectionMovement = DirectionMovement.LEFT;
         Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, generateIndividualProperties());
-        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
+        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties(), new RandomUtil(new SecureRandom())));
 
         // When
         DirectionMovement newDirectionMovement = DirectionMovement.RIGHT;
@@ -53,7 +56,7 @@ class MovementBehaviorTest {
     void testChangeDirectionByReachingLeftMapBoundary() {
         // Given
         Individual individual = new Individual(INITIAL_POINT, MIDDLE_POINT, DirectionMovement.LEFT, generateIndividualProperties());
-        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
+        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties(), new RandomUtil(new SecureRandom())));
 
         // When
         when(movementBehavior.shouldChangeDirectionRandomly()).thenReturn(Boolean.FALSE);
@@ -67,7 +70,7 @@ class MovementBehaviorTest {
     void testChangeDirectionByReachingRightMapBoundary() {
         // Given
         Individual individual = new Individual(FINAL_POINT, MIDDLE_POINT, DirectionMovement.RIGHT, generateIndividualProperties());
-        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
+        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties(), new RandomUtil(new SecureRandom())));
 
         // When
         when(movementBehavior.shouldChangeDirectionRandomly()).thenReturn(Boolean.FALSE);
@@ -81,7 +84,7 @@ class MovementBehaviorTest {
     void testChangeDirectionByReachingUpMapBoundary() {
         // Given
         Individual individual = new Individual(MIDDLE_POINT, INITIAL_POINT, DirectionMovement.UP, generateIndividualProperties());
-        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
+        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties(), new RandomUtil(new SecureRandom())));
 
         // When
         when(movementBehavior.shouldChangeDirectionRandomly()).thenReturn(Boolean.FALSE);
@@ -95,7 +98,7 @@ class MovementBehaviorTest {
     void testChangeDirectionByReachingDownMapBoundary() {
         // Given
         Individual individual = new Individual(MIDDLE_POINT, FINAL_POINT, DirectionMovement.DOWN, generateIndividualProperties());
-        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties()));
+        MovementBehavior movementBehavior = spy(new MovementBehavior(PropertiesGenerator.generateMovementProperties(), new RandomUtil(new SecureRandom())));
 
         // When
         when(movementBehavior.shouldChangeDirectionRandomly()).thenReturn(Boolean.FALSE);
@@ -109,7 +112,7 @@ class MovementBehaviorTest {
     void testShouldChangeDirectionWithZeroPercentChance() {
         // Given
         MovementProperties movementProperties = mock(MovementProperties.class);
-        MovementBehavior movementBehavior = new MovementBehavior(movementProperties);
+        MovementBehavior movementBehavior = new MovementBehavior(movementProperties, mock(RandomUtil.class));
 
         // When
         when(movementProperties.getDirectionChangeProbability()).thenReturn(0.0);
@@ -123,7 +126,7 @@ class MovementBehaviorTest {
     void testShouldChangeDirectionWithOneHundredPercentChance() {
         // Given
         MovementProperties movementProperties = mock(MovementProperties.class);
-        MovementBehavior movementBehavior = new MovementBehavior(movementProperties);
+        MovementBehavior movementBehavior = new MovementBehavior(movementProperties, mock(RandomUtil.class));
 
         // When
         when(movementProperties.getDirectionChangeProbability()).thenReturn(100.0);

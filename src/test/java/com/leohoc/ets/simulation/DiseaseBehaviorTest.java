@@ -3,8 +3,11 @@ package com.leohoc.ets.simulation;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
+import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.security.SecureRandom;
 
 import static com.leohoc.ets.generators.PropertiesGenerator.generateEpidemicProperties;
 import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
@@ -26,7 +29,7 @@ class DiseaseBehaviorTest {
     @BeforeEach
     void setup() {
         healthSystemResources = mock(HealthSystemResources.class);
-        diseaseBehavior = spy(new DiseaseBehavior(generateEpidemicProperties(), healthSystemResources));
+        diseaseBehavior = spy(new DiseaseBehavior(generateEpidemicProperties(), healthSystemResources, new RandomUtil(new SecureRandom())));
     }
 
     @Test

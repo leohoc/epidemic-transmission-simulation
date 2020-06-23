@@ -5,6 +5,7 @@ import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.infrastructure.config.*;
 import com.leohoc.ets.userinterface.GraphicalEnvironment;
+import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,7 @@ class SimulationCoordinatorTest {
     private final GraphicalEnvironment graphicalEnvironment = mock(GraphicalEnvironment.class);
     private final MovementBehavior movementBehavior = mock(MovementBehavior.class);
     private final EpidemicStatistics epidemicStatistics = mock(EpidemicStatistics.class);
+    private final RandomUtil randomUtil = mock(RandomUtil.class);
     private SimulationCoordinator simulationCoordinator;
 
     @BeforeEach
@@ -36,7 +38,8 @@ class SimulationCoordinatorTest {
                 populationDynamics,
                 graphicalEnvironment,
                 movementBehavior,
-                epidemicStatistics
+                epidemicStatistics,
+                randomUtil
         );
     }
 

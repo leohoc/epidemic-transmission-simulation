@@ -10,9 +10,11 @@ import static com.leohoc.ets.domain.enums.DirectionMovement.*;
 public class MovementBehavior {
 
     private final MovementProperties movementProperties;
+    private final RandomUtil randomUtil;
 
-    public MovementBehavior(final MovementProperties movementProperties) {
+    public MovementBehavior(final MovementProperties movementProperties, final RandomUtil randomUtil) {
         this.movementProperties = movementProperties;
+        this.randomUtil = randomUtil;
     }
 
     public void adjustDirectionOf(final Individual individual) {
@@ -55,18 +57,27 @@ public class MovementBehavior {
     }
 
     protected boolean shouldChangeDirectionRandomly() {
-        return RandomUtil.generatePercentWithTwoDigitsScale() < movementProperties.getDirectionChangeProbability();
+        return randomUtil.generatePercentWithTwoDigitsScale() < movementProperties.getDirectionChangeProbability();
     }
 
     public DirectionMovement newRandomDirection() {
-        return randomDirectionMovement(movementProperties.getSocialIsolationPercent());
+        if (shouldRespectSocialIsolation(movementProperties.getSocialIsolationPercent())) {
+            return STANDING;
+        }
+
+        final int bound = DirectionMovement.movementDirections().size();
+        return movementDirections().get(randomUtil.generateIntLessThan(bound));
     }
 
     public int generateRandomXPointWithinMapBoundaries() {
-        return RandomUtil.generateIntBetween(movementProperties.getLeftBoundary(), movementProperties.getRightBoundary());
+        return randomUtil.generateIntBetween(movementProperties.getLeftBoundary(), movementProperties.getRightBoundary());
     }
 
     public int generateRandomYPointWithinMapBoundaries() {
-        return RandomUtil.generateIntBetween(movementProperties.getUpBoundary(), movementProperties.getDownBoundary());
+        return randomUtil.generateIntBetween(movementProperties.getUpBoundary(), movementProperties.getDownBoundary());
+    }
+
+    private boolean shouldRespectSocialIsolation(double socialIsolationPercent) {
+        return randomUtil.generatePercentWithTwoDigitsScale() < socialIsolationPercent;
     }
 }

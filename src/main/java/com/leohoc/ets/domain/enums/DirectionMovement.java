@@ -38,21 +38,7 @@ public enum DirectionMovement {
         return yAxisMovement;
     }
 
-    public static DirectionMovement randomDirectionMovement(final double socialIsolationPercent) {
-
-        if (shouldRespectSocialIsolation(socialIsolationPercent)) {
-            return STANDING;
-        }
-
-        final int bound = movementDirections().size();
-        return movementDirections().get(RandomUtil.generateIntLessThan(bound));
-    }
-
-    private static boolean shouldRespectSocialIsolation(double socialIsolationPercent) {
-        return RandomUtil.generatePercentWithTwoDigitsScale() < socialIsolationPercent;
-    }
-
-    protected static List<DirectionMovement> movementDirections() {
+    public static List<DirectionMovement> movementDirections() {
         return Arrays.asList(UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT);
     }
 }
