@@ -3,13 +3,11 @@ package com.leohoc.ets.simulation;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
+import com.leohoc.ets.infrastructure.config.EpidemicProperties;
 import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.security.SecureRandom;
-
-import static com.leohoc.ets.generators.PropertiesGenerator.generateEpidemicProperties;
 import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -23,13 +21,17 @@ class DiseaseBehaviorTest {
     private static final Integer SIMULATION_START_DAY = 0;
     private static final int ONE_INVOCATION = 1;
 
+    private EpidemicProperties epidemicProperties;
     private DiseaseBehavior diseaseBehavior;
     private HealthSystemResources healthSystemResources;
+    private RandomUtil randomUtil;
 
     @BeforeEach
     void setup() {
+        epidemicProperties = mock(EpidemicProperties.class);
         healthSystemResources = mock(HealthSystemResources.class);
-        diseaseBehavior = spy(new DiseaseBehavior(generateEpidemicProperties(), healthSystemResources, new RandomUtil(new SecureRandom())));
+        randomUtil = mock(RandomUtil.class);
+        diseaseBehavior = new DiseaseBehavior(epidemicProperties, healthSystemResources, randomUtil);
     }
 
     @Test
@@ -38,7 +40,7 @@ class DiseaseBehaviorTest {
         Individual individual = buildIndividual();
 
         // When
-        Integer currentSimulatedDay = 15;
+        int currentSimulatedDay = 15;
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -53,7 +55,9 @@ class DiseaseBehaviorTest {
         individual.gotInfected(SIMULATION_START_DAY);
 
         // When
-        Integer currentSimulatedDay = 5;
+        int currentSimulatedDay = 5;
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -69,7 +73,10 @@ class DiseaseBehaviorTest {
         individual.gotInfected(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.hasDied()).thenReturn(Boolean.FALSE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(5.0);
+        when(epidemicProperties.getDeathPercentage()).thenReturn(4.99);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -85,7 +92,10 @@ class DiseaseBehaviorTest {
         individual.gotHospitalized(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.hasDied()).thenReturn(Boolean.FALSE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(10.0);
+        when(epidemicProperties.getDeathPercentage()).thenReturn(5.0);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -102,7 +112,10 @@ class DiseaseBehaviorTest {
         individual.gotInfected(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.hasDied()).thenReturn(Boolean.TRUE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(4.0);
+        when(epidemicProperties.getDeathPercentage()).thenReturn(5.0);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -118,7 +131,10 @@ class DiseaseBehaviorTest {
         individual.gotHospitalized(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.hasDied()).thenReturn(Boolean.TRUE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(4.0);
+        when(epidemicProperties.getDeathPercentage()).thenReturn(5.0);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -130,12 +146,15 @@ class DiseaseBehaviorTest {
     @Test
     void testUpdateHealthConditionToHospitalized() {
         // Given
-        Integer currentSimulatedDay = 7;
+        int currentSimulatedDay = 7;
         Individual individual = buildIndividual();
         individual.gotInfected(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.TRUE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(4.0);
+        when(epidemicProperties.getHospitalizationPercentage()).thenReturn(5.0);
         when(healthSystemResources.hasAvailableICUBed()).thenReturn(Boolean.TRUE);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
@@ -153,7 +172,10 @@ class DiseaseBehaviorTest {
         individual.gotInfected(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.TRUE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(4.0);
+        when(epidemicProperties.getHospitalizationPercentage()).thenReturn(5.0);
         when(healthSystemResources.hasAvailableICUBed()).thenReturn(Boolean.FALSE);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
@@ -165,12 +187,15 @@ class DiseaseBehaviorTest {
     @Test
     void testUpdateHealthConditionShouldNotBeHospitalized() {
         // Given
-        Integer currentSimulatedDay = 7;
+        int currentSimulatedDay = 7;
         Individual individual = buildIndividual();
         individual.gotInfected(SIMULATION_START_DAY);
 
         // When
-        when(diseaseBehavior.shouldBeHospitalized()).thenReturn(Boolean.FALSE);
+        when(epidemicProperties.getHospitalizationDays()).thenReturn(7);
+        when(epidemicProperties.getRecoveryDays()).thenReturn(14);
+        when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(6.0);
+        when(epidemicProperties.getHospitalizationPercentage()).thenReturn(5.0);
         diseaseBehavior.updateHealthCondition(individual, currentSimulatedDay);
 
         // Then
@@ -220,7 +245,7 @@ class DiseaseBehaviorTest {
         passerby.gotInfected(SIMULATION_START_DAY);
 
         // When
-        Integer currentSimulatedDay = 1;
+        int currentSimulatedDay = 1;
         diseaseBehavior.interactionBetween(individual, passerby, currentSimulatedDay);
 
         // Then
@@ -237,7 +262,7 @@ class DiseaseBehaviorTest {
         passerby.gotInfected(SIMULATION_START_DAY);
 
         // When
-        Integer currentSimulatedDay = 1;
+        int currentSimulatedDay = 1;
         diseaseBehavior.interactionBetween(individual, passerby, currentSimulatedDay);
 
         // Then
@@ -252,7 +277,7 @@ class DiseaseBehaviorTest {
         Individual passerby = buildIndividual();
 
         // When
-        Integer currentSimulatedDay = 1;
+        int currentSimulatedDay = 1;
         diseaseBehavior.interactionBetween(individual, passerby, currentSimulatedDay);
 
         // Then
@@ -268,7 +293,7 @@ class DiseaseBehaviorTest {
         passerby.gotInfected(SIMULATION_START_DAY);
 
         // When
-        Integer currentSimulatedDay = 1;
+        int currentSimulatedDay = 1;
         diseaseBehavior.interactionBetween(individual, passerby, currentSimulatedDay);
 
         // Then

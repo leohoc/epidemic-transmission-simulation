@@ -23,9 +23,31 @@ public class DiseaseBehavior {
         }
     }
 
-    public void interactionBetween(final Individual individual, final Individual passerby, final int currentSimulatedDay) {
-        if (individual.crossedWayWith(passerby) && passerby.isInfected() && !individual.getHealthStatus().hasAntibodies()) {
-            individual.gotInfected(currentSimulatedDay);
+    private void checkHospitalizationNeeds(final Individual individual, final int currentSimulatedDay) {
+        final int individualInfectionStartDay = individual.getHealthCondition().getStartDay();
+
+        if (!individual.getHealthCondition().isHospitalizationNeedVerified() && reachedHospitalizationTime(individualInfectionStartDay, currentSimulatedDay)) {
+            individual.getHealthCondition().hospitalizationNeedVerified();
+            if (!individual.isHospitalized() && shouldBeHospitalized()) {
+                sendToICU(individual, currentSimulatedDay, individualInfectionStartDay);
+            }
+        }
+    }
+
+    private boolean reachedHospitalizationTime(final int individualInfectionDay, final int currentSimulatedDay) {
+        return (currentSimulatedDay - individualInfectionDay) == epidemicProperties.getHospitalizationDays();
+    }
+
+    private boolean shouldBeHospitalized() {
+        return randomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getHospitalizationPercentage();
+    }
+
+    private void sendToICU(Individual individual, int currentSimulatedDay, int individualInfectionStartDay) {
+        if (healthSystemResources.hasAvailableICUBed()) {
+            healthSystemResources.fillICUBed();
+            individual.gotHospitalized(individualInfectionStartDay);
+        } else {
+            individual.died(currentSimulatedDay);
         }
     }
 
@@ -42,40 +64,17 @@ public class DiseaseBehavior {
         }
     }
 
-    private void checkHospitalizationNeeds(final Individual individual, final int currentSimulatedDay) {
-
-        final int individualInfectionStartDay = individual.getHealthCondition().getStartDay();
-
-        if (!individual.getHealthCondition().isHospitalizationNeedVerified() && reachedHospitalizationTime(individualInfectionStartDay, currentSimulatedDay)) {
-            individual.getHealthCondition().hospitalizationNeedVerified();
-            if (!individual.isHospitalized() && shouldBeHospitalized()) {
-                sendToICU(individual, currentSimulatedDay, individualInfectionStartDay);
-            }
-        }
-    }
-
-    private boolean reachedHospitalizationTime(final int individualInfectionDay, final int currentSimulatedDay) {
-        return (currentSimulatedDay - individualInfectionDay) == epidemicProperties.getHospitalizationDays();
-    }
-
-    protected boolean shouldBeHospitalized() {
-        return randomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getHospitalizationPercentage();
-    }
-
     private boolean reachedRecoveryTime(final int individualInfectionDay, final long currentSimulatedDay) {
         return (currentSimulatedDay - individualInfectionDay) > epidemicProperties.getRecoveryDays();
     }
 
-    protected boolean hasDied() {
+    private boolean hasDied() {
         return randomUtil.generatePercentWithTwoDigitsScale() < epidemicProperties.getDeathPercentage();
     }
 
-    private void sendToICU(Individual individual, int currentSimulatedDay, int individualInfectionStartDay) {
-        if (healthSystemResources.hasAvailableICUBed()) {
-            healthSystemResources.fillICUBed();
-            individual.gotHospitalized(individualInfectionStartDay);
-        } else {
-            individual.died(currentSimulatedDay);
+    public void interactionBetween(final Individual individual, final Individual passerby, final int currentSimulatedDay) {
+        if (individual.crossedWayWith(passerby) && passerby.isInfected() && !individual.getHealthStatus().hasAntibodies()) {
+            individual.gotInfected(currentSimulatedDay);
         }
     }
 }

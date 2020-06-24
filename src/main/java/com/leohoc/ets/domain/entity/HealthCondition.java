@@ -13,7 +13,6 @@ public class HealthCondition {
     public HealthCondition(final HealthStatus healthStatus, final Integer startDay) {
         this.healthStatus = healthStatus;
         this.startDay = startDay;
-        this.hospitalizationNeedVerified = Boolean.FALSE;
     }
 
     public HealthCondition(final HealthStatus healthStatus) {

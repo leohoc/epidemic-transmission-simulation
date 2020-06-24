@@ -18,4 +18,16 @@ class HealthConditionTest {
         // Then
         assertTrue(healthCondition.isHospitalizationNeedVerified());
     }
+
+    @Test
+    void testHospitalizatinNeedNotVerified() {
+        // Given
+        HealthCondition healthCondition = new HealthCondition(HealthStatus.INFECTED);
+
+        // When
+        boolean isHospitalizationNeedVerified = healthCondition.isHospitalizationNeedVerified();
+
+        // Then
+        assertFalse(isHospitalizationNeedVerified);
+    }
 }

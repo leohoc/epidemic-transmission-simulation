@@ -65,7 +65,13 @@ public class GraphicalEnvironment {
         return jContentPane;
     }
 
-    public JPanel getImagePanel(final List<Individual> population,
+    public void repaint(final List<Individual> population,
+                        final IterationEvolution iterationEvolution,
+                        final EpidemicStatistics epidemicStatistics) {
+        this.getImagePanel(population, iterationEvolution, epidemicStatistics).repaint();
+    }
+
+    private JPanel getImagePanel(final List<Individual> population,
                                 final IterationEvolution iterationEvolution,
                                 final EpidemicStatistics epidemicStatistics) {
 

@@ -25,7 +25,6 @@ class SimulationCoordinatorTest {
     private final IterationEvolution iterationEvolution = mock(IterationEvolution.class);
     private final PopulationDynamics populationDynamics = mock(PopulationDynamics.class);
     private final GraphicalEnvironment graphicalEnvironment = mock(GraphicalEnvironment.class);
-    private final MovementBehavior movementBehavior = mock(MovementBehavior.class);
     private final EpidemicStatistics epidemicStatistics = mock(EpidemicStatistics.class);
     private SimulationCoordinator simulationCoordinator;
 
@@ -41,18 +40,14 @@ class SimulationCoordinatorTest {
     }
 
     @Test
-    void testGenerateEntirelyHealthyPopulation() {
+    void testGeneratePopulation() {
         // Given
         final int populationSize = 10;
-        final int mapStartPoint = 0;
         final double initialInfectedPercent = 0.0;
         final int currentSimulatedDay = 0;
 
         // When
         when(simulationProperties.getPopulationSize()).thenReturn(populationSize);
-        when(movementBehavior.generateRandomXPointWithinMapBoundaries()).thenReturn(mapStartPoint);
-        when(movementBehavior.generateRandomYPointWithinMapBoundaries()).thenReturn(mapStartPoint);
-        when(movementBehavior.newRandomDirection()).thenReturn(DirectionMovement.STANDING);
         when(simulationProperties.getInitialInfectedPercent()).thenReturn(initialInfectedPercent);
         when(populationDynamics.generateRandomIndividual(eq(initialInfectedPercent), eq(currentSimulatedDay))).thenReturn(buildIndividual());
         List<Individual> population = simulationCoordinator.generatePopulation();
@@ -83,6 +78,16 @@ class SimulationCoordinatorTest {
         verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalHospitalizedCount();
         verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalRecoveredCount();
         verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalDeadCount();
+    }
+
+    @Test
+    void testRunGraphicalEnvironment() {
+        // Given When
+        when(iterationEvolution.hasSimulationFinished()).thenReturn(Boolean.TRUE);
+        simulationCoordinator.runGraphicalEnvironment();
+
+        // Then
+        verify(graphicalEnvironment, times(ONE_INVOCATION)).repaint(anyList(), any(IterationEvolution.class), any(EpidemicStatistics.class));
     }
 
     private Individual buildIndividual() {

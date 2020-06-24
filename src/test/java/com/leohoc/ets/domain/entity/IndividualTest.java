@@ -98,8 +98,6 @@ class IndividualTest {
         assertEquals(CURRENT_SIMULATED_DAY, individual.getHealthCondition().getStartDay().intValue());
     }
 
-
-
     @Test
     void testIndividualCrossedWayWithPasserBy() {
         // Given

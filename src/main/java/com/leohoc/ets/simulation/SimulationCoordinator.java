@@ -66,11 +66,11 @@ public class SimulationCoordinator {
         epidemicStatistics.updateAllStatistics(iterationStatistics);
     }
 
-    private void runGraphicalEnvironment() {
-        while (!iterationEvolution.hasSimulationFinished()) {
+    protected void runGraphicalEnvironment() {
+        do {
             sleepFor(GRAPHICS_UPDATE_TIME_MS);
-            graphicalEnvironment.getImagePanel(population, iterationEvolution, epidemicStatistics).repaint();
-        }
+            graphicalEnvironment.repaint(population, iterationEvolution, epidemicStatistics);
+        } while (!iterationEvolution.hasSimulationFinished());
     }
 
     private void sleepFor(final Integer timeInMs) {
