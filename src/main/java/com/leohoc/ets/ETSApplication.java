@@ -13,28 +13,31 @@ public class ETSApplication {
 
 	public static void main(String[] args) {
 
-	    final SecureRandom secureRandom = new SecureRandom();
-	    final RandomUtil randomUtil = new RandomUtil(secureRandom);
-
-		SimulationPropertiesLoader propertiesLoader = new SimulationPropertiesLoader();
+        SimulationPropertiesLoader propertiesLoader = new SimulationPropertiesLoader();
+	    final RandomUtil randomUtil = new RandomUtil(new SecureRandom());
 		final HealthSystemCapacityProperties healthSystemCapacityProperties = propertiesLoader.loadHealthSystemCapacityProperties();
-		final GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(propertiesLoader.loadGraphicsProperties(), healthSystemCapacityProperties.getAvailableBeds());
-		final MovementBehavior movementBehavior = new MovementBehavior(propertiesLoader.loadMovementProperties(), randomUtil);
 		final HealthSystemResources healthSystemResources = new HealthSystemResources(healthSystemCapacityProperties.getAvailableBeds());
 		final DiseaseBehavior diseaseBehavior = new DiseaseBehavior(propertiesLoader.loadEpidemicProperties(), healthSystemResources, randomUtil);
+        final MovementBehavior movementBehavior = new MovementBehavior(propertiesLoader.loadMovementProperties(), randomUtil);
 		final IterationEvolution iterationEvolution = new IterationEvolution(propertiesLoader.loadIterationsProperties());
-		final PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
-		final EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
+        final EpidemicStatistics epidemicStatistics = new EpidemicStatistics();
 
-		SimulationCoordinator simulationCoordinator = new SimulationCoordinator(
+        final PopulationDynamics populationDynamics = new PopulationDynamics(
+                diseaseBehavior,
+                movementBehavior,
+                propertiesLoader.loadIndividualProperties(),
+                randomUtil);
+
+        final GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(
+                propertiesLoader.loadGraphicsProperties(),
+                healthSystemCapacityProperties.getAvailableBeds());
+
+		final SimulationCoordinator simulationCoordinator = new SimulationCoordinator(
 				propertiesLoader.loadSimulationProperties(),
-				propertiesLoader.loadIndividualProperties(),
 				iterationEvolution,
 				populationDynamics,
 				graphicalEnvironment,
-				movementBehavior,
-				epidemicStatistics,
-                randomUtil);
+				epidemicStatistics);
 
 		simulationCoordinator.startSimulation();
 	}

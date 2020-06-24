@@ -5,12 +5,12 @@ import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.infrastructure.config.*;
 import com.leohoc.ets.userinterface.GraphicalEnvironment;
-import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -18,28 +18,25 @@ class SimulationCoordinatorTest {
 
     private static final int ONE_INVOCATION = 1;
     private static final int TWO_INVOCATIONS = 2;
+    private static final Integer POINT_A_X = 0;
+    private static final Integer POINT_A_Y = 0;
 
     private final SimulationProperties simulationProperties = mock(SimulationProperties.class);
-    private final IndividualProperties individualProperties = mock(IndividualProperties.class);
     private final IterationEvolution iterationEvolution = mock(IterationEvolution.class);
     private final PopulationDynamics populationDynamics = mock(PopulationDynamics.class);
     private final GraphicalEnvironment graphicalEnvironment = mock(GraphicalEnvironment.class);
     private final MovementBehavior movementBehavior = mock(MovementBehavior.class);
     private final EpidemicStatistics epidemicStatistics = mock(EpidemicStatistics.class);
-    private final RandomUtil randomUtil = mock(RandomUtil.class);
     private SimulationCoordinator simulationCoordinator;
 
     @BeforeEach
     void setup() {
         simulationCoordinator = new SimulationCoordinator(
                 simulationProperties,
-                individualProperties,
                 iterationEvolution,
                 populationDynamics,
                 graphicalEnvironment,
-                movementBehavior,
-                epidemicStatistics,
-                randomUtil
+                epidemicStatistics
         );
     }
 
@@ -49,6 +46,7 @@ class SimulationCoordinatorTest {
         final int populationSize = 10;
         final int mapStartPoint = 0;
         final double initialInfectedPercent = 0.0;
+        final int currentSimulatedDay = 0;
 
         // When
         when(simulationProperties.getPopulationSize()).thenReturn(populationSize);
@@ -56,31 +54,12 @@ class SimulationCoordinatorTest {
         when(movementBehavior.generateRandomYPointWithinMapBoundaries()).thenReturn(mapStartPoint);
         when(movementBehavior.newRandomDirection()).thenReturn(DirectionMovement.STANDING);
         when(simulationProperties.getInitialInfectedPercent()).thenReturn(initialInfectedPercent);
+        when(populationDynamics.generateRandomIndividual(eq(initialInfectedPercent), eq(currentSimulatedDay))).thenReturn(buildIndividual());
         List<Individual> population = simulationCoordinator.generatePopulation();
 
         // Then
         assertEquals(populationSize, population.size());
         assertFalse(population.stream().allMatch(Individual::isInfected));
-    }
-
-    @Test
-    void testGenerateEntirelyInfectedPopulation() {
-        // Given
-        final int populationSize = 10;
-        final int mapStartPoint = 0;
-        final double initialInfectedPercent = 100.0;
-
-        // When
-        when(simulationProperties.getPopulationSize()).thenReturn(populationSize);
-        when(movementBehavior.generateRandomXPointWithinMapBoundaries()).thenReturn(mapStartPoint);
-        when(movementBehavior.generateRandomYPointWithinMapBoundaries()).thenReturn(mapStartPoint);
-        when(movementBehavior.newRandomDirection()).thenReturn(DirectionMovement.STANDING);
-        when(simulationProperties.getInitialInfectedPercent()).thenReturn(initialInfectedPercent);
-        List<Individual> population = simulationCoordinator.generatePopulation();
-
-        // Then
-        assertEquals(populationSize, population.size());
-        assertTrue(population.stream().allMatch(Individual::isInfected));
     }
 
     @Test
@@ -104,5 +83,9 @@ class SimulationCoordinatorTest {
         verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalHospitalizedCount();
         verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalRecoveredCount();
         verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalDeadCount();
+    }
+
+    private Individual buildIndividual() {
+        return new Individual(POINT_A_X, POINT_A_Y, DirectionMovement.STANDING, generateIndividualProperties());
     }
 }

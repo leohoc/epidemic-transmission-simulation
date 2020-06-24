@@ -4,7 +4,6 @@ import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.infrastructure.config.*;
 import com.leohoc.ets.userinterface.GraphicalEnvironment;
-import com.leohoc.ets.util.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,30 +16,21 @@ public class SimulationCoordinator {
     private static final Integer GRAPHICS_UPDATE_TIME_MS = 25;
     private final List<Individual> population = new ArrayList<>();
     private final SimulationProperties simulationProperties;
-    private final IndividualProperties individualProperties;
     private final IterationEvolution iterationEvolution;
     private final PopulationDynamics populationDynamics;
     private final GraphicalEnvironment graphicalEnvironment;
-    private final MovementBehavior movementBehavior;
     private final EpidemicStatistics epidemicStatistics;
-    private final RandomUtil randomUtil;
 
     public SimulationCoordinator(final SimulationProperties simulationProperties,
-                                 final IndividualProperties individualProperties,
                                  final IterationEvolution iterationEvolution,
                                  final PopulationDynamics populationDynamics,
                                  final GraphicalEnvironment graphicalEnvironment,
-                                 final MovementBehavior movementBehavior,
-                                 final EpidemicStatistics epidemicStatistics,
-                                 final RandomUtil randomUtil) {
+                                 final EpidemicStatistics epidemicStatistics) {
         this.simulationProperties = simulationProperties;
-        this.individualProperties = individualProperties;
         this.iterationEvolution = iterationEvolution;
         this.populationDynamics = populationDynamics;
         this.graphicalEnvironment = graphicalEnvironment;
-        this.movementBehavior = movementBehavior;
         this.epidemicStatistics = epidemicStatistics;
-        this.randomUtil = randomUtil;
     }
 
     public void startSimulation() {
@@ -55,26 +45,12 @@ public class SimulationCoordinator {
     protected List<Individual> generatePopulation() {
         List<Individual> initialPopulation = new ArrayList<>();
         for (int i = 0; i < simulationProperties.getPopulationSize(); i++) {
-            Individual individual = randomIndividual();
-            if (shouldGotInfected(simulationProperties.getInitialInfectedPercent())) {
-                individual.gotInfected(iterationEvolution.getCurrentSimulatedDay());
-            }
+            Individual individual = populationDynamics.generateRandomIndividual(
+                    simulationProperties.getInitialInfectedPercent(),
+                    iterationEvolution.getCurrentSimulatedDay());
             initialPopulation.add(individual);
         }
         return initialPopulation;
-    }
-
-    private Individual randomIndividual() {
-        return new Individual(
-                movementBehavior.generateRandomXPointWithinMapBoundaries(),
-                movementBehavior.generateRandomYPointWithinMapBoundaries(),
-                movementBehavior.newRandomDirection(),
-                individualProperties
-        );
-    }
-
-    private boolean shouldGotInfected(final double initialInfectedPercent) {
-        return randomUtil.generatePercentWithTwoDigitsScale() < initialInfectedPercent;
     }
 
     protected void runSimulation() {

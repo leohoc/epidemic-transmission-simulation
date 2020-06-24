@@ -4,6 +4,8 @@ import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.generators.PropertiesGenerator;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
+import com.leohoc.ets.infrastructure.config.IndividualProperties;
+import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -24,7 +26,9 @@ class PopulationDynamicsTest {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
         MovementBehavior movementBehavior = mock(MovementBehavior.class);
-        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
+        IndividualProperties individualProperties = mock(IndividualProperties.class);
+        RandomUtil randomUtil = mock(RandomUtil.class);
+        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior, individualProperties, randomUtil);
         final List<Individual> population = buildPopulation();
         final int currentSimulatedDay = 1;
 
@@ -49,7 +53,9 @@ class PopulationDynamicsTest {
         // Given
         DiseaseBehavior diseaseBehavior = mock(DiseaseBehavior.class);
         MovementBehavior movementBehavior = mock(MovementBehavior.class);
-        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior);
+        IndividualProperties individualProperties = mock(IndividualProperties.class);
+        RandomUtil randomUtil = mock(RandomUtil.class);
+        PopulationDynamics populationDynamics = new PopulationDynamics(diseaseBehavior, movementBehavior, individualProperties, randomUtil);
         final List<Individual> population = buildPopulation();
         final int currentSimulatedDay = 1;
 

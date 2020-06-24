@@ -1,7 +1,5 @@
 package com.leohoc.ets.domain.enums;
 
-import com.leohoc.ets.util.RandomUtil;
-
 import java.util.Arrays;
 import java.util.List;
 
