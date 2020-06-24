@@ -42,7 +42,7 @@ public class SimulationCoordinator {
         new Thread(this::runSimulation).start();
     }
 
-    protected List<Individual> generatePopulation() {
+    private List<Individual> generatePopulation() {
         List<Individual> initialPopulation = new ArrayList<>();
         for (int i = 0; i < simulationProperties.getPopulationSize(); i++) {
             Individual individual = populationDynamics.generateRandomIndividual(
@@ -53,7 +53,7 @@ public class SimulationCoordinator {
         return initialPopulation;
     }
 
-    protected void runSimulation() {
+    private void runSimulation() {
         do {
             runDynamicsIteration();
             iterationEvolution.iterate();
@@ -66,7 +66,7 @@ public class SimulationCoordinator {
         epidemicStatistics.updateAllStatistics(iterationStatistics);
     }
 
-    protected void runGraphicalEnvironment() {
+    private void runGraphicalEnvironment() {
         do {
             sleepFor(GRAPHICS_UPDATE_TIME_MS);
             graphicalEnvironment.repaint(population, iterationEvolution, epidemicStatistics);

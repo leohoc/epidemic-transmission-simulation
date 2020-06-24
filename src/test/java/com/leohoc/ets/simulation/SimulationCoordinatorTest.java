@@ -8,16 +8,14 @@ import com.leohoc.ets.userinterface.GraphicalEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Arrays;
 
 import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SimulationCoordinatorTest {
 
     private static final int ONE_INVOCATION = 1;
-    private static final int TWO_INVOCATIONS = 2;
     private static final Integer POINT_A_X = 0;
     private static final Integer POINT_A_Y = 0;
 
@@ -40,54 +38,29 @@ class SimulationCoordinatorTest {
     }
 
     @Test
-    void testGeneratePopulation() {
+    void testStartSimulation() {
         // Given
-        final int populationSize = 10;
+        final int populationSize = 1;
         final double initialInfectedPercent = 0.0;
         final int currentSimulatedDay = 0;
+        final Individual individual = buildIndividual();
+        final long waitingTimeInMs = 100;
 
         // When
         when(simulationProperties.getPopulationSize()).thenReturn(populationSize);
         when(simulationProperties.getInitialInfectedPercent()).thenReturn(initialInfectedPercent);
-        when(populationDynamics.generateRandomIndividual(eq(initialInfectedPercent), eq(currentSimulatedDay))).thenReturn(buildIndividual());
-        List<Individual> population = simulationCoordinator.generatePopulation();
-
-        // Then
-        assertEquals(populationSize, population.size());
-        assertFalse(population.stream().allMatch(Individual::isInfected));
-    }
-
-    @Test
-    void testRunSimulation() {
-        // Given
-        final EpidemicStatistics iterationEpidemicStatistics = new EpidemicStatistics();
-
-        // When
-        when(populationDynamics.executeDynamicsIterationOn(anyList(), anyInt())).thenReturn(iterationEpidemicStatistics);
+        when(iterationEvolution.getCurrentSimulatedDay()).thenReturn(currentSimulatedDay);
+        when(populationDynamics.generateRandomIndividual(eq(initialInfectedPercent), eq(currentSimulatedDay))).thenReturn(individual);
+        when(simulationProperties.isGraphicsEnabled()).thenReturn(Boolean.TRUE);
         when(iterationEvolution.hasSimulationFinished()).thenReturn(Boolean.TRUE);
-        simulationCoordinator.runSimulation();
+        simulationCoordinator.startSimulation();
 
         // Then
+        verify(graphicalEnvironment, times(ONE_INVOCATION)).initialize(eq(Arrays.asList(individual)), eq(iterationEvolution), eq(epidemicStatistics));
+        verify(populationDynamics, times(ONE_INVOCATION)).executeDynamicsIterationOn(eq(Arrays.asList(individual)), eq(currentSimulatedDay));
         verify(iterationEvolution, times(ONE_INVOCATION)).iterate();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).updateAllStatistics(eq(iterationEpidemicStatistics));
-        verify(iterationEvolution, times(TWO_INVOCATIONS)).getCurrentSimulatedDay();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getCurrentNormalCount();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getCurrentInfectedCount();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getCurrentHospitalizedCount();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalInfectedCount();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalHospitalizedCount();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalRecoveredCount();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).getTotalDeadCount();
-    }
-
-    @Test
-    void testRunGraphicalEnvironment() {
-        // Given When
-        when(iterationEvolution.hasSimulationFinished()).thenReturn(Boolean.TRUE);
-        simulationCoordinator.runGraphicalEnvironment();
-
-        // Then
-        verify(graphicalEnvironment, times(ONE_INVOCATION)).repaint(anyList(), any(IterationEvolution.class), any(EpidemicStatistics.class));
+        verify(epidemicStatistics, times(ONE_INVOCATION)).updateAllStatistics(any());
+        verify(graphicalEnvironment, timeout(waitingTimeInMs)).repaint(eq(Arrays.asList(individual)), eq(iterationEvolution), eq(epidemicStatistics));
     }
 
     private Individual buildIndividual() {
