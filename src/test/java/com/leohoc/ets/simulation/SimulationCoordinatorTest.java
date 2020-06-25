@@ -57,9 +57,9 @@ class SimulationCoordinatorTest {
 
         // Then
         verify(graphicalEnvironment, times(ONE_INVOCATION)).initialize(eq(Arrays.asList(individual)), eq(iterationEvolution), eq(epidemicStatistics));
-        verify(populationDynamics, times(ONE_INVOCATION)).executeDynamicsIterationOn(eq(Arrays.asList(individual)), eq(currentSimulatedDay));
-        verify(iterationEvolution, times(ONE_INVOCATION)).iterate();
-        verify(epidemicStatistics, times(ONE_INVOCATION)).updateAllStatistics(any());
+        verify(populationDynamics, timeout(waitingTimeInMs)).executeDynamicsIterationOn(eq(Arrays.asList(individual)), eq(currentSimulatedDay));
+        verify(iterationEvolution, timeout(waitingTimeInMs)).iterate();
+        verify(epidemicStatistics, timeout(waitingTimeInMs)).updateAllStatistics(any());
         verify(graphicalEnvironment, timeout(waitingTimeInMs)).repaint(eq(Arrays.asList(individual)), eq(iterationEvolution), eq(epidemicStatistics));
     }
 
