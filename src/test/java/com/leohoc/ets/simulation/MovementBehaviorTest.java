@@ -90,7 +90,7 @@ class MovementBehaviorTest {
 
         // When
         when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(10.0);
-        when(movementProperties.getDirectionChangeProbability()).thenReturn(15.0);
+        when(movementProperties.getDirectionChangeProbability()).thenReturn(5.0);
         when(movementProperties.getUpBoundary()).thenReturn(INITIAL_POINT);
         when(movementProperties.getLeftBoundary()).thenReturn(INITIAL_POINT);
         when(movementProperties.getDownBoundary()).thenReturn(FINAL_POINT);
@@ -109,7 +109,7 @@ class MovementBehaviorTest {
 
         // When
         when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(10.0);
-        when(movementProperties.getDirectionChangeProbability()).thenReturn(15.0);
+        when(movementProperties.getDirectionChangeProbability()).thenReturn(5.0);
         when(movementProperties.getUpBoundary()).thenReturn(INITIAL_POINT);
         when(movementProperties.getLeftBoundary()).thenReturn(INITIAL_POINT);
         when(movementProperties.getDownBoundary()).thenReturn(FINAL_POINT);
@@ -128,7 +128,7 @@ class MovementBehaviorTest {
 
         // When
         when(randomUtil.generatePercentWithTwoDigitsScale()).thenReturn(10.0);
-        when(movementProperties.getDirectionChangeProbability()).thenReturn(15.0);
+        when(movementProperties.getDirectionChangeProbability()).thenReturn(5.0);
         when(movementProperties.getUpBoundary()).thenReturn(INITIAL_POINT);
         when(movementProperties.getLeftBoundary()).thenReturn(INITIAL_POINT);
         when(movementProperties.getDownBoundary()).thenReturn(FINAL_POINT);
