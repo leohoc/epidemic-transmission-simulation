@@ -24,6 +24,23 @@ public class MovementBehavior {
         individual.moveTo(getDirectionConsideringMapBoundariesOf(individual));
     }
 
+    private boolean shouldChangeDirectionRandomly() {
+        return randomUtil.generatePercentWithTwoDigitsScale() < movementProperties.getDirectionChangeProbability();
+    }
+
+    public DirectionMovement newRandomDirection() {
+        if (shouldRespectSocialIsolation(movementProperties.getSocialIsolationPercent())) {
+            return STANDING;
+        }
+
+        final int bound = DirectionMovement.movementDirections().size();
+        return movementDirections().get(randomUtil.generateIntLessThan(bound));
+    }
+
+    private boolean shouldRespectSocialIsolation(double socialIsolationPercent) {
+        return randomUtil.generatePercentWithTwoDigitsScale() < socialIsolationPercent;
+    }
+
     private DirectionMovement getDirectionConsideringMapBoundariesOf(final Individual individual) {
         if (reachedLeftBoundary(individual.getX())) {
             return RIGHT;
@@ -56,28 +73,11 @@ public class MovementBehavior {
         return y >= movementProperties.getDownBoundary();
     }
 
-    protected boolean shouldChangeDirectionRandomly() {
-        return randomUtil.generatePercentWithTwoDigitsScale() < movementProperties.getDirectionChangeProbability();
-    }
-
-    public DirectionMovement newRandomDirection() {
-        if (shouldRespectSocialIsolation(movementProperties.getSocialIsolationPercent())) {
-            return STANDING;
-        }
-
-        final int bound = DirectionMovement.movementDirections().size();
-        return movementDirections().get(randomUtil.generateIntLessThan(bound));
-    }
-
     public int generateRandomXPointWithinMapBoundaries() {
         return randomUtil.generateIntBetween(movementProperties.getLeftBoundary(), movementProperties.getRightBoundary());
     }
 
     public int generateRandomYPointWithinMapBoundaries() {
         return randomUtil.generateIntBetween(movementProperties.getUpBoundary(), movementProperties.getDownBoundary());
-    }
-
-    private boolean shouldRespectSocialIsolation(double socialIsolationPercent) {
-        return randomUtil.generatePercentWithTwoDigitsScale() < socialIsolationPercent;
     }
 }
