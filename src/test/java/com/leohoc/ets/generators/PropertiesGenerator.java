@@ -5,12 +5,6 @@ import com.leohoc.ets.infrastructure.config.*;
 public class PropertiesGenerator {
 
     private static final int DEFAULT_PROPERTY_VALUE = 1;
-    private static final int INDIVIDUAL_INITIAL_BOUNDARY = 0;
-    private static final int INDIVIDUAL_END_BOUNDARY = 10;
-    private static final int RECOVERY_DAYS = 14;
-    private static final int ZERO_DEATH_PERCENTAGE = 0;
-    private static final int ZERO_HOSPITALIZATION_PERCENTAGE = 0;
-    private static final int HOSPITALIZATION_DAYS = 7;
     private static final int DEFAULT_MAP_PROPERTY_VALUE = 10;
     private static final int CURRENT_INFO_X = 0;
     private static final int CURRENT_NOT_EXPOSED_Y = 1;
@@ -30,21 +24,6 @@ public class PropertiesGenerator {
                 DEFAULT_PROPERTY_VALUE,
                 DEFAULT_PROPERTY_VALUE
         );
-    }
-
-    public static MovementProperties generateMovementProperties() {
-        return new MovementProperties(
-                INDIVIDUAL_INITIAL_BOUNDARY,
-                INDIVIDUAL_END_BOUNDARY,
-                INDIVIDUAL_END_BOUNDARY,
-                INDIVIDUAL_INITIAL_BOUNDARY,
-                DEFAULT_PROPERTY_VALUE,
-                DEFAULT_PROPERTY_VALUE
-        );
-    }
-
-    public static EpidemicProperties generateEpidemicProperties() {
-        return new EpidemicProperties(RECOVERY_DAYS, ZERO_DEATH_PERCENTAGE, ZERO_HOSPITALIZATION_PERCENTAGE, HOSPITALIZATION_DAYS);
     }
 
     public static GraphicsProperties generateGraphicsProperties() {
