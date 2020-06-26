@@ -56,7 +56,6 @@ jacocoTestCoverageVerification {
 
 check.dependsOn jacocoTestCoverageVerification
 
-
 task fatJar(type: Jar) {
 	zip64 true
 	manifest {
