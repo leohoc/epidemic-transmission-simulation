@@ -48,6 +48,7 @@ jacocoTestCoverageVerification {
 			excludes = [
 					'com.leohoc.ets.infrastructure.config.*',
 					'com.leohoc.ets.ETSApplication',
+                    'com.leohoc.ets.userinterface.GraphicalEnvironment',
 					'com.leohoc.ets.userinterface.GraphicalEnvironment.*'
 			]
 		}

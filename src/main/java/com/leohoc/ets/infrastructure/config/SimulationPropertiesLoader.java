@@ -65,26 +65,42 @@ public class SimulationPropertiesLoader {
 
     public GraphicsProperties loadGraphicsProperties() {
 
-        final int mapWidth = parseInt(properties.getProperty("simulation.graphics.map.width"));
-        final int mapHeight = parseInt(properties.getProperty("simulation.graphics.map.height"));
-        final int areaChartWidth = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
-        final int areaChartHeight = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
+        final int width = parseInt(properties.getProperty("simulation.graphics.map.width"));
+        final int height = parseInt(properties.getProperty("simulation.graphics.map.height"));
 
-        final int currentInfoX = parseInt(properties.getProperty("simulation.graphics.info.current.x"));
-        final int currentNotExposedY = parseInt(properties.getProperty("simulation.graphics.info.current.notexposed.y"));
-        final int currentInfectedY = parseInt(properties.getProperty("simulation.graphics.info.current.infected.y"));
-        final int currentHospitalizedY = parseInt(properties.getProperty("simulation.graphics.info.current.hospitalized.y"));
-        final int currentSimulationDayY = parseInt(properties.getProperty("simulation.graphics.info.current.simulationday.y"));
+        return new GraphicsProperties(width, height);
+    }
+
+    public ChartPanelProperties loadChartPanelProperties() {
+
+        final int x = parseInt(properties.getProperty("simulation.graphics.chartpanel.x"));
+        final int y = parseInt(properties.getProperty("simulation.graphics.chartpanel.y"));
+        final int width = parseInt(properties.getProperty("simulation.graphics.chartpanel.width"));
+        final int height = parseInt(properties.getProperty("simulation.graphics.chartpanel.height"));
+
+        final int currentInfoX = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.current.x"));
+        final int currentNotExposedY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.current.notexposed.y"));
+        final int currentInfectedY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.current.infected.y"));
+        final int currentHospitalizedY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.current.hospitalized.y"));
+        final int currentSimulationDayY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.current.simulationday.y"));
         final CurrentInfoLocation currentInfoLocation = new CurrentInfoLocation(currentInfoX, currentNotExposedY, currentInfectedY, currentHospitalizedY, currentSimulationDayY);
 
-        final int totalInfoX = parseInt(properties.getProperty("simulation.graphics.info.total.x"));
-        final int totalInfectedY = parseInt(properties.getProperty("simulation.graphics.info.total.infected.y"));
-        final int totalHospitalizedY = parseInt(properties.getProperty("simulation.graphics.info.total.hospitalized.y"));
-        final int totalRecoveredY = parseInt(properties.getProperty("simulation.graphics.info.total.recovered.y"));
-        final int totalDeadY = parseInt(properties.getProperty("simulation.graphics.info.total.dead.y"));
+        final int totalInfoX = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.total.x"));
+        final int totalInfectedY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.total.infected.y"));
+        final int totalHospitalizedY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.total.hospitalized.y"));
+        final int totalRecoveredY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.total.recovered.y"));
+        final int totalDeadY = parseInt(properties.getProperty("simulation.graphics.chartpanel.info.total.dead.y"));
         final TotalInfoLocation totalInfoLocation = new TotalInfoLocation(totalInfoX, totalInfectedY, totalHospitalizedY, totalRecoveredY, totalDeadY);
 
-        return new GraphicsProperties(mapWidth, mapHeight, areaChartWidth, areaChartHeight, currentInfoLocation, totalInfoLocation);
+        return new ChartPanelProperties(x, y, width, height, currentInfoLocation, totalInfoLocation);
+    }
+
+    public AreaChartProperties loadAreaChartProperties() {
+        final int x = parseInt(properties.getProperty("simulation.graphics.areachart.x"));
+        final int y = parseInt(properties.getProperty("simulation.graphics.areachart.y"));
+        final int width = parseInt(properties.getProperty("simulation.graphics.areachart.width"));
+        final int height = parseInt(properties.getProperty("simulation.graphics.areachart.height"));
+        return new AreaChartProperties(x, y, width, height);
     }
 
     public HealthSystemCapacityProperties loadHealthSystemCapacityProperties() {

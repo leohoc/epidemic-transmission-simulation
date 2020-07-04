@@ -1,5 +1,6 @@
 package com.leohoc.ets.userinterface;
 
+import com.leohoc.ets.infrastructure.config.AreaChartProperties;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -7,6 +8,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 class AreaChartTest {
 
@@ -18,13 +21,16 @@ class AreaChartTest {
     @Test
     void testDraw() {
         // Given
-        Rectangle chartPanel = buildChartPanel();
-        HashMap<Integer, List<AreaChartElement>> iterationsContent = buildIterationsContent();
-        AreaChart areaChart = new AreaChart(chartPanel, TOTAL_ITERATIONS, TOTAL_ITEMS_COUNT, iterationsContent, BOUNDARY_LINE_COUNT);
+        AreaChartProperties areaChartProperties = mock(AreaChartProperties.class);
+        Graphics graphics = spy(Graphics.class);
+        AreaChart areaChart = new AreaChart(areaChartProperties, TOTAL_ITERATIONS, TOTAL_ITEMS_COUNT, BOUNDARY_LINE_COUNT);
 
         // When
-        Graphics graphics = Mockito.spy(Graphics.class);
-        areaChart.draw(graphics);
+        when(areaChartProperties.getX()).thenReturn(0);
+        when(areaChartProperties.getY()).thenReturn(0);
+        when(areaChartProperties.getWidth()).thenReturn(4);
+        when(areaChartProperties.getHeight()).thenReturn(4);
+        areaChart.draw(graphics, buildIterationsContent());
 
         // Then
         Mockito.verify(graphics, Mockito.times(TOTAL_ITERATIONS)).setColor(Color.GREEN);
@@ -40,14 +46,6 @@ class AreaChartTest {
         Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).setColor(Color.YELLOW);
         Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).drawLine(0, 2, 4, 2);
 
-    }
-
-    private Rectangle buildChartPanel() {
-        final int x = 0;
-        final int y = 0;
-        final int width = 4;
-        final int height = 4;
-        return new Rectangle(x, y, width, height);
     }
 
     private HashMap<Integer, List<AreaChartElement>> buildIterationsContent() {
