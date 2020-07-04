@@ -5,12 +5,12 @@ import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
 import com.leohoc.ets.infrastructure.config.GraphicsProperties;
+import com.leohoc.ets.infrastructure.config.IndividualProperties;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.util.List;
 
-import static com.leohoc.ets.generators.PropertiesGenerator.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -127,7 +127,7 @@ class GraphicalEnvironmentTest {
     private Individual buildIndividual() {
         final int x = 0;
         final int y = 0;
-        return new Individual(x, y, DirectionMovement.STANDING, generateIndividualProperties());
+        return new Individual(x, y, DirectionMovement.STANDING, mock(IndividualProperties.class));
     }
 
     private EpidemicStatistics buildEpidemicStatistics() {

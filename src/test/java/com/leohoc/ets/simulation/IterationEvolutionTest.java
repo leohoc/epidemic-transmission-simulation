@@ -1,18 +1,23 @@
 package com.leohoc.ets.simulation;
 
+import com.leohoc.ets.infrastructure.config.IterationsProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.leohoc.ets.generators.PropertiesGenerator.generateIterationsProperties;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class IterationEvolutionTest {
 
+    private IterationsProperties iterationsProperties = mock(IterationsProperties.class);
     private IterationEvolution iterationEvolution;
 
     @BeforeEach
     void setup() {
-        iterationEvolution = new IterationEvolution(generateIterationsProperties());
+        iterationEvolution = new IterationEvolution(iterationsProperties);
+        when(iterationsProperties.getTotalIterations()).thenReturn(100);
+        when(iterationsProperties.getIterationsPerDay()).thenReturn(10);
     }
 
     @Test

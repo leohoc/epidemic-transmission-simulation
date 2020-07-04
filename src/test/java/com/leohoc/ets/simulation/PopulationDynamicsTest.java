@@ -2,7 +2,6 @@ package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
-import com.leohoc.ets.generators.PropertiesGenerator;
 import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.infrastructure.config.IndividualProperties;
@@ -114,6 +113,6 @@ class PopulationDynamicsTest {
         final int x = 0;
         final int y = 0;
         final DirectionMovement directionMovement = DirectionMovement.STANDING;
-        return new Individual(x, y, directionMovement, PropertiesGenerator.generateIndividualProperties());
+        return new Individual(x, y, directionMovement, individualProperties);
     }
 }

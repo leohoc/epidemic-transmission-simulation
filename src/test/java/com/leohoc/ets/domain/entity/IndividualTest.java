@@ -2,9 +2,10 @@ package com.leohoc.ets.domain.entity;
 
 import com.leohoc.ets.domain.enums.DirectionMovement;
 import com.leohoc.ets.domain.enums.HealthStatus;
+import com.leohoc.ets.infrastructure.config.IndividualProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -14,11 +15,19 @@ class IndividualTest {
     private static final int INITIAL_X = 0;
     private static final int INITIAL_Y = 0;
 
+    private IndividualProperties individualProperties = mock(IndividualProperties.class);
+
+    @BeforeEach
+    void setup() {
+        when(individualProperties.getIndividualWidth()).thenReturn(1);
+        when(individualProperties.getIndividualHeight()).thenReturn(1);
+    }
+
     @Test
     void testLivingIndividualMovement() {
         // Given
         DirectionMovement newDirectionMovement = DirectionMovement.RIGHT;
-        Individual individual = spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties()));
+        Individual individual = spy(new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, individualProperties));
 
         // When
         individual.moveTo(newDirectionMovement);
@@ -34,7 +43,7 @@ class IndividualTest {
     void testDeadIndividualMovement() {
         // Given
         DirectionMovement newDirectionMovement = DirectionMovement.RIGHT;
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, individualProperties);
         individual.died(CURRENT_SIMULATED_DAY);
 
         // When
@@ -50,7 +59,7 @@ class IndividualTest {
     @Test
     void testIndividualGotInfected() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, individualProperties);
 
         // When
         individual.gotInfected(CURRENT_SIMULATED_DAY);
@@ -62,7 +71,7 @@ class IndividualTest {
     @Test
     void testIndividualGotHospitalized() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, generateIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.STANDING, individualProperties);
 
         // When
         individual.gotHospitalized(CURRENT_SIMULATED_DAY);
@@ -74,7 +83,7 @@ class IndividualTest {
     @Test
     void testIndividualDied() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, individualProperties);
 
         // When
         individual.died(CURRENT_SIMULATED_DAY);
@@ -88,7 +97,7 @@ class IndividualTest {
     @Test
     void testIndividualRecovered() {
         // Given
-        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, generateIndividualProperties());
+        Individual individual = new Individual(INITIAL_X, INITIAL_Y, DirectionMovement.RIGHT, individualProperties);
 
         // When
         individual.recovered(CURRENT_SIMULATED_DAY);
@@ -103,10 +112,10 @@ class IndividualTest {
         // Given
         int individualX = 0;
         int individualY = 0;
-        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, generateIndividualProperties()));
+        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, individualProperties));
         int passerbyX = 1;
         int passerbyY = 1;
-        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, generateIndividualProperties());
+        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, individualProperties);
 
         // When
         when(individual.getWidth()).thenReturn(2);
@@ -122,10 +131,10 @@ class IndividualTest {
         // Given
         int individualX = 0;
         int individualY = 0;
-        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, generateIndividualProperties()));
+        Individual individual = spy(new Individual(individualX, individualY, DirectionMovement.STANDING, individualProperties));
         int passerbyX = 1;
         int passerbyY = 1;
-        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, generateIndividualProperties());
+        Individual passerby = new Individual(passerbyX, passerbyY, DirectionMovement.STANDING, individualProperties);
 
         // When
         when(individual.getWidth()).thenReturn(1);

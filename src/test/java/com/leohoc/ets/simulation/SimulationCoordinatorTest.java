@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.mockito.Mockito.*;
 
 class SimulationCoordinatorTest {
@@ -64,6 +63,6 @@ class SimulationCoordinatorTest {
     }
 
     private Individual buildIndividual() {
-        return new Individual(POINT_A_X, POINT_A_Y, DirectionMovement.STANDING, generateIndividualProperties());
+        return new Individual(POINT_A_X, POINT_A_Y, DirectionMovement.STANDING, mock(IndividualProperties.class));
     }
 }

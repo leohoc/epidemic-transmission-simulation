@@ -2,12 +2,11 @@ package com.leohoc.ets.simulation;
 
 import com.leohoc.ets.domain.entity.Individual;
 import com.leohoc.ets.domain.enums.DirectionMovement;
+import com.leohoc.ets.infrastructure.config.IndividualProperties;
 import com.leohoc.ets.infrastructure.config.MovementProperties;
 import com.leohoc.ets.util.RandomUtil;
 import org.junit.jupiter.api.Test;
 
-
-import static com.leohoc.ets.generators.PropertiesGenerator.generateIndividualProperties;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
@@ -19,6 +18,7 @@ class MovementBehaviorTest {
     private static final int FINAL_POINT = 10;
     private static final int ONE_INVOCATION = 1;
 
+    private final IndividualProperties individualProperties = mock(IndividualProperties.class);
     private final MovementProperties movementProperties = mock(MovementProperties.class);
     private final RandomUtil randomUtil = mock(RandomUtil.class);
 
@@ -26,7 +26,7 @@ class MovementBehaviorTest {
     void testAdjustDirectionWithoutChangingIt() {
         // Given
         DirectionMovement currentDirectionMovement = DirectionMovement.RIGHT;
-        Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, generateIndividualProperties());
+        Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, individualProperties);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties, randomUtil);
 
         // When
@@ -46,7 +46,7 @@ class MovementBehaviorTest {
     void testAdjustDirectionRespectingSocialIsolation() {
         // Given
         DirectionMovement currentDirectionMovement = DirectionMovement.LEFT;
-        Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, generateIndividualProperties());
+        Individual individual = new Individual(MIDDLE_POINT, MIDDLE_POINT, currentDirectionMovement, individualProperties);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties, randomUtil);
 
         // When
@@ -66,7 +66,7 @@ class MovementBehaviorTest {
     @Test
     void testChangeDirectionByReachingLeftMapBoundary() {
         // Given
-        Individual individual = new Individual(INITIAL_POINT, MIDDLE_POINT, DirectionMovement.LEFT, generateIndividualProperties());
+        Individual individual = new Individual(INITIAL_POINT, MIDDLE_POINT, DirectionMovement.LEFT, individualProperties);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties, randomUtil);
 
         // When
@@ -85,7 +85,7 @@ class MovementBehaviorTest {
     @Test
     void testChangeDirectionByReachingRightMapBoundary() {
         // Given
-        Individual individual = new Individual(FINAL_POINT, MIDDLE_POINT, DirectionMovement.RIGHT, generateIndividualProperties());
+        Individual individual = new Individual(FINAL_POINT, MIDDLE_POINT, DirectionMovement.RIGHT, individualProperties);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties, randomUtil);
 
         // When
@@ -104,7 +104,7 @@ class MovementBehaviorTest {
     @Test
     void testChangeDirectionByReachingUpMapBoundary() {
         // Given
-        Individual individual = new Individual(MIDDLE_POINT, INITIAL_POINT, DirectionMovement.UP, generateIndividualProperties());
+        Individual individual = new Individual(MIDDLE_POINT, INITIAL_POINT, DirectionMovement.UP, individualProperties);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties, randomUtil);
 
         // When
@@ -123,7 +123,7 @@ class MovementBehaviorTest {
     @Test
     void testChangeDirectionByReachingDownMapBoundary() {
         // Given
-        Individual individual = new Individual(MIDDLE_POINT, FINAL_POINT, DirectionMovement.DOWN, generateIndividualProperties());
+        Individual individual = new Individual(MIDDLE_POINT, FINAL_POINT, DirectionMovement.DOWN, individualProperties);
         MovementBehavior movementBehavior = new MovementBehavior(movementProperties, randomUtil);
 
         // When
