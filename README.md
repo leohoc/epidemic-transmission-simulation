@@ -107,7 +107,7 @@ The individuals start the simulation either with a *normal* health status, or a 
 the initial infected population percent property). When an *infected* individual overlaps a *normal* individual in the
 simulation map, the *normal* individual changes its health status to *infected*.
 
-After a configured number of days, a configured percent of the individuals will need hospitalization, changing its
+After a configured number of days, a configured percent of the *infected* individuals will need hospitalization, changing its
 status to *hospitalized*. *Hospitalized* individuals can no longer move, but they can infect *normal* individuals that
 happens to overlap them.  
 
@@ -124,14 +124,13 @@ After a configured number of days, *infected* and *hospitalized* individuals wil
 #### Health System Properties
 
 When an individual needs hospitalization, it will fill one of the available ICUs beds, releasing it after it's recovery 
-time. If there is no bed available when an individual needs, it will change its status to *died* instead of 
-*hospitalized*.
+time. If there is no bed available when an individual needs, it will change its status to *died* instead of *hospitalized*.
 
 | Property                                      | Type    | Description                                                                     |
 |-----------------------------------------------|---------|---------------------------------------------------------------------------------|
 | simulation.healthsystem.icus.availablebeds    | Integer | Number of Intensive Care Unit beds available to treat hospitalized individuals. |
 
-#### Graphics properties
+#### General Graphics properties
 
 If the graphic interface is enabled, the following properties will define how the simulation will be showed.
 
@@ -139,26 +138,44 @@ The map properties define the size of a window, starting at zero point in both X
 real time movements and health status. Note that the individuals can move outside this window, respecting the movement
 boundaries properties.
 
-The area chart properties defines a space to build an area chart, showing the evolution of the population health status.
-
-The info properties define the position each simulation information will be showed.   
-
 | Property                                         | Type    | Description                                                                    |
 |--------------------------------------------------|---------|--------------------------------------------------------------------------------|
 | simulation.graphics.map.width                    | Integer | Width of the visible map.                                                      |
 | simulation.graphics.map.height                   | Integer | Height of the visible map.                                                     |
+
+#### Chart Panel properties
+
+The chart panel properties defines a space to build a chart panel containing all the information about the ongoing simulation.
+
+The info sub-properties defines the position each simulation information will be showed.   
+
+| Property                                                    | Type    | Description                                                                    |
+|-------------------------------------------------------------|---------|--------------------------------------------------------------------------------|
+| simulation.graphics.chartpanel.x                            | Integer | Start point in the X axis of the chart panel.                                  |
+| simulation.graphics.chartpanel.y                            | Integer | Start point in the Y axis of the chart panel.                                  |
+| simulation.graphics.chartpanel.width                        | Integer | Width of the chart panel.                                                      |
+| simulation.graphics.chartpanel.height                       | Integer | Height of the chart panel.                                                     |
+| simulation.graphics.chartpanel.info.current.x               | Integer | Start point in the X axis of the current population health status information. |
+| simulation.graphics.chartpanel.info.current.notexposed.y    | Integer | Y axis point to show the number of not exposed to the disease individuals.     |
+| simulation.graphics.chartpanel.info.current.infected.y      | Integer | Y axis point to show the current number of infected individuals.               |
+| simulation.graphics.chartpanel.info.current.hospitalized.y  | Integer | Y axis point to show the current number of hospitalized individuals.           |
+| simulation.graphics.chartpanel.info.current.simulationday.y | Integer | Y axis point to show the current simulated day.                                |
+| simulation.graphics.chartpanel.info.total.x                 | Integer | Start point in the X axis of the health status information totals.             |
+| simulation.graphics.chartpanel.info.total.infected.y        | Integer | Y axis point to show the total number of infected individuals.                 |
+| simulation.graphics.chartpanel.info.total.hospitalized.y    | Integer | Y axis point to show the total number of hospitalized individuals.             |
+| simulation.graphics.chartpanel.info.total.recovered.y       | Integer | Y axis point to show the total number of recovered individuals.                |
+| simulation.graphics.chartpanel.info.total.dead.y            | Integer | Y axis point to show the total number of dead individuals.                     |
+
+#### Area Chart properties
+
+The area chart properties defines a space to build an area chart, showing the evolution of the population health status.
+
+| Property                                         | Type    | Description                                                                    |
+|--------------------------------------------------|---------|--------------------------------------------------------------------------------|
+| simulation.graphics.areachart.x                  | Integer | Start point in the X axis of the area chart.                                   |
+| simulation.graphics.areachart.y                  | Integer | Start point in the Y axis of the area chart.                                   |
 | simulation.graphics.areachart.width              | Integer | Width of the area chart.                                                       |
 | simulation.graphics.areachart.height             | Integer | Height of the area chart.                                                      |
-| simulation.graphics.info.current.x               | Integer | Start point in the X axis of the current population health status information. |
-| simulation.graphics.info.current.notexposed.y    | Integer | Y axis point to show the number of not exposed to the disease individuals.     |
-| simulation.graphics.info.current.infected.y      | Integer | Y axis point to show the current number of infected individuals.               |
-| simulation.graphics.info.current.hospitalized.y  | Integer | Y axis point to show the current number of hospitalized individuals.           |
-| simulation.graphics.info.current.simulationday.y | Integer | Y axis point to show the current simulated day.                                |
-| simulation.graphics.info.total.x                 | Integer | Start point in the X axis of the health status information totals.             |
-| simulation.graphics.info.total.infected.y        | Integer | Y axis point to show the total number of infected individuals.                 |
-| simulation.graphics.info.total.hospitalized.y    | Integer | Y axis point to show the total number of hospitalized individuals.             |
-| simulation.graphics.info.total.recovered.y       | Integer | Y axis point to show the total number of recovered individuals.                |
-| simulation.graphics.info.total.dead.y            | Integer | Y axis point to show the total number of dead individuals.                     |
 
 [1]: https://github.com/leohoc/epidemic-transmission-simulation/blob/master/src/main/resources/application.properties 
 
