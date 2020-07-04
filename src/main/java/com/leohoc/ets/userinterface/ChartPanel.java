@@ -4,8 +4,8 @@ import com.leohoc.ets.domain.entity.EpidemicStatistics;
 import com.leohoc.ets.infrastructure.config.ChartPanelProperties;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 
@@ -30,7 +30,7 @@ public class ChartPanel {
 
     public void draw(final Graphics graphics,
                      final EpidemicStatistics epidemicStatistics,
-                     final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration,
+                     final Map<Integer, List<AreaChartElement>> areaChartContentByIteration,
                      final Integer currentSimulatedDay) {
         drawBackgroundPanel(graphics);
         drawAreaChart(graphics, areaChartContentByIteration);
@@ -54,7 +54,7 @@ public class ChartPanel {
         graphics.drawString(format(TOTAL_DEAD, epidemicStatistics.getTotalDeadCount()), properties.getTotalInfoX(), properties.getTotalDeadY());
     }
 
-    private void drawAreaChart(final Graphics graphics, final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration) {
+    private void drawAreaChart(final Graphics graphics, final Map<Integer, List<AreaChartElement>> areaChartContentByIteration) {
         areaChart.draw(graphics, areaChartContentByIteration);
     }
 }
