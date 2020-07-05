@@ -16,11 +16,11 @@ import static com.leohoc.ets.domain.enums.HealthStatus.DEAD;
 
 public class SimulationPanel extends JPanel {
 
-    private final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
-    private final ChartPanel chartPanel;
-    private List<Individual> population;
-    private IterationEvolution iterationEvolution;
-    private EpidemicStatistics epidemicStatistics;
+    private transient final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
+    private transient final ChartPanel chartPanel;
+    private transient List<Individual> population;
+    private transient IterationEvolution iterationEvolution;
+    private transient EpidemicStatistics epidemicStatistics;
 
     public SimulationPanel(final ChartPanel chartPanel) {
         this.chartPanel = chartPanel;
