@@ -14,7 +14,6 @@ import static org.mockito.Mockito.*;
 
 class SimulationCoordinatorTest {
 
-    private static final int ONE_INVOCATION = 1;
     private static final Integer POINT_A_X = 0;
     private static final Integer POINT_A_Y = 0;
 
@@ -55,7 +54,6 @@ class SimulationCoordinatorTest {
         simulationCoordinator.startSimulation();
 
         // Then
-        verify(graphicalEnvironment, times(ONE_INVOCATION)).initialize(eq(Arrays.asList(individual)), eq(iterationEvolution), eq(epidemicStatistics));
         verify(populationDynamics, timeout(waitingTimeInMs)).executeDynamicsIterationOn(eq(Arrays.asList(individual)), eq(currentSimulatedDay));
         verify(iterationEvolution, timeout(waitingTimeInMs)).iterate();
         verify(epidemicStatistics, timeout(waitingTimeInMs)).updateAllStatistics(any());

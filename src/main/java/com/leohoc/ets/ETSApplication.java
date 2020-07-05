@@ -6,6 +6,7 @@ import com.leohoc.ets.simulation.*;
 import com.leohoc.ets.userinterface.AreaChart;
 import com.leohoc.ets.userinterface.ChartPanel;
 import com.leohoc.ets.userinterface.GraphicalEnvironment;
+import com.leohoc.ets.userinterface.SimulationPanel;
 import com.leohoc.ets.util.RandomUtil;
 
 import java.security.SecureRandom;
@@ -39,9 +40,11 @@ public class ETSApplication {
                 propertiesLoader.loadChartPanelProperties(),
                 areaChart);
 
+        final SimulationPanel simulationPanel = new SimulationPanel(chartPanel);
+
         final GraphicalEnvironment graphicalEnvironment = new GraphicalEnvironment(
                 propertiesLoader.loadGraphicsProperties(),
-                chartPanel);
+                simulationPanel);
 
 		final SimulationCoordinator simulationCoordinator = new SimulationCoordinator(
                 simulationProperties,

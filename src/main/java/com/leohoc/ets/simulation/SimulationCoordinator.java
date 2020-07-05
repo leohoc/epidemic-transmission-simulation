@@ -36,7 +36,6 @@ public class SimulationCoordinator {
     public void startSimulation() {
         this.population.addAll(generatePopulation());
         if (simulationProperties.isGraphicsEnabled()) {
-            graphicalEnvironment.initialize(population, iterationEvolution, epidemicStatistics);
             new Thread(this::runGraphicalEnvironment).start();
         }
         new Thread(this::runSimulation).start();
