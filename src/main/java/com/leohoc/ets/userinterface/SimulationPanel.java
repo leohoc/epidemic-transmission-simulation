@@ -16,8 +16,8 @@ import static com.leohoc.ets.domain.enums.HealthStatus.DEAD;
 
 public class SimulationPanel extends JPanel {
 
-    private transient final HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
-    private transient final ChartPanel chartPanel;
+    private final transient HashMap<Integer, List<AreaChartElement>> areaChartContentByIteration = new HashMap<>();
+    private final transient ChartPanel chartPanel;
     private transient List<Individual> population;
     private transient IterationEvolution iterationEvolution;
     private transient EpidemicStatistics epidemicStatistics;
