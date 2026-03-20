@@ -6,7 +6,6 @@ import com.leohoc.ets.infrastructure.config.IndividualProperties;
 import com.leohoc.ets.simulation.IterationEvolution;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.leohoc.ets.domain.enums.DirectionMovement.STANDING;
+import static com.leohoc.ets.userinterface.SimulationPanel.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -31,7 +31,7 @@ class SimulationPanelTest {
     @Test
     void testPaintWithSimulationElementsNotInitialized() {
         // Given
-        Graphics graphics = Mockito.spy(Graphics.class);
+        Graphics2D graphics = mock(Graphics2D.class);
         ChartPanel chartPanel = mock(ChartPanel.class);
         SimulationPanel simulationPanel = new SimulationPanel(chartPanel);
 
@@ -40,7 +40,7 @@ class SimulationPanelTest {
 
         // Then
         verify(graphics, never()).setColor(any(Color.class));
-        verify(graphics, never()).fillRect(anyInt(), anyInt(), anyInt(), anyInt());
+        verify(graphics, never()).fillOval(anyInt(), anyInt(), anyInt(), anyInt());
         verify(chartPanel, never()).draw(eq(graphics), any(EpidemicStatistics.class), any(HashMap.class), anyInt());
     }
 
@@ -50,7 +50,7 @@ class SimulationPanelTest {
         ArgumentCaptor<Map<Integer, List<AreaChartElement>>> areaChartContentByIteration = ArgumentCaptor.forClass(Map.class);
         IterationEvolution iterationEvolution = mock(IterationEvolution.class);
         EpidemicStatistics epidemicStatistics = mock(EpidemicStatistics.class);
-        Graphics graphics = Mockito.spy(Graphics.class);
+        Graphics2D graphics = mock(Graphics2D.class);
         ChartPanel chartPanel = mock(ChartPanel.class);
         SimulationPanel simulationPanel = new SimulationPanel(chartPanel);
 
@@ -61,12 +61,12 @@ class SimulationPanelTest {
         simulationPanel.paint(graphics);
 
         // Then
-        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.LIGHT_GRAY));
-        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.CYAN));
-        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.BLUE));
-        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.GREEN));
-        verify(graphics, times(ONE_INVOCATION)).setColor(eq(Color.RED));
-        verify(graphics, times(FIVE_INVOCATIONS)).fillRect(eq(INDIVIDUAL_X), eq(INDIVIDUAL_Y), anyInt(), anyInt());
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(COLOR_NORMAL));
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(COLOR_INFECTED));
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(COLOR_HOSPITALIZED));
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(COLOR_RECOVERED));
+        verify(graphics, times(ONE_INVOCATION)).setColor(eq(COLOR_DEAD));
+        verify(graphics, times(FIVE_INVOCATIONS)).fillOval(anyInt(), anyInt(), eq(4), eq(4));
         verify(chartPanel, times(ONE_INVOCATION)).draw(eq(graphics), eq(epidemicStatistics), areaChartContentByIteration.capture(), eq(CURRENT_SIMULATED_DAY));
         assertContentOf(areaChartContentByIteration);
     }
@@ -86,15 +86,14 @@ class SimulationPanelTest {
 
     private void assertContentOf(ArgumentCaptor<Map<Integer, List<AreaChartElement>>> areaChartContentByIteration) {
         List<AreaChartElement> areaChartElements = areaChartContentByIteration.getValue().get(CURRENT_ITERATION);
-        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, Color.LIGHT_GRAY)));
-        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, Color.CYAN)));
-        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, Color.BLUE)));
-        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, Color.GREEN)));
-        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, Color.RED)));
+        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, COLOR_NORMAL)));
+        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, COLOR_INFECTED)));
+        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, COLOR_HOSPITALIZED)));
+        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, COLOR_RECOVERED)));
+        assertTrue(areaChartElements.contains(new AreaChartElement(ONE_INDIVIDUAL, COLOR_DEAD)));
     }
 
     private List<Individual> buildPopulation() {
-
         Individual healthyIndividual = buildIndividual();
 
         Individual infectedIndividual = buildIndividual();
@@ -115,5 +114,4 @@ class SimulationPanelTest {
     private Individual buildIndividual() {
         return new Individual(INDIVIDUAL_X, INDIVIDUAL_Y, STANDING, mock(IndividualProperties.class));
     }
-
 }

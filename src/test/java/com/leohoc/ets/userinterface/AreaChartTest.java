@@ -2,7 +2,6 @@ package com.leohoc.ets.userinterface;
 
 import com.leohoc.ets.infrastructure.config.AreaChartProperties;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,7 +21,8 @@ class AreaChartTest {
     void testDraw() {
         // Given
         AreaChartProperties areaChartProperties = mock(AreaChartProperties.class);
-        Graphics graphics = spy(Graphics.class);
+        Graphics2D graphics = mock(Graphics2D.class);
+        Graphics2D boundaryLineGraphics = mock(Graphics2D.class);
         AreaChart areaChart = new AreaChart(areaChartProperties, TOTAL_ITERATIONS, TOTAL_ITEMS_COUNT, BOUNDARY_LINE_COUNT);
 
         // When
@@ -30,22 +30,23 @@ class AreaChartTest {
         when(areaChartProperties.getY()).thenReturn(0);
         when(areaChartProperties.getWidth()).thenReturn(4);
         when(areaChartProperties.getHeight()).thenReturn(4);
+        when(graphics.create()).thenReturn(boundaryLineGraphics);
         areaChart.draw(graphics, buildIterationsContent());
 
         // Then
-        Mockito.verify(graphics, Mockito.times(TOTAL_ITERATIONS)).setColor(Color.GREEN);
-        Mockito.verify(graphics, Mockito.times(TOTAL_ITERATIONS)).setColor(Color.WHITE);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(0, 0, 1, 4);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(0, 0, 1, 0);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(1, 1, 1, 3);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(1, 0, 1, 1);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(2, 2, 1, 2);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(2, 0, 1, 2);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(3, 3, 1, 1);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).fillRect(3, 0, 1, 3);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).setColor(Color.YELLOW);
-        Mockito.verify(graphics, Mockito.times(ONE_INVOCATION)).drawLine(0, 2, 4, 2);
-
+        verify(graphics, times(TOTAL_ITERATIONS)).setColor(Color.GREEN);
+        verify(graphics, times(TOTAL_ITERATIONS)).setColor(Color.WHITE);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(0, 0, 1, 4);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(0, 0, 1, 0);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(1, 1, 1, 3);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(1, 0, 1, 1);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(2, 2, 1, 2);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(2, 0, 1, 2);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(3, 3, 1, 1);
+        verify(graphics, times(ONE_INVOCATION)).fillRect(3, 0, 1, 3);
+        verify(boundaryLineGraphics, times(ONE_INVOCATION)).setColor(new Color(255, 220, 0));
+        verify(boundaryLineGraphics, times(ONE_INVOCATION)).drawLine(0, 2, 4, 2);
+        verify(boundaryLineGraphics, times(ONE_INVOCATION)).dispose();
     }
 
     private HashMap<Integer, List<AreaChartElement>> buildIterationsContent() {

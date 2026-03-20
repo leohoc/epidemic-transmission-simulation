@@ -66,8 +66,17 @@ public class AreaChart {
         final int boundaryLineStartX = properties.getX();
         final int boundaryLineEndX = (properties.getX() + properties.getWidth());
         final int boundaryLineY = calculateBoundaryLineY();
-        graphics.setColor(Color.YELLOW);
-        graphics.drawLine(boundaryLineStartX, boundaryLineY, boundaryLineEndX, boundaryLineY);
+
+        Graphics2D g2d = (Graphics2D) graphics.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(new Color(255, 220, 0));
+        g2d.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+                10.0f, new float[]{6, 4}, 0));
+        g2d.drawLine(boundaryLineStartX, boundaryLineY, boundaryLineEndX, boundaryLineY);
+        g2d.setStroke(new BasicStroke(1f));
+        g2d.setFont(new Font("SansSerif", Font.BOLD, 9));
+        g2d.drawString("ICU Capacity", boundaryLineStartX + 4, boundaryLineY - 3);
+        g2d.dispose();
     }
 
     private int calculateBoundaryLineY() {
